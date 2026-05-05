@@ -24,17 +24,31 @@
       letter-spacing: -0.005em;
     }
 
+    .ot-page .project__head {
+      text-align: left;
+    }
+    .ot-page .project__title {
+      margin-bottom: 10px;
+    }
+    .ot-page .project__tagline {
+      margin: 0;
+      max-width: 640px;
+    }
+
     /* ── 인트로 카드 ── */
     .ot-intro {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
       gap: 36px;
-      align-items: center;
-      margin: 32px 0 12px;
+      align-items: start;
+      margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e5e7;
     }
     .ot-intro__lede {
       font-size: 17px; line-height: 1.65;
       color: #424245;
+      margin: 0;
     }
     .ot-intro__lede strong { color: #1d1d1f; font-weight: 600; }
 
@@ -433,31 +447,34 @@
       .ot-shots { grid-template-columns: 1fr; }
     }
   </style>
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
 </head>
 <body class="ot-page">
   <article class="section project tile-light">
     <div class="section__inner">
-      <header class="project__head">
-        <p class="project__eyebrow">Desktop · 창업 프로젝트</p>
-        <h1 class="project__title">작업 품질 트래킹 앱</h1>
-        <p class="project__tagline">PC 사용 신호로 작업의 품질을 측정합니다.</p>
-      </header>
-
       <!-- ── 인트로: 앱 설명 + 스택 ── -->
-      <section class="ot-intro">
-        <p class="ot-intro__lede">
-          세션 시작 시 <strong>의도(예: Coding)를 선언</strong>하고 스톱워치를 켭니다.
-          <strong>ActivityWatch가 OS API 레벨</strong>에서 활성 앱·윈도우·AFK를 수집하면,
-          그 시간 동안 의도한 카테고리에 쓴 비율로 <strong>작업 품질을 0~100점으로 즉시 환산</strong>합니다.
-          일·주 단위 패턴 인사이트는 Gemini Flash가 비동기로 생성합니다.
-        </p>
+      <section class="ot-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head">
+            <h1 class="project__title">작업 품질 트래킹 앱</h1>
+          </header>
+
+          <p class="ot-intro__lede">
+            사용자는 TODO를 선택하고 작업 세션을 시작합니다.
+            세션 동안 ActivityWatch가 OS API 기반으로 활성 앱·윈도우·AFK 상태를 로컬에서 수집합니다.
+            세션 종료 후에는 작업 품질 점수, 이탈 구간, 일·주 단위 패턴 인사이트를 제공합니다.
+          </p>
+        </div>
 
         <div class="ot-stack">
           <div class="ot-stack__label">Stack</div>
 
           <div class="ot-stack__group">
-            <div class="ot-stack__group-name">Desktop Shell</div>
+            <div class="ot-stack__group-name">Shell</div>
             <div class="ot-stack__items">
               <span class="ot-stack__item">PyWebview</span>
               <span class="ot-stack__item">py2app</span>

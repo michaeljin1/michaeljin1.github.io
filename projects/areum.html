@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>마음챙김 가이드 앱 mylo — 양영진</title>
+  <title>마음챙김 가이드 앱 — 양영진</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <!-- 이유: 폰트 통일 — Wanted Sans Variable (한국어) + DM Sans (영문/숫자) -->
@@ -24,26 +24,6 @@
       letter-spacing: -0.005em;
     }
 
-    /* ── 페이지 흐름 (6단계) ── */
-    .ot-page-flow {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      margin: 24px 0 36px;
-      padding-bottom: 22px;
-      border-bottom: 1px solid #e5e5e7;
-    }
-    .ot-page-flow__step {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 10px;
-      background: #f5f5f7;
-      border-radius: 999px;
-      font-size: 12px; color: #6e6e73;
-    }
-    .ot-page-flow__step b {
-      font-family: "DM Sans", sans-serif !important;
-      font-weight: 600; color: #0066cc;
-    }
-    .ot-page-flow__sep { color: #c0c0c4; font-size: 12px; align-self: center; }
-
     /* ── 인트로 (좌 lede + 우 stack) ── */
     .ot-intro {
       display: grid;
@@ -51,6 +31,8 @@
       gap: 36px;
       align-items: start;
       margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e5e7;
     }
     .ot-intro__lede {
       font-size: 17px; line-height: 1.7;
@@ -100,8 +82,9 @@
     /* ── 화면 그리드 ── */
     .ot-shots {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      margin: 0 auto;
     }
     .ot-shot {
       background: #fafafc;
@@ -110,234 +93,45 @@
       overflow: hidden;
     }
     .ot-shot__media {
-      aspect-ratio: 9 / 16;
+      aspect-ratio: 1080 / 2340;
       background: #fff;
       display: flex; align-items: stretch; justify-content: center;
       overflow: hidden;
     }
     .ot-shot__media img {
-      width: 100%; height: 100%; object-fit: cover; object-position: top;
-    }
-    .ot-shot__caption {
-      padding: 10px 16px;
-      background: #fff;
-      border-top: 1px solid #e5e5e7;
-    }
-    .ot-shot__label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: #8e8e93;
-    }
-    .ot-shot__title {
-      font-size: 13px; font-weight: 600; color: #1d1d1f;
-      margin-top: 2px;
-    }
-
-    /* ── mock 화면 (sage green + 화이트) ── */
-    :root {
-      --mylo-sage: #cfd9c5;
-      --mylo-sage-soft: #e6ede0;
-      --mylo-leaf: #6c8b62;
-      --mylo-ink: #2b3a26;
-    }
-    .mock-screen {
-      background: #fff;
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column;
-      padding: 22px 18px 16px;
-      gap: 14px;
-    }
-    .mock-screen__top {
-      display: flex; align-items: center; justify-content: flex-end;
-      font-size: 9px; color: #8e8e93;
-      font-family: "DM Sans", sans-serif !important;
-    }
-    .mock-screen__center {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 18px;
-    }
-    .mock-bubble {
-      width: 64px; height: 64px;
-      border-radius: 50%;
-      background: var(--mylo-sage);
-      box-shadow: 0 0 0 12px var(--mylo-sage-soft);
-    }
-    .mock-question {
-      text-align: center;
-      font-size: 13px; line-height: 1.55;
-      color: var(--mylo-ink);
-      font-weight: 500;
-    }
-    .mock-chips {
-      display: flex; flex-wrap: nowrap; gap: 6px;
-      overflow: hidden;
-      padding: 4px 2px;
-    }
-    .mock-chip {
-      flex-shrink: 0;
-      padding: 5px 11px;
-      background: #fff;
-      border: 1px solid #e5e5e7;
-      border-radius: 999px;
-      font-size: 10px; color: #1d1d1f;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-    }
-    .mock-input-bar {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 8px 7px 14px;
-      background: #fff;
-      border: 1px solid #e5e5e7;
-      border-radius: 999px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .mock-input-bar__placeholder {
-      flex: 1;
-      font-size: 11px; color: #8e8e93;
-    }
-    .mock-input-bar__placeholder--typed { color: #1d1d1f; }
-    .mock-input-bar__send {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--mylo-sage);
-      display: grid; place-items: center;
-    }
-    .mock-input-bar__send::after {
-      content: "";
-      width: 0; height: 0;
-      border-left: 6px solid var(--mylo-leaf);
-      border-top: 4px solid transparent;
-      border-bottom: 4px solid transparent;
-      margin-left: 2px;
-    }
-
-    /* mock 화면 4: 일기 회고 */
-    .mock-diary {
-      background: #fff;
-      width: 100%; height: 100%;
-      padding: 22px 18px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .mock-diary__date {
-      font-family: "DM Sans", sans-serif !important;
-      font-size: 11px; color: #8e8e93; font-weight: 500;
-    }
-    .mock-diary__title {
-      font-size: 16px; font-weight: 600; color: var(--mylo-ink);
-      line-height: 1.35;
-    }
-    .mock-diary__qa {
-      margin-top: 8px;
-      padding: 10px 12px;
-      background: var(--mylo-sage-soft);
-      border-radius: 10px;
-    }
-    .mock-diary__q { font-size: 10px; color: var(--mylo-leaf); margin-bottom: 4px; font-weight: 600; }
-    .mock-diary__a { font-size: 11px; color: var(--mylo-ink); line-height: 1.5; }
-    .mock-diary__sum {
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px dashed #d2d2d7;
-      font-size: 10px; color: #6e6e73;
-      line-height: 1.5;
-    }
-
-    /* ── 미니 아키텍처 ── */
-    .mini-arch {
-      background: #fafafc;
-      border: 1px solid #e5e5e7;
-      border-radius: 14px;
-      padding: 22px;
-    }
-    .mini-arch__row {
-      display: grid; gap: 8px;
-      margin-bottom: 8px;
-    }
-    .mini-arch__row:last-child { margin-bottom: 0; }
-    .mini-arch__cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .mini-arch__node {
-      background: #fff;
-      border: 1px solid #e5e5e7;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 12px;
-      text-align: center;
-      color: #1d1d1f;
-      line-height: 1.4;
-    }
-    .mini-arch__node--primary { border-color: #0066cc; background: rgba(0,102,204,0.04); }
-    .mini-arch__node--leaf { border-color: var(--mylo-leaf); background: rgba(108,139,98,0.06); color: var(--mylo-ink); }
-    .mini-arch__node--orange { border-color: #ff9500; background: rgba(255,149,0,0.04); }
-    .mini-arch__node small {
-      display: block; font-size: 10px; color: #8e8e93;
-      font-family: "DM Sans", sans-serif !important;
-      font-weight: 500;
-      margin-top: 2px;
-    }
-    .mini-arch__arrow {
-      text-align: center; color: #c0c0c4;
-      font-size: 14px; margin: 0 0 8px;
-    }
-
-    /* ── 처리 흐름 (번호 + 시간 + 한 줄) ── */
-    .ot-flow {
-      display: flex; flex-direction: column;
-    }
-    .ot-flow__row {
-      display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 14px;
-      padding: 14px 0;
-      border-top: 1px solid #e5e5e7;
-    }
-    .ot-flow__row:first-child { border-top: 0; }
-    .ot-flow__num {
-      font-family: "DM Sans", sans-serif !important;
-      font-size: 13px; font-weight: 600;
-      color: #0066cc;
-      padding-top: 1px;
-    }
-    .ot-flow__line {
-      display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
-    }
-    .ot-flow__title {
-      font-size: 14px; color: #1d1d1f; font-weight: 500;
-      flex: 1;
-    }
-    .ot-flow__time {
-      font-family: "DM Sans", sans-serif !important;
-      font-size: 11px; font-weight: 500;
-      color: #8e8e93;
-      letter-spacing: 0.02em;
+      width: 100%; height: 100%; object-fit: contain; object-position: top;
     }
 
     @media (max-width: 760px) {
       .ot-intro { grid-template-columns: 1fr; gap: 22px; }
-      .ot-shots { grid-template-columns: 1fr; }
-      .mini-arch__cols-3 { grid-template-columns: 1fr; }
+      .ot-shots { max-width: 360px; }
     }
   </style>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
 </head>
 <body>
   <article class="section project tile-light ot-page">
     <div class="section__inner">
 
-      <header class="project__head" style="text-align:left;">
-        <p class="project__eyebrow" style="color:#6c8b62;">Mobile · 창업 프로젝트</p>
-        <h1 class="project__title" style="margin-bottom:10px;">마음챙김 가이드 앱 <span style="color:#6c8b62;">mylo</span></h1>
-        <p class="project__tagline" style="margin:0; max-width:640px;">자극에서 벗어나, 내면에 다가갈 수 있는 환경.</p>
-      </header>
-
       <!-- 1. 인트로 (좌 lede + 우 stack) -->
-      <div class="ot-intro">
-        <div class="ot-intro__lede">
-          <p>채팅 상담 앱의 형태를 따르되, <strong>화면을 비우고 질문 하나만 띄워</strong> 사용자가 자기 안의 감정과 마주할 시간을 만든다.</p>
-          <p>입력 부담을 줄이는 가이드 칩과 차분한 인터랙션으로 <strong>한 턴씩 천천히 누적되는 대화</strong>를 유도하고, 세션이 끝나면 그 흐름이 일기 형태로 자동 정리된다.</p>
+      <section class="ot-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head" style="text-align:left;">
+            <h1 class="project__title" style="margin-bottom:10px;">마음챙김 가이드 앱</h1>
+          </header>
+
+          <div class="ot-intro__lede">
+            <p>채팅 상담 앱의 구조를 따르되, 차분한 애니메이션과 <strong>질문 하나만 띄우는 대화 화면</strong>, 입력 부담을 줄이는 가이드 칩으로 사용자가 자극에서 벗어나 자연스럽게 자신의 감정을 표현하도록 설계했습니다.</p>
+          </div>
         </div>
         <aside class="ot-stack">
           <div class="ot-stack__label">Stack</div>
           <div class="ot-stack__group">
-            <div class="ot-stack__group-name">Mobile</div>
+            <div class="ot-stack__group-name">App</div>
             <div class="ot-stack__items">
               <span class="ot-stack__item">React Native</span>
               <span class="ot-stack__item">Expo</span>
@@ -359,180 +153,15 @@
             </div>
           </div>
         </aside>
-      </div>
+      </section>
 
       <!-- 2. 화면 -->
       <h2 class="ot-section-title">화면</h2>
 
       <div class="ot-shots">
-        <!-- Step 1 — 실제 스크린샷 (왼쪽) -->
         <div class="ot-shot">
           <div class="ot-shot__media">
             <img src="../assets/projects/areum-chat-empty.jpeg" alt="첫 진입 — 단일 질문 화면" />
-          </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 1</div>
-            <div class="ot-shot__title">첫 진입 — 단일 질문</div>
-          </div>
-        </div>
-
-        <!-- Step 2 — 입력 중 -->
-        <div class="ot-shot">
-          <div class="ot-shot__media">
-            <div class="mock-screen">
-              <div class="mock-screen__top"><span>● ● ●</span></div>
-              <div class="mock-screen__center">
-                <div class="mock-bubble"></div>
-                <div class="mock-question">오늘 하루는 어땠어?<br/>천천히 들려줘도 돼</div>
-              </div>
-              <div class="mock-input-bar">
-                <span class="mock-input-bar__placeholder mock-input-bar__placeholder--typed">오늘은…</span>
-                <span class="mock-input-bar__send"></span>
-              </div>
-            </div>
-          </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 2</div>
-            <div class="ot-shot__title">자유 입력 — 차분한 인터랙션</div>
-          </div>
-        </div>
-
-        <!-- Step 3 — 일기 회고 -->
-        <div class="ot-shot">
-          <div class="ot-shot__media">
-            <div class="mock-diary">
-              <div class="mock-diary__date">2026 · 05 · 05 · MON</div>
-              <div class="mock-diary__title">오늘의 마음, 한 페이지로</div>
-              <div class="mock-diary__qa">
-                <div class="mock-diary__q">Q.</div>
-                <div class="mock-diary__a">오늘 하루는 어땠어? 천천히 들려줘도 돼.</div>
-              </div>
-              <div class="mock-diary__qa">
-                <div class="mock-diary__q">A.</div>
-                <div class="mock-diary__a">생각이 많았던 날. 일이 많아 정신없었지만 저녁에 잠시 멍 때리는 시간이 좋았어.</div>
-              </div>
-              <div class="mock-diary__sum">
-                3턴 · 2분 12초 · 키워드 <em>여유 · 멍 · 회복</em>
-              </div>
-            </div>
-          </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 3</div>
-            <div class="ot-shot__title">세션 회고 — 일기로 자동 정리</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. 시스템 아키텍처 -->
-      <h2 class="ot-section-title">시스템 아키텍처</h2>
-
-      <div class="mini-arch">
-        <div class="mini-arch__row">
-          <div class="mini-arch__node mini-arch__node--leaf">사용자 (iOS · Android)</div>
-        </div>
-        <div class="mini-arch__arrow">↓</div>
-        <div class="mini-arch__row mini-arch__cols-3">
-          <div class="mini-arch__node mini-arch__node--primary">React Native App<br/><small>Expo · Reanimated</small></div>
-          <div class="mini-arch__node mini-arch__node--primary">Chip Suggestor<br/><small>최근 N턴 + 시간대 기반</small></div>
-          <div class="mini-arch__node mini-arch__node--primary">Diary Composer<br/><small>세션 종료 시 1회</small></div>
-        </div>
-        <div class="mini-arch__arrow">↓</div>
-        <div class="mini-arch__row mini-arch__cols-3">
-          <div class="mini-arch__node mini-arch__node--orange">Supabase Edge Fn<br/><small>인증 · 토큰 보호</small></div>
-          <div class="mini-arch__node mini-arch__node--orange">GPT-4o-mini<br/><small>다음 질문 1턴 생성</small></div>
-          <div class="mini-arch__node">Postgres + RLS<br/><small>턴/일기 누적</small></div>
-        </div>
-      </div>
-
-      <!-- 4. 한 턴 처리 흐름 -->
-      <h2 class="ot-section-title">한 턴 처리 흐름</h2>
-
-      <div class="ot-flow">
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">1</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">앱 진입 — 환영 + 첫 질문 표시</span>
-            <span class="ot-flow__time">~0s</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">2</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">최근 턴·시간대 기반 가이드 칩 3개 산출</span>
-            <span class="ot-flow__time">~30ms</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">3</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">사용자 입력 (칩 탭 또는 자유 텍스트)</span>
-            <span class="ot-flow__time">사용자 시간</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">4</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">전송 → fade-out · 새 질문 fade-in (차분 트랜지션)</span>
-            <span class="ot-flow__time">~250ms</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">5</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">Edge Fn → GPT-4o-mini 다음 질문 1턴 생성</span>
-            <span class="ot-flow__time">~1.4s</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">6</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">세션 종료 → Diary Composer가 일기로 자동 정리</span>
-            <span class="ot-flow__time">~2s · 세션당 1회</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. 데이터 모델 -->
-      <h2 class="ot-section-title">데이터 모델</h2>
-
-      <div class="mini-arch">
-        <div class="mini-arch__row mini-arch__cols-3">
-          <div class="mini-arch__node">sessions<br/><small>id · started_at · ended_at</small></div>
-          <div class="mini-arch__node">turns<br/><small>session_id · role · text · ts</small></div>
-          <div class="mini-arch__node">diaries<br/><small>session_id · summary · keywords[]</small></div>
-        </div>
-      </div>
-
-      <!-- 6. 디자인 원칙 -->
-      <h2 class="ot-section-title">디자인 원칙</h2>
-
-      <div class="ot-flow">
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">·</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">한 화면에 하나의 질문 — 정보 밀도 ≤ 1</span>
-            <span class="ot-flow__time">single focus</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">·</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">모션은 ≤ 300ms, 이징은 부드럽게 (cubic-bezier 0.2, 0.8, 0.2, 1)</span>
-            <span class="ot-flow__time">calm motion</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">·</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">색은 sage green + 화이트만, 알림 배지·뱃지 금지</span>
-            <span class="ot-flow__time">low chroma</span>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">·</span>
-          <div class="ot-flow__line">
-            <span class="ot-flow__title">타이포는 본문 13–14px, 질문은 15–16px (모바일 기준)</span>
-            <span class="ot-flow__time">typo</span>
           </div>
         </div>
       </div>

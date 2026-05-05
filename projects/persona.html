@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>페르소나 시뮬레이션 — 양영진</title>
   <link rel="stylesheet" href="../styles.css" />
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
@@ -14,27 +18,128 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
-    body, body * {
+    .ps-page,
+    .ps-page * {
       font-family: "Wanted Sans Variable", "Wanted Sans",
                    "DM Sans", -apple-system, BlinkMacSystemFont,
                    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
       letter-spacing: -0.005em;
     }
+    .ps-page .project__head {
+      text-align: left;
+    }
+    .ps-page .project__title {
+      margin-bottom: 10px;
+    }
+    .ps-page .project__tagline {
+      margin: 0;
+      max-width: 640px;
+    }
+    .ps-intro {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 36px;
+      align-items: start;
+      margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e5e7;
+    }
+    .ps-intro__lede {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #424245;
+      margin: 0;
+    }
+    .ps-intro__lede strong {
+      color: #1d1d1f;
+      font-weight: 600;
+    }
+    .ps-stack {
+      background: #fafafc;
+      border: 1px solid #e5e5e7;
+      border-radius: 14px;
+      padding: 22px 24px;
+    }
+    .ps-stack__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #8e8e93;
+      margin-bottom: 14px;
+    }
+    .ps-stack__group {
+      margin-bottom: 14px;
+    }
+    .ps-stack__group:last-child {
+      margin-bottom: 0;
+    }
+    .ps-stack__group-name {
+      font-size: 11px;
+      color: #8e8e93;
+      margin-bottom: 6px;
+    }
+    .ps-stack__items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .ps-stack__item {
+      padding: 3px 9px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #1d1d1f;
+    }
+    @media (max-width: 720px) {
+      .ps-intro { grid-template-columns: 1fr; gap: 22px; }
+    }
   </style>
 </head>
-<body>
+<body class="ps-page">
     <article class="section project tile-light">
     <div class="section__inner">
-      <header class="project__head">
-        <p class="project__eyebrow">Dev tooling · 사고 보조</p>
-        <h1 class="project__title">페르소나 시뮬레이션</h1>
-        <p class="project__tagline">서로 다른 시점의 페르소나가 같은 문제를 토론합니다.</p>
-        <div class="chips">
-          <span class="chip">Multi-perspective</span>
-          <span class="chip">Sub-agent prompt</span>
-          <span class="chip">의사결정 보조</span>
+      <section class="ps-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head">
+            <h1 class="project__title">페르소나 시뮬레이션</h1>
+          </header>
+
+          <p class="ps-intro__lede">
+            의사결정 단계에서 서로 다른 관점(혁신가·구현자·분석가)을 페르소나로 모사해,
+            <strong>한 명의 사고 안에서 누락되는 시점</strong>을 빠르게 보완합니다.
+            토론 결과는 <strong>절충안과 근거 보고서</strong> 형태로 누적되어 다음 판단의 입력이 됩니다.
+          </p>
         </div>
-      </header>
+
+        <aside class="ps-stack">
+          <div class="ps-stack__label">Stack</div>
+          <div class="ps-stack__group">
+            <div class="ps-stack__group-name">Method</div>
+            <div class="ps-stack__items">
+              <span class="ps-stack__item">Multi-perspective</span>
+              <span class="ps-stack__item">Sub-agent prompt</span>
+            </div>
+          </div>
+          <div class="ps-stack__group">
+            <div class="ps-stack__group-name">Roles</div>
+            <div class="ps-stack__items">
+              <span class="ps-stack__item">혁신가</span>
+              <span class="ps-stack__item">구현자</span>
+              <span class="ps-stack__item">분석가</span>
+            </div>
+          </div>
+          <div class="ps-stack__group">
+            <div class="ps-stack__group-name">Output</div>
+            <div class="ps-stack__items">
+              <span class="ps-stack__item">절충안</span>
+              <span class="ps-stack__item">근거 보고서</span>
+              <span class="ps-stack__item">의사결정 보조</span>
+            </div>
+          </div>
+        </aside>
+      </section>
 
       <div class="preview preview-persona">
         <div class="preview-persona__card">
@@ -57,12 +162,6 @@
         </div>
       </div>
 
-      <dl class="project-body">
-        <div>
-          <dt>요지</dt>
-          <dd>의사결정 단계에서 서로 다른 관점(혁신가·구현자·분석가)을 페르소나로 모사해, 한 명의 사고 안에서 누락되는 시점을 빠르게 보완합니다. 결과는 절충안과 근거 보고서 형태로 누적됩니다.</dd>
-        </div>
-      </dl>
     </div>
   </article>
 </body>

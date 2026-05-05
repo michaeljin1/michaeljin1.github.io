@@ -24,17 +24,31 @@
       letter-spacing: -0.005em;
     }
 
+    .ph-page .project__head {
+      text-align: left;
+    }
+    .ph-page .project__title {
+      margin-bottom: 10px;
+    }
+    .ph-page .project__tagline {
+      margin: 0;
+      max-width: 640px;
+    }
+
     /* ── 인트로 ── */
     .ph-intro {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
       gap: 36px;
-      align-items: center;
-      margin: 32px 0 12px;
+      align-items: start;
+      margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
     }
     .ph-intro__lede {
       font-size: 17px; line-height: 1.65;
       color: #d2d2d7;
+      margin: 0;
     }
     .ph-intro__lede strong { color: #fff; font-weight: 600; }
 
@@ -368,25 +382,29 @@
       .mini-arch__cols-4 { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
 </head>
 <body class="ph-page">
   <article class="section project tile-dark on-dark">
     <div class="section__inner">
-      <header class="project__head">
-        <p class="project__eyebrow">개발환경 개선 · 멀티 에이전트 통신 실험</p>
-        <h1 class="project__title">Pheromone Lab</h1>
-        <p class="project__tagline">Claude Code sub-agent 통신 모델 3-way 비교 실험.</p>
-      </header>
-
       <!-- ── 인트로 ── -->
-      <section class="ph-intro">
-        <p class="ph-intro__lede">
-          Enhans의 <strong>Pheromone Protocol</strong>(개미 군집 지능 모델)을 Claude Code sub-agent 시스템에 직접 구현.
-          sub-agent끼리 직접 호출하지 않고 <strong>공유 마크다운 파일에 신호를 남기면 다음 단계가 반응</strong>합니다.
-          동일 환경에서 <strong>기존 방식(Ad-hoc 단발 호출, Relay 응답 릴레이)과 정량 비교 실험</strong>을 진행해
-          메인 컨텍스트 5.6배 경량화 / 영속 추적 / 자가 회복 사이클을 데이터로 입증했습니다.
-        </p>
+      <section class="ph-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head">
+            <h1 class="project__title">Pheromone Lab</h1>
+          </header>
+
+          <p class="ph-intro__lede">
+            Enhans의 <strong>Pheromone Protocol</strong>(개미 군집 지능 모델)을 Claude Code sub-agent 시스템에 직접 구현.
+            sub-agent끼리 직접 호출하지 않고 <strong>공유 마크다운 파일에 신호를 남기면 다음 단계가 반응</strong>합니다.
+            동일 환경에서 <strong>기존 방식(Ad-hoc 단발 호출, Relay 응답 릴레이)과 정량 비교 실험</strong>을 진행해
+            메인 컨텍스트 5.6배 경량화 / 영속 추적 / 자가 회복 사이클을 데이터로 입증했습니다.
+          </p>
+        </div>
 
         <div class="ph-stack">
           <div class="ph-stack__label">Stack</div>

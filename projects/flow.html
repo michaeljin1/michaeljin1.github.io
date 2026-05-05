@@ -45,6 +45,8 @@
       display: grid; grid-template-columns: 1.2fr 1fr;
       gap: 36px; align-items: start;
       margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e5e7;
     }
     .ot-intro__lede {
       font-size: 17px; line-height: 1.7; color: #424245;
@@ -151,21 +153,26 @@
       .mini-arch__cols-3 { grid-template-columns: 1fr; }
     }
   </style>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
 </head>
 <body>
   <article class="section project tile-light ot-page">
     <div class="section__inner">
 
-      <header class="project__head" style="text-align:left;">
-        <p class="project__eyebrow" style="color:#0066cc;">Dev tooling · 개발 방식 개선</p>
-        <h1 class="project__title" style="margin-bottom:10px;">MECE 멀티 에이전트 개발 환경</h1>
-        <p class="project__tagline" style="margin:0; max-width:640px;">페로몬 프로토콜에서 착안. md 공유 + 훅 트리거로 자율 실행.</p>
-      </header>
+      <section class="ot-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head" style="text-align:left;">
+            <h1 class="project__title" style="margin-bottom:10px;">MECE 멀티 에이전트 개발 환경</h1>
+          </header>
 
-      <div class="ot-intro">
-        <div class="ot-intro__lede">
-          <p>슬래시 명령으로 매번 sub-agent를 부르는 방식은 <strong>메인 컨텍스트가 빠르게 오염</strong>되고, 산출물·로그가 휘발됐다.</p>
-          <p>페로몬 프로토콜에서 착안해 <strong>에이전트 간 통신은 md 파일로</strong>, 변경 감지는 훅이 담당하도록 설계. 한 번 명령하면 단계가 자율 실행되고 모든 산출물이 파일로 누적된다.</p>
+          <div class="ot-intro__lede">
+            <p>슬래시 명령으로 매번 sub-agent를 부르는 방식은 <strong>메인 컨텍스트가 빠르게 오염</strong>되고, 산출물·로그가 휘발됐다.</p>
+            <p>페로몬 프로토콜에서 착안해 <strong>에이전트 간 통신은 md 파일로</strong>, 변경 감지는 훅이 담당하도록 설계. 한 번 명령하면 단계가 자율 실행되고 모든 산출물이 파일로 누적된다.</p>
+          </div>
         </div>
         <aside class="ot-stack">
           <div class="ot-stack__label">Stack</div>
@@ -191,7 +198,7 @@
             </div>
           </div>
         </aside>
-      </div>
+      </section>
 
       <h2 class="ot-section-title">파이프라인</h2>
 

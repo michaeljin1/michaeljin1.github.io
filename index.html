@@ -39,18 +39,18 @@
         <div class="gallery">
           <button type="button" class="gallery__card" data-modal-src="./projects/areum.html?embed=1" aria-haspopup="dialog">
             <div class="gallery__frame">
-              <iframe src="./projects/areum.html" loading="lazy" tabindex="-1" title="마음챙김 가이드 앱 mylo 미리보기"></iframe>
+              <iframe src="./projects/areum.html?embed=1&preview=1" loading="lazy" tabindex="-1" title="마음챙김 가이드 앱 미리보기"></iframe>
             </div>
             <div class="gallery__body">
-              <h3 class="gallery__title">마음챙김 가이드 앱 mylo</h3>
+              <h3 class="gallery__title">마음챙김 가이드 앱</h3>
               <p class="gallery__desc">자극에서 벗어나, 내면에 다가갈 수 있는 환경. 차분한 인터랙션과 가이드 칩으로 자연스러운 감정 표현을 유도.</p>
               <span class="gallery__open">자세히 보기</span>
             </div>
-          </a>
+          </button>
 
           <button type="button" class="gallery__card" data-modal-src="./projects/yt.html?embed=1" aria-haspopup="dialog">
             <div class="gallery__frame">
-              <iframe src="./projects/yt.html" loading="lazy" tabindex="-1" title="유튜브 분리수거 웹 미리보기"></iframe>
+              <iframe src="./projects/yt.html?embed=1&preview=1" loading="lazy" tabindex="-1" title="유튜브 분리수거 웹 미리보기"></iframe>
             </div>
             <div class="gallery__body">
               <h3 class="gallery__title">유튜브 분리수거 웹</h3>
@@ -59,9 +59,9 @@
             </div>
           </button>
 
-          <button type="button" class="gallery__card gallery__card--left-square" data-modal-src="./projects/focus.html?embed=1" aria-haspopup="dialog">
+          <button type="button" class="gallery__card" data-modal-src="./projects/focus.html?embed=1" aria-haspopup="dialog">
             <div class="gallery__frame">
-              <iframe src="./projects/focus.html" loading="lazy" tabindex="-1" title="작업 품질 트래킹 앱 미리보기"></iframe>
+              <iframe src="./projects/focus.html?embed=1&preview=1" loading="lazy" tabindex="-1" title="작업 품질 트래킹 앱 미리보기"></iframe>
             </div>
             <div class="gallery__body">
               <h3 class="gallery__title">작업 품질 트래킹 앱</h3>
@@ -83,7 +83,7 @@
         <div class="gallery">
           <button type="button" class="gallery__card" data-modal-src="./projects/pheromone.html?embed=1" aria-haspopup="dialog">
             <div class="gallery__frame">
-              <iframe src="./projects/pheromone.html" loading="lazy" tabindex="-1" title="Pheromone Lab 미리보기"></iframe>
+              <iframe src="./projects/pheromone.html?embed=1&preview=1" loading="lazy" tabindex="-1" title="Pheromone Lab 미리보기"></iframe>
             </div>
             <div class="gallery__body">
               <h3 class="gallery__title">Pheromone Lab</h3>
@@ -92,13 +92,13 @@
             </div>
           </button>
 
-          <button type="button" class="gallery__card" data-modal-src="./projects/persona.html?embed=1" aria-haspopup="dialog">
+          <button type="button" class="gallery__card" data-modal-src="./projects/litmus.html?embed=1" aria-haspopup="dialog">
             <div class="gallery__frame">
-              <iframe src="./projects/persona.html" loading="lazy" tabindex="-1" title="페르소나 시뮬레이션 미리보기"></iframe>
+              <iframe src="./projects/litmus.html?embed=1&preview=1" loading="lazy" tabindex="-1" title="Litmus 미리보기"></iframe>
             </div>
             <div class="gallery__body">
-              <h3 class="gallery__title">페르소나 시뮬레이션</h3>
-              <p class="gallery__desc">서로 다른 시점의 페르소나(혁신가·구현자·분석가)가 같은 문제를 토론. 한 명의 사고에서 누락되는 시점을 보완.</p>
+              <h3 class="gallery__title">Litmus</h3>
+              <p class="gallery__desc">출시 전 K-뷰티 컨셉 100개를 합성 페르소나 Best/Worst 선택으로 빠르게 좁히는 스크리닝 엔진.</p>
               <span class="gallery__open">자세히 보기</span>
             </div>
           </button>
@@ -112,7 +112,9 @@
        Project popup — one shared <dialog>, src swapped per click
        ============================================================ -->
   <dialog class="modal-iframe" id="proj-dialog" aria-label="프로젝트 상세">
-    <button class="modal-iframe__close" data-close aria-label="닫기">×</button>
+    <button class="modal-iframe__close" data-close aria-label="뒤로가기">
+      <span class="modal-iframe__back-icon" aria-hidden="true"></span>
+    </button>
     <iframe id="proj-dialog-iframe" src="about:blank" title="프로젝트 상세"></iframe>
   </dialog>
 

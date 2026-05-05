@@ -24,17 +24,31 @@
       letter-spacing: -0.005em;
     }
 
+    .yt-page .project__head {
+      text-align: left;
+    }
+    .yt-page .project__title {
+      margin-bottom: 10px;
+    }
+    .yt-page .project__tagline {
+      margin: 0;
+      max-width: 640px;
+    }
+
     /* ── 인트로 카드 ── */
     .yt-intro {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
       gap: 36px;
-      align-items: center;
-      margin: 32px 0 12px;
+      align-items: start;
+      margin: 8px 0 56px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
     }
     .yt-intro__lede {
       font-size: 17px; line-height: 1.65;
       color: #d2d2d7;
+      margin: 0;
     }
     .yt-intro__lede strong { color: #fff; font-weight: 600; }
 
@@ -334,25 +348,29 @@
       .yt-shots { grid-template-columns: 1fr; }
     }
   </style>
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('embed') === '1') document.documentElement.classList.add('embed');
+    if (params.get('preview') === '1') document.documentElement.classList.add('preview');
+  </script>
 </head>
 <body class="yt-page">
   <article class="section project tile-dark on-dark">
     <div class="section__inner">
-      <header class="project__head">
-        <p class="project__eyebrow">Web · 창업 프로젝트</p>
-        <h1 class="project__title">유튜브 분리수거 웹</h1>
-        <p class="project__tagline">재생목록을 한 번에. 꼭 봐야 할 영상만 선별합니다.</p>
-      </header>
-
       <!-- ── 인트로: 앱 설명 + 스택 ── -->
-      <section class="yt-intro">
-        <p class="yt-intro__lede">
-          유튜브 URL을 붙여넣으면 <strong>자막을 분석해 의미 임베딩으로 변환</strong>하고,
-          이미 본 영상들로 만든 <strong>라이브러리와 cosine 유사도를 비교</strong>해
-          <strong>🟢 꼭 보세요 / 🟡 일부 겹침 / 🔴 스킵하세요</strong>로 자동 분류합니다.
-          재생목록 일괄 처리, 글로벌 캐시, 가입 없이 무료 체험을 지원합니다.
-        </p>
+      <section class="yt-intro project-hero">
+        <div class="project-hero__main">
+          <header class="project__head">
+            <h1 class="project__title">유튜브 분리수거 웹</h1>
+          </header>
+
+          <p class="yt-intro__lede">
+            유튜브 URL을 붙여넣으면 <strong>자막을 분석해 의미 임베딩으로 변환</strong>하고,
+            이미 본 영상들로 만든 <strong>라이브러리와 cosine 유사도를 비교</strong>해
+            <strong>"꼭 보세요" / "일부 겹침" / "스킵하세요"</strong>로 자동 분류합니다.
+            재생목록 일괄 처리, 글로벌 캐시, 가입 없이 무료 체험을 지원합니다.
+          </p>
+        </div>
 
         <div class="yt-stack">
           <div class="yt-stack__label">Stack</div>
@@ -461,36 +479,36 @@
           <div class="mock-result">
             <div class="mock-result__head">
               <div class="mock-stat mock-stat--green">
-                <div class="mock-stat__label">🟢 꼭 보세요</div>
+                <div class="mock-stat__label">"꼭 보세요"</div>
                 <div class="mock-stat__num">2개</div>
               </div>
               <div class="mock-stat mock-stat--orange">
-                <div class="mock-stat__label">🟡 일부 겹침</div>
+                <div class="mock-stat__label">"일부 겹침"</div>
                 <div class="mock-stat__num">3개</div>
               </div>
               <div class="mock-stat mock-stat--red">
-                <div class="mock-stat__label">🔴 스킵하세요</div>
+                <div class="mock-stat__label">"스킵하세요"</div>
                 <div class="mock-stat__num">1개</div>
               </div>
             </div>
             <div class="mock-card">
               <div class="mock-card__thumb"></div>
               <div>
-                <div class="mock-card__meta mock-card__meta--green">🟢 꼭 보세요 · 88% new</div>
+                <div class="mock-card__meta mock-card__meta--green">"꼭 보세요" · 88% new</div>
                 <div class="mock-card__title">구글의 10년 베팅이 터졌다 — Gemini 3.0</div>
               </div>
             </div>
             <div class="mock-card">
               <div class="mock-card__thumb" style="background: linear-gradient(135deg, #ff9500, #c05621);"></div>
               <div>
-                <div class="mock-card__meta mock-card__meta--orange">🟡 일부 겹침 · 37% new</div>
+                <div class="mock-card__meta mock-card__meta--orange">"일부 겹침" · 37% new</div>
                 <div class="mock-card__title">앤트로픽 클로드 디자인의 등장</div>
               </div>
             </div>
             <div class="mock-card">
               <div class="mock-card__thumb" style="background: linear-gradient(135deg, #ff3b30, #7b341e);"></div>
               <div>
-                <div class="mock-card__meta mock-card__meta--red">🔴 스킵하세요 · 8% new</div>
+                <div class="mock-card__meta mock-card__meta--red">"스킵하세요" · 8% new</div>
                 <div class="mock-card__title">개발자가 알려주는 ChatGPT 12가지 활용법</div>
               </div>
             </div>
@@ -507,7 +525,7 @@
             <div class="mock-modal__head">
               <div class="mock-modal__thumb"></div>
               <div>
-                <span class="mock-modal__pill">🟡 일부 겹침 · 37% new</span>
+                <span class="mock-modal__pill">"일부 겹침" · 37% new</span>
                 <div class="mock-modal__title">앤트로픽 클로드 디자인의 등장</div>
               </div>
             </div>
