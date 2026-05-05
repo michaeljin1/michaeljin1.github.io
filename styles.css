@@ -581,9 +581,8 @@ body {
 .gallery__card--full { grid-column: 1 / -1; }
 .gallery__card--full .gallery__frame { aspect-ratio: 21 / 6; }
 
-/* left-aligned square card — sits in column 1, leaves column 2 empty */
+/* left-aligned card — sits in column 1, leaves column 2 empty (same 16:10 frame) */
 .gallery__card--left-square { grid-column: 1; }
-.gallery__card--left-square .gallery__frame { aspect-ratio: 1 / 1; }
 
 /* ----- Project group (창업 / 개발 방식 개선) ----- */
 .gallery-group { margin-bottom: 72px; }
@@ -600,13 +599,12 @@ body {
 }
 .gallery-group__tag {
   font-family: inherit;
-  font-feature-settings: "tnum";
-  font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
-  color: var(--primary);
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(0, 102, 204, 0.08);
+  font-size: 18px; font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  padding: 0;
+  background: none;
+  text-transform: none;
 }
 .gallery-group__title {
   font-family: "SF Pro Display", system-ui, sans-serif;
