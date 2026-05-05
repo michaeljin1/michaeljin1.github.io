@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>작업 품질 트래킹 앱 — 양영진</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
+    body, body * {
+      font-family: "Wanted Sans Variable", "Wanted Sans",
+                   "DM Sans", -apple-system, BlinkMacSystemFont,
+                   system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+      letter-spacing: -0.005em;
+    }
+  </style>
+</head>
+<body>
+    <article class="section project tile-parchment">
+    <div class="section__inner">
+      <header class="project__head">
+        <p class="project__eyebrow">Desktop · 창업 프로젝트</p>
+        <h1 class="project__title">작업 품질 트래킹 앱</h1>
+        <p class="project__tagline">PC 사용 신호로 몰입을 측정하고, 습관을 점검합니다.</p>
+        <div class="chips">
+          <span class="chip">ActivityWatch</span>
+          <span class="chip">OS API · Active Tab</span>
+          <span class="chip">세션 평가</span>
+          <span class="chip">통계 대시보드</span>
+        </div>
+      </header>
+
+      <div class="preview preview-fg">
+        <div class="preview-fg__head">
+          <span class="preview-fg__title">오늘의 몰입 리포트</span>
+          <span class="preview-fg__date">2026.05.05 · Mon</span>
+        </div>
+        <div class="preview-fg__grid">
+          <div class="preview-fg__card">
+            <div class="preview-fg__metric">Deep work</div>
+            <div class="preview-fg__big">3h 47m</div>
+            <div class="preview-fg__delta">▲ 어제보다 +52분</div>
+            <div class="preview-fg__bars">
+              <span style="height:40%"></span><span style="height:65%"></span>
+              <span style="height:80%"></span><span style="height:55%"></span>
+              <span style="height:90%"></span><span style="height:72%"></span>
+              <span style="height:48%"></span>
+            </div>
+            <div class="preview-fg__timeline">
+              <span class="focus" style="flex:6"></span>
+              <span class="ok" style="flex:3"></span>
+              <span class="distract" style="flex:1"></span>
+              <span class="focus" style="flex:5"></span>
+              <span class="afk" style="flex:2"></span>
+              <span class="focus" style="flex:4"></span>
+              <span class="distract" style="flex:1"></span>
+            </div>
+          </div>
+          <div class="preview-fg__card">
+            <div class="preview-fg__metric">현재 세션 — TODO</div>
+            <div class="preview-fg__big" style="font-size:18px; line-height:1.4;">포트폴리오 리팩터링</div>
+            <div class="preview-fg__delta" style="color:#8694b8;">42분 / 90분 · 차단 사이트 7</div>
+            <div style="height:8px; background:#1f2a47; border-radius:4px; margin-top:14px; overflow:hidden;">
+              <div style="width:46%; height:100%; background:linear-gradient(90deg,#4dd58a,#4f8cff);"></div>
+            </div>
+            <div class="preview-fg__metric" style="margin-top:18px;">세션 품질 점수</div>
+            <div class="preview-fg__big" style="color:#4dd58a;">A−</div>
+          </div>
+        </div>
+      </div>
+
+      <dl class="project-body">
+        <div><dt>배경 및 문제 정의</dt><dd>최근 멀티태스킹과 타 페이지 이탈로 작업 몰입도가 굉장히 떨어지는 걸 느꼈습니다. 메타가 전 직원 PC 화면을 녹화해 데이터화한 사례에서 영감을 받아, 내 PC 사용 내역으로 작업 습관과 품질을 도출하는 앱을 고안했습니다.</dd></div>
+        <div><dt>해결 방향</dt><dd>ActivityWatch로 활성 탭·윈도우·AFK를 수집합니다. 사용자는 TODO를 적은 다음 세션을 시작하고, 세션 종료 시 행동 신호로 품질을 평가합니다. 세션·일 단위 인사이트로 습관을 점검할 수 있게 했습니다.</dd></div>
+        <div><dt>배운 점</dt><dd>있는 줄도 몰랐던 데이터를 기존 앱에 결부시켜 새로운 가치를 만들 수 있다는 사실이 놀라웠습니다. 데이터 활용에 관심을 갖게 되며 문제를 바라보는 방식이 한 층 넓어졌습니다.</dd></div>
+      </dl>
+    </div>
+  </article>
+</body>
+</html>

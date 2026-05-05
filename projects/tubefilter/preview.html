@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TubeFilter — 분리수거 미리보기</title>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0066cc;
+      --ink: #1d1d1f;
+      --canvas: #ffffff;
+      --parchment: #f5f5f7;
+      --hairline: #e5e5e7;
+      --muted: #6e6e73;
+      --green: #34c759;
+      --green-bg: #e9f9ee;
+      --orange: #ff9500;
+      --orange-bg: #fff4e1;
+      --red: #ff3b30;
+      --red-bg: #ffe9e8;
+      --fill: #f5f5f7;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard Variable", Pretendard, "Inter",
+                   -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
+                   "Noto Sans KR", sans-serif;
+      letter-spacing: -0.005em;
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 60px 32px; }
+    h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
+    .subtitle { color: var(--muted); margin: 0 0 32px; font-size: 16px; }
+    .back {
+      display: inline-flex; gap: 6px; align-items: center;
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; margin-bottom: 32px;
+    }
+    .back:hover { color: var(--ink); }
+
+    /* ── 상단 통계 ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat {
+      padding: 16px 18px;
+      border-radius: 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .stat--green { background: var(--green-bg); }
+    .stat--orange { background: var(--orange-bg); }
+    .stat--red { background: var(--red-bg); }
+
+    .stat-label {
+      font-size: 12px; font-weight: 600;
+    }
+    .stat--green .stat-label { color: var(--green); }
+    .stat--orange .stat-label { color: var(--orange); }
+    .stat--red .stat-label { color: var(--red); }
+
+    .stat-num {
+      font-size: 22px; font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat--green .stat-num { color: var(--green); }
+    .stat--orange .stat-num { color: var(--orange); }
+    .stat--red .stat-num { color: var(--red); }
+    .stat-num small { font-size: 13px; font-weight: 500; margin-left: 4px; }
+
+    /* ── 사전 업데이트 배너 ── */
+    .dict-banner {
+      padding: 12px 16px;
+      background: rgba(0, 102, 204, 0.06);
+      border-radius: 10px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--primary);
+      margin-bottom: 28px;
+    }
+    .dict-banner strong { font-weight: 700; }
+    .dict-pill {
+      margin-left: auto;
+      padding: 3px 10px;
+      background: var(--primary); color: #fff;
+      border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    /* ── 카드 리스트 ── */
+    .cards { display: grid; gap: 12px; }
+
+    .card {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 160ms ease;
+    }
+    .card:hover {
+      background: #fafafc;
+      border-color: #d2d2d7;
+      transform: translateY(-1px);
+    }
+
+    .card-thumb {
+      width: 112px; height: 63px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #1a202c, #2d3748);
+      flex-shrink: 0;
+    }
+    .card-thumb--a { background: linear-gradient(135deg, #2d3748, #1a202c); }
+    .card-thumb--b { background: linear-gradient(135deg, #4a5568, #2d3748); }
+    .card-thumb--c { background: linear-gradient(135deg, #553c9a, #2c5282); }
+    .card-thumb--d { background: linear-gradient(135deg, #2c7a7b, #285e61); }
+    .card-thumb--e { background: linear-gradient(135deg, #c05621, #7b341e); }
+    .card-thumb--f { background: linear-gradient(135deg, #1a365d, #2a4365); }
+
+    .card-body { min-width: 0; }
+
+    .card-meta {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+    .grade {
+      font-weight: 700;
+      display: inline-flex; gap: 4px; align-items: center;
+    }
+    .grade--green { color: var(--green); }
+    .grade--orange { color: var(--orange); }
+    .grade--red { color: var(--red); }
+    .pct {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      font-family: -apple-system, monospace;
+    }
+    .card-tags {
+      margin-left: auto;
+      display: flex; gap: 6px;
+    }
+    .card-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      background: var(--fill);
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .card-title {
+      font-size: 14px; font-weight: 700;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .card-bar {
+      height: 2px;
+      background: var(--fill);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .card-bar-fill { height: 100%; border-radius: 999px; }
+
+    .card-reason {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: 1fr; }
+      .card { grid-template-columns: 80px 1fr; }
+      .card-thumb { width: 80px; height: 45px; }
+      .card-tags { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../yt.html">← TubeFilter</a>
+
+    <h1>분리수거 결과</h1>
+    <p class="subtitle">재생목록 6개 영상 분석 완료 · 라이브러리 43개와 비교</p>
+
+    <!-- 통계 -->
+    <div class="stats">
+      <div class="stat stat--green">
+        <span class="stat-label">🟢 꼭 보세요</span>
+        <span class="stat-num">2<small>개</small></span>
+      </div>
+      <div class="stat stat--orange">
+        <span class="stat-label">🟡 부분만 보세요</span>
+        <span class="stat-num">3<small>개</small></span>
+      </div>
+      <div class="stat stat--red">
+        <span class="stat-label">🔴 스킵하세요</span>
+        <span class="stat-num">1<small>개</small></span>
+      </div>
+    </div>
+
+    <!-- 사전 배너 -->
+    <div class="dict-banner">
+      📖 <strong>사전 업데이트</strong> · 이번 분석으로 새 개념 14개 추가 · 총 440개
+      <span class="dict-pill">+14</span>
+    </div>
+
+    <!-- 카드 -->
+    <div class="cards">
+
+      <!-- skip -->
+      <div class="card">
+        <div class="card-thumb card-thumb--b"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--red">🔴 스킵하세요</span>
+            <span class="pct">8% new</span>
+            <div class="card-tags">
+              <span class="card-tag">중복 92%</span>
+            </div>
+          </div>
+          <div class="card-title">개발자가 알려주는 ChatGPT 12가지 활용법 (요약본)</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 8%; background: var(--red);"></div></div>
+          <div class="card-reason">'AI 90% 사용법'과 92% 유사 — 같은 채널 다른 영상</div>
+        </div>
+      </div>
+
+      <!-- partial -->
+      <div class="card">
+        <div class="card-thumb card-thumb--c"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--orange">🟡 부분만 보세요</span>
+            <span class="pct">37% new</span>
+            <div class="card-tags">
+              <span class="card-tag">새 개념 8개</span>
+              <span class="card-tag">중복 63%</span>
+            </div>
+          </div>
+          <div class="card-title">앤트로픽의 '클로드 디자인'이 디자이너의 일을 어떻게 바꾸고 있나</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 37%; background: var(--orange);"></div></div>
+          <div class="card-reason">'직군이 사라집니다... 5년 뒤'와 63% 겹치지만 새 내용도 있습니다</div>
+        </div>
+      </div>
+
+      <!-- partial -->
+      <div class="card">
+        <div class="card-thumb card-thumb--d"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--orange">🟡 부분만 보세요</span>
+            <span class="pct">42% new</span>
+            <div class="card-tags">
+              <span class="card-tag">새 개념 11개</span>
+              <span class="card-tag">중복 58%</span>
+            </div>
+          </div>
+          <div class="card-title">NVIDIA Nemotron은 그냥 AI 모델이 아니네요... Nemo 패밀리 분석</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 42%; background: var(--orange);"></div></div>
+          <div class="card-reason">'AI 90% 사용법'과 58% 겹침 · NVIDIA 특화 내용 추가</div>
+        </div>
+      </div>
+
+      <!-- partial -->
+      <div class="card">
+        <div class="card-thumb card-thumb--a"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--orange">🟡 부분만 보세요</span>
+            <span class="pct">52% new</span>
+            <div class="card-tags">
+              <span class="card-tag">새 개념 9개</span>
+              <span class="card-tag">중복 48%</span>
+            </div>
+          </div>
+          <div class="card-title">옵시디언으로 나만의 주식 분석 AI 만들기 | 카파시 'LLM Wiki' 실전</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 52%; background: var(--orange);"></div></div>
+          <div class="card-reason">'카파시 wiki 구축법'과 48% 겹침 · 주식 도메인 적용 사례 추가</div>
+        </div>
+      </div>
+
+      <!-- must-watch -->
+      <div class="card">
+        <div class="card-thumb card-thumb--e"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--green">🟢 꼭 보세요</span>
+            <span class="pct">88% new</span>
+            <div class="card-tags">
+              <span class="card-tag">새 개념 14개</span>
+              <span class="card-tag">중복 12%</span>
+            </div>
+          </div>
+          <div class="card-title">구글의 10년 베팅이 터졌다 — Gemini 3.0과 그 뒷이야기</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 88%; background: var(--green);"></div></div>
+          <div class="card-reason">라이브러리 최고 유사도 12% — 대부분 새 내용입니다</div>
+        </div>
+      </div>
+
+      <!-- must-watch -->
+      <div class="card">
+        <div class="card-thumb card-thumb--f"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="grade grade--green">🟢 꼭 보세요</span>
+            <span class="pct">79% new</span>
+            <div class="card-tags">
+              <span class="card-tag">새 개념 12개</span>
+              <span class="card-tag">중복 21%</span>
+            </div>
+          </div>
+          <div class="card-title">EP 91. 26.1Q 비즈니스 관점에서의 AI — 시장이 보는 진짜 변화</div>
+          <div class="card-bar"><div class="card-bar-fill" style="width: 79%; background: var(--green);"></div></div>
+          <div class="card-reason">라이브러리 최고 유사도 21% — 비즈니스 관점 새로운 시각</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

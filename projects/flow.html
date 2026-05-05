@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MECE 멀티 에이전트 개발 환경 — 양영진</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
+    body, body * {
+      font-family: "Wanted Sans Variable", "Wanted Sans",
+                   "DM Sans", -apple-system, BlinkMacSystemFont,
+                   system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+      letter-spacing: -0.005em;
+    }
+  </style>
+</head>
+<body>
+    <article class="section project tile-dark-2 on-dark">
+    <div class="section__inner">
+      <header class="project__head">
+        <p class="project__eyebrow">Dev tooling · 개발 방식 개선</p>
+        <h1 class="project__title">MECE 멀티 에이전트 개발 환경</h1>
+        <p class="project__tagline">페로몬 프로토콜에서 착안. md 공유 + 훅 트리거로 자율 실행.</p>
+        <div class="chips">
+          <span class="chip">Claude Code</span>
+          <span class="chip">Sub-agents</span>
+          <span class="chip">Hook 자동화</span>
+          <span class="chip">권한 격리 (MECE)</span>
+        </div>
+      </header>
+
+      <div class="preview preview-flow">
+        <div class="preview-flow__row">
+          <span class="preview-flow__tag preview-flow__tag--planner">planner</span>
+          <span>writes</span><span class="preview-flow__file">spec.md</span>
+          <span class="preview-flow__arrow">→</span><span>onChange</span>
+        </div>
+        <div class="preview-flow__row">
+          <span class="preview-flow__tag preview-flow__tag--builder">builder</span>
+          <span>reads spec.md, writes</span><span class="preview-flow__file">impl/*.ts</span>
+          <span class="preview-flow__arrow">→</span><span>onChange</span>
+        </div>
+        <div class="preview-flow__row">
+          <span class="preview-flow__tag preview-flow__tag--reviewer">reviewer</span>
+          <span>reads impl/*, writes</span><span class="preview-flow__file">review.md</span>
+          <span class="preview-flow__arrow">→</span><span>done</span>
+        </div>
+        <div class="preview-flow__hook">
+          <b>hook</b> · 변경 감지 시 다음 에이전트만 호출 — 메인 컨텍스트 오염 0, 단일 명령으로 자율 실행, 로그 누적·재시작 가능.
+        </div>
+      </div>
+
+      <dl class="project-body">
+        <div><dt>기존 방식의 문제</dt><dd>Claude Code 내 슬래시 명령으로 sub agent (기획·디자인·리뷰)를 호출했지만, 메인 컨텍스트 오염, 명령 번거로움, 데이터/로그 휘발이 발생했습니다.</dd></div>
+        <div><dt>새 방식</dt><dd>페로몬 프로토콜에서 착안해 sub agent들이 md 파일을 공유하고, 변경 시 훅으로 다음 에이전트를 호출하도록 설계했습니다. MECE 권한 격리.</dd></div>
+        <div><dt>실험과 절충</dt><dd>1회 명령만으로 자율 실행, 단계별 산출물 품질 향상, 로그 누적·재시작 가능. 비용은 느린 실행, 횡단 검증 불가, 작업 과잉. 비용 인지 후 긴 호흡 작업에만 적용하고, 내용에 따라 필수 agent만 채택하도록 최적화했습니다.</dd></div>
+      </dl>
+    </div>
+  </article>
+</body>
+</html>

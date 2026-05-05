@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TubeFilter — System Architecture</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0066cc;
+      --ink: #1d1d1f;
+      --canvas: #ffffff;
+      --parchment: #f5f5f7;
+      --hairline: #e5e5e7;
+      --muted: #6e6e73;
+      --green: #34c759;
+      --orange: #ff9500;
+      --red: #ff3b30;
+      --purple: #8e44ec;
+
+      /* 이유: 한국어는 Pretendard, 영문/숫자는 Inter — 둘 다 modern geometric sans */
+      --font-sans: "Pretendard Variable", Pretendard, "Inter",
+                   -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
+                   "Noto Sans KR", "Malgun Gothic", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      font-feature-settings: "ss01", "tnum";
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      letter-spacing: -0.005em;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 60px 32px; }
+    h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
+    .subtitle { color: var(--muted); margin: 0 0 40px; font-size: 16px; }
+
+    /* ── 다이어그램 ── */
+    .diagram {
+      background: var(--parchment);
+      border-radius: 18px;
+      padding: 40px 32px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .layer { display: grid; gap: 12px; }
+    .layer-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .row { display: grid; gap: 12px; }
+    .row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .node {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .node strong { font-size: 14px; font-weight: 600; }
+    .node span { font-size: 12px; color: var(--muted); }
+
+    .node--primary { border-color: var(--primary); background: rgba(0, 102, 204, 0.04); }
+    .node--green   { border-color: var(--green); background: rgba(52, 199, 89, 0.04); }
+    .node--orange  { border-color: var(--orange); background: rgba(255, 149, 0, 0.04); }
+    .node--purple  { border-color: var(--purple); background: rgba(142, 68, 236, 0.04); }
+    .node--dark    { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .node--dark span { color: rgba(255,255,255,0.6); }
+
+    .arrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin: -4px 0;
+    }
+    .arrow::after { content: '↓'; font-size: 18px; opacity: 0.5; display: block; }
+
+    /* ── 데이터 흐름 ── */
+    .flow-section { margin-top: 56px; }
+    .flow-section h2 { font-size: 22px; font-weight: 700; margin: 0 0 20px; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .flow-step { display: contents; }
+    .flow-num {
+      width: 32px; height: 32px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 13px;
+    }
+    .flow-content {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 8px;
+    }
+    .flow-content strong { font-size: 14px; }
+    .flow-content p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+    .flow-time { font-size: 11px; color: var(--primary); font-weight: 600; margin-left: 8px; }
+
+    /* ── 스택 칩 ── */
+    .stack {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 28px;
+    }
+    .chip {
+      padding: 5px 10px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--canvas);
+    }
+    .chip strong { color: var(--ink); font-weight: 600; }
+
+    /* ── 푸터 ── */
+    .back {
+      display: inline-flex; gap: 6px; align-items: center;
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; margin-bottom: 32px;
+    }
+    .back:hover { color: var(--ink); }
+
+    @media (max-width: 720px) {
+      .row.cols-2, .row.cols-3, .row.cols-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../yt.html">← TubeFilter</a>
+
+    <h1>System Architecture</h1>
+    <p class="subtitle">Frontend (Vercel) → Backend (Railway) → Data (Supabase pgvector) + 외부 API (YouTube · Gemini · Paddle)</p>
+
+    <!-- 다이어그램 -->
+    <div class="diagram">
+
+      <!-- 사용자 -->
+      <div class="layer">
+        <div class="layer-label">Client</div>
+        <div class="row">
+          <div class="node node--dark">
+            <strong>👤 사용자</strong>
+            <span>YouTube URL 또는 재생목록 입력 · 결과 즉시 확인</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow">HTTPS · NDJSON 스트림</div>
+
+      <!-- 프론트엔드 -->
+      <div class="layer">
+        <div class="layer-label">Frontend · Vercel Edge</div>
+        <div class="row cols-2">
+          <div class="node node--primary">
+            <strong>Next.js 15 (App Router)</strong>
+            <span>React + TypeScript · Server Components</span>
+          </div>
+          <div class="node node--primary">
+            <strong>Supabase Auth (Google OAuth)</strong>
+            <span>JWT 토큰 발급 → 백엔드 검증</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow">Bearer Token + JSON</div>
+
+      <!-- 백엔드 -->
+      <div class="layer">
+        <div class="layer-label">Backend · Railway (FastAPI)</div>
+        <div class="row cols-3">
+          <div class="node node--green">
+            <strong>분석 파이프라인</strong>
+            <span>자막 → 청크 → LLM → 임베딩 → 판정</span>
+          </div>
+          <div class="node node--green">
+            <strong>quota / Auth</strong>
+            <span>JWT 검증 · IP 기반 anon 쿼터</span>
+          </div>
+          <div class="node node--green">
+            <strong>Webhook 수신</strong>
+            <span>Paddle HMAC-SHA256 + replay 방어</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow">병렬 호출 (asyncio)</div>
+
+      <!-- 외부 API + 데이터 -->
+      <div class="layer">
+        <div class="layer-label">External APIs &amp; Data</div>
+        <div class="row cols-4">
+          <div class="node node--orange">
+            <strong>YouTube</strong>
+            <span>Data API v3 + oEmbed + yt-dlp (4단 폴백)</span>
+          </div>
+          <div class="node node--orange">
+            <strong>Gemini</strong>
+            <span>Flash Lite + Embedding · 4 키 round-robin</span>
+          </div>
+          <div class="node node--purple">
+            <strong>Supabase Postgres</strong>
+            <span>pgvector(768d) · HNSW 인덱스 · RLS</span>
+          </div>
+          <div class="node node--orange">
+            <strong>Paddle (MoR)</strong>
+            <span>구독 결제 · 글로벌 부가세 위임</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 데이터 흐름 -->
+    <section class="flow-section">
+      <h2>영상 한 개 분석 흐름</h2>
+      <div class="flow">
+
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content">
+            <strong>자막 추출 <span class="flow-time">~6s</span></strong>
+            <p>youtube-transcript-api + Webshare proxy. 실패 시 재시도 3회 → yt-dlp 폴백 → api.list() 자동 선택.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content">
+            <strong>청크 분할 <span class="flow-time">&lt;100ms</span></strong>
+            <p>최대 3,000자 + 15% overlap. 6,000자 영상 → 약 2~3개 청크.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content">
+            <strong>청크별 LLM 분석 (병렬) <span class="flow-time">~10~15s</span></strong>
+            <p>Gemini Flash Lite × 8 동시 (Semaphore). section_title · summary · concepts · best_quote · density 추출.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-content">
+            <strong>brief 임베딩 <span class="flow-time">~150ms</span></strong>
+            <p>title + tags + concepts + brief → Gemini embedding-001 → 768d 벡터.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-content">
+            <strong>분리수거 판정 <span class="flow-time">~50ms</span></strong>
+            <p>pgvector RPC로 라이브러리 top-1 cosine 비교. raw ≥ 0.85 → skip / 0.72~0.85 → partial / &lt; 0.72 → must-watch.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-content">
+            <strong>캐시 + 저장 <span class="flow-time">~200ms</span></strong>
+            <p>video_id 기준 글로벌 캐시. 같은 영상 재분석 시 0 API 호출 (25s → 0.5s). concept 자동 dedup (cosine ≥ 0.85).</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 스택 -->
+    <section class="flow-section">
+      <h2>Stack</h2>
+      <div class="stack">
+        <span class="chip"><strong>Next.js 15</strong></span>
+        <span class="chip"><strong>FastAPI</strong></span>
+        <span class="chip"><strong>Supabase pgvector</strong></span>
+        <span class="chip"><strong>Gemini 2.5 Flash Lite</strong></span>
+        <span class="chip"><strong>Paddle</strong> (MoR)</span>
+        <span class="chip"><strong>Vercel</strong></span>
+        <span class="chip"><strong>Railway</strong></span>
+        <span class="chip"><strong>Cloudflare</strong></span>
+        <span class="chip">youtube-transcript-api</span>
+        <span class="chip">yt-dlp (폴백)</span>
+        <span class="chip">Webshare residential proxy</span>
+        <span class="chip">YouTube Data API v3</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

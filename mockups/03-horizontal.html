@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup 03 — Horizontal Scroll · 양영진</title>
+  <link rel="stylesheet" href="./shared.css" />
+  <style>
+    /* ─── Horizontal scroll snap (Apple TV / 영화관 스타일) ───
+       가로 스크롤 컨테이너, 각 프로젝트 한 화면.
+       scroll-snap으로 정확히 한 장씩 멈춤. */
+    .hs {
+      max-width: 1240px;
+      margin: 24px auto 80px;
+      padding: 0 22px;
+    }
+    .hs__rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 78%;
+      gap: 22px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 8px 4px 36px;
+      scrollbar-width: thin;
+    }
+    .hs__rail::-webkit-scrollbar { height: 6px; }
+    .hs__rail::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 999px; }
+
+    .hs__slide {
+      scroll-snap-align: center;
+      border-radius: 22px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16 / 10;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.18);
+      cursor: pointer;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    }
+    .hs__slide:hover { transform: translateY(-4px); }
+
+    .hs__slide__bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hs__slide__overlay {
+      position: absolute; inset: 0;
+      padding: 36px 40px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.65) 100%);
+      color: #fff;
+    }
+    .hs__slide__num {
+      position: absolute; top: 28px; left: 32px;
+      font-family: "SF Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.7);
+    }
+    .hs__slide__eyebrow {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85); margin: 0 0 10px;
+    }
+    .hs__slide__title {
+      font-family: "SF Pro Display", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 38px; line-height: 1.1; letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .hs__slide__tagline {
+      font-size: 16px; line-height: 1.5;
+      color: rgba(255,255,255,0.85);
+      margin: 0;
+      max-width: 460px;
+    }
+
+    /* per-slide visuals */
+    .hs__slide--areum .hs__slide__bg {
+      background: linear-gradient(180deg, #fafaf7, #eef2e8);
+    }
+    .hs__slide--areum .hs__slide__bg img {
+      max-height: 92%; border-radius: 32px;
+      box-shadow: 0 18px 40px -12px rgba(0,0,0,0.2);
+    }
+    .hs__slide--areum .hs__slide__overlay { color: var(--ink); background: linear-gradient(180deg, rgba(255,255,255,0) 50%, rgba(255,255,255,0.92) 100%); }
+    .hs__slide--areum .hs__slide__eyebrow { color: var(--primary); }
+    .hs__slide--areum .hs__slide__tagline { color: var(--muted-80); }
+    .hs__slide--areum .hs__slide__num { color: var(--muted-48); }
+
+    .hs__slide--yt .hs__slide__bg {
+      background: #0f0f0f;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      padding: 56px 80px 140px;
+      align-content: center;
+    }
+    .hs__slide--yt .hs__slide__bg i {
+      display: block; aspect-ratio: 16/9; border-radius: 10px;
+    }
+    .hs__slide--yt .hs__slide__bg i:nth-child(1) { background: linear-gradient(135deg, #2d3748, #1a202c); }
+    .hs__slide--yt .hs__slide__bg i:nth-child(2) { background: linear-gradient(135deg, #3a2d1a, #1f1407); }
+    .hs__slide--yt .hs__slide__bg i:nth-child(3) { background: linear-gradient(135deg, #1a3a2d, #07221a); }
+    .hs__slide--yt .hs__slide__bg i:nth-child(4) { background: linear-gradient(135deg, #3a1a2d, #220714); }
+    .hs__slide--yt .hs__slide__bg i:nth-child(5) { background: linear-gradient(135deg, #1a2a3a, #07142a); }
+    .hs__slide--yt .hs__slide__bg i:nth-child(6) { background: linear-gradient(135deg, #2a1a3a, #14072a); }
+
+    .hs__slide--focus .hs__slide__bg {
+      background: #0e1424;
+      flex-direction: column; gap: 6px;
+      color: #e6ebf5;
+    }
+    .hs__slide--focus .label { font-size: 12px; color: #8694b8; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hs__slide--focus .big {
+      font-family: "SF Pro Display", system-ui, sans-serif;
+      font-size: 96px; font-weight: 600; letter-spacing: -0.025em;
+      color: #4dd58a;
+    }
+    .hs__slide--focus .timeline {
+      display: flex; gap: 3px; height: 18px; width: 60%; margin-top: 24px;
+      border-radius: 4px; overflow: hidden;
+    }
+    .hs__slide--focus .timeline span { flex: 1; }
+    .hs__slide--focus .timeline .f { background: #4dd58a; }
+    .hs__slide--focus .timeline .o { background: #4f8cff; }
+    .hs__slide--focus .timeline .d { background: #ff7a59; }
+    .hs__slide--focus .timeline .a { background: #2a3552; }
+
+    .hs__slide--flow .hs__slide__bg {
+      background: #1d1d1f;
+      font-family: "SF Mono", ui-monospace, monospace;
+      color: #e8e8e8;
+      font-size: 18px; line-height: 2.2;
+      padding: 0 80px 140px;
+    }
+    .hs__slide--flow .hs__slide__bg b { color: #ff9c75; font-weight: 600; }
+    .hs__slide--flow .hs__slide__bg i { color: #6aa6ff; font-style: normal; }
+    .hs__slide--flow .hs__slide__bg s { color: #6fe2a4; text-decoration: none; }
+
+    .hs__slide--persona .hs__slide__bg {
+      background: var(--parchment);
+      gap: 18px; flex-direction: column;
+    }
+    .hs__slide--persona .row { display: flex; gap: 20px; }
+    .hs__slide--persona .row span {
+      width: 76px; height: 76px; border-radius: 999px;
+    }
+    .hs__slide--persona .row span:nth-child(1) { background: linear-gradient(135deg, #ffb86b, #ff7849); }
+    .hs__slide--persona .row span:nth-child(2) { background: linear-gradient(135deg, #6cc1ff, #2b7de9); }
+    .hs__slide--persona .row span:nth-child(3) { background: linear-gradient(135deg, #c39bff, #7d4be0); }
+    .hs__slide--persona .hs__slide__overlay { color: var(--ink); background: linear-gradient(180deg, rgba(255,255,255,0) 50%, rgba(255,255,255,0.92) 100%); }
+    .hs__slide--persona .hs__slide__eyebrow { color: var(--primary); }
+    .hs__slide--persona .hs__slide__tagline { color: var(--muted-80); }
+    .hs__slide--persona .hs__slide__num { color: var(--muted-48); }
+
+    /* nav arrows */
+    .hs__nav {
+      max-width: 1240px; margin: 0 auto;
+      padding: 0 22px;
+      display: flex; gap: 12px; justify-content: flex-end;
+    }
+    .hs__btn {
+      width: 44px; height: 44px; border-radius: 999px;
+      background: var(--parchment);
+      color: var(--ink);
+      font-size: 20px; line-height: 1;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background-color .15s, transform .15s;
+    }
+    .hs__btn:hover { background: var(--hairline); }
+    .hs__btn:active { transform: scale(0.95); }
+
+    /* indicator dots */
+    .hs__dots {
+      display: flex; gap: 8px; justify-content: center;
+      margin-top: 18px;
+    }
+    .hs__dots button {
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--hairline);
+      transition: background-color .2s, width .2s;
+    }
+    .hs__dots button.is-current { background: var(--primary); width: 28px; }
+  </style>
+</head>
+<body>
+
+  <header class="mock-head">
+    <span class="mock-head__title">양영진 · Layout Studies</span>
+    <nav class="mock-head__nav">
+      <a href="../index.html">01 Editorial</a>
+      <a href="./02-hover-reveal.html">02 Hover Reveal</a>
+      <a href="./03-horizontal.html" class="is-current">03 Horizontal</a>
+      <a href="./04-bento.html">04 Bento</a>
+      <a href="./index.html">↩ Compare</a>
+    </nav>
+  </header>
+
+  <section class="mock-hero">
+    <h1 class="mock-hero__name">양영진</h1>
+    <p class="mock-hero__role">Forward Deployed Engineer</p>
+    <p class="mock-hero__lede">비기술적인 요구사항을 정제하고, 공학적 문제로 재정의해 해결합니다.</p>
+  </section>
+
+  <div class="mock-section-title">
+    <p class="mock-section-title__eyebrow">Mockup 03</p>
+    <h2>Horizontal Scroll Snap</h2>
+    <p>가로 스크롤 / 각 프로젝트가 한 화면. 트랙패드 가로 스와이프 또는 우측 화살표로 이동.</p>
+  </div>
+
+  <section class="hs">
+    <div class="hs__nav">
+      <button class="hs__btn" data-dir="-1" aria-label="이전">‹</button>
+      <button class="hs__btn" data-dir="1" aria-label="다음">›</button>
+    </div>
+
+    <div class="hs__rail" id="hs-rail">
+      <article class="hs__slide hs__slide--areum">
+        <div class="hs__slide__bg"><img src="../assets/projects/areum-chat-empty.jpeg" alt="" /></div>
+        <span class="hs__slide__num">01 / 05</span>
+        <div class="hs__slide__overlay">
+          <p class="hs__slide__eyebrow">Mobile · 창업</p>
+          <h3 class="hs__slide__title">마음챙김 가이드 앱 mylo</h3>
+          <p class="hs__slide__tagline">자극에서 벗어나, 내면에 다가갈 수 있는 환경.</p>
+        </div>
+      </article>
+
+      <article class="hs__slide hs__slide--yt">
+        <div class="hs__slide__bg"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="hs__slide__num">02 / 05</span>
+        <div class="hs__slide__overlay">
+          <p class="hs__slide__eyebrow">Web · 창업</p>
+          <h3 class="hs__slide__title">유튜브 분리수거 웹</h3>
+          <p class="hs__slide__tagline">재생목록을 한 번에. 꼭 봐야 할 영상만 선별합니다.</p>
+        </div>
+      </article>
+
+      <article class="hs__slide hs__slide--focus">
+        <div class="hs__slide__bg">
+          <span class="label">Deep work</span>
+          <span class="big">3h 47m</span>
+          <div class="timeline"><span class="f" style="flex:6"></span><span class="o" style="flex:3"></span><span class="d" style="flex:1"></span><span class="f" style="flex:5"></span><span class="a" style="flex:2"></span><span class="f" style="flex:4"></span></div>
+        </div>
+        <span class="hs__slide__num">03 / 05</span>
+        <div class="hs__slide__overlay">
+          <p class="hs__slide__eyebrow">Desktop · 창업</p>
+          <h3 class="hs__slide__title">작업 품질 트래킹 앱</h3>
+          <p class="hs__slide__tagline">PC 사용 신호로 몰입을 측정하고, 습관을 점검합니다.</p>
+        </div>
+      </article>
+
+      <article class="hs__slide hs__slide--flow">
+        <div class="hs__slide__bg">
+          <div>
+            <b>planner</b> → spec.md<br/>
+            <i>builder</i> → impl/*<br/>
+            <s>reviewer</s> → review.md
+          </div>
+        </div>
+        <span class="hs__slide__num">04 / 05</span>
+        <div class="hs__slide__overlay">
+          <p class="hs__slide__eyebrow">Dev tooling</p>
+          <h3 class="hs__slide__title">MECE 멀티 에이전트 개발 환경</h3>
+          <p class="hs__slide__tagline">페로몬 프로토콜에서 착안. md 공유 + 훅 트리거로 자율 실행.</p>
+        </div>
+      </article>
+
+      <article class="hs__slide hs__slide--persona">
+        <div class="hs__slide__bg">
+          <div class="row"><span></span><span></span><span></span></div>
+        </div>
+        <span class="hs__slide__num">05 / 05</span>
+        <div class="hs__slide__overlay">
+          <p class="hs__slide__eyebrow">Dev tooling</p>
+          <h3 class="hs__slide__title">페르소나 시뮬레이션</h3>
+          <p class="hs__slide__tagline">서로 다른 시점의 페르소나가 같은 문제를 토론합니다.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="hs__dots" id="hs-dots">
+      <button class="is-current" data-i="0"></button>
+      <button data-i="1"></button>
+      <button data-i="2"></button>
+      <button data-i="3"></button>
+      <button data-i="4"></button>
+    </div>
+  </section>
+
+  <script>
+    const rail = document.getElementById('hs-rail');
+    const dots = document.querySelectorAll('#hs-dots button');
+    const slides = rail.querySelectorAll('.hs__slide');
+
+    const goTo = (i) => {
+      const target = slides[Math.max(0, Math.min(slides.length - 1, i))];
+      target?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    };
+
+    document.querySelectorAll('[data-dir]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cur = [...slides].findIndex(s => s.getBoundingClientRect().left >= rail.getBoundingClientRect().left - 20);
+        goTo(cur + Number(btn.dataset.dir));
+      });
+    });
+    dots.forEach(d => d.addEventListener('click', () => goTo(Number(d.dataset.i))));
+
+    // dot tracking on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.intersectionRatio > 0.6) {
+          const i = [...slides].indexOf(e.target);
+          dots.forEach(d => d.classList.toggle('is-current', Number(d.dataset.i) === i));
+        }
+      });
+    }, { root: rail, threshold: [0.6, 0.9] });
+    slides.forEach(s => io.observe(s));
+  </script>
+</body>
+</html>

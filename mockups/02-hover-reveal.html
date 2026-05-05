@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockup 02 — Hover Reveal · 양영진</title>
+  <link rel="stylesheet" href="./shared.css" />
+  <style>
+    /* ─── Hover-reveal index (Linear/Vercel-style) ───
+       대형 타이포 세로 나열. hover 시 우측 영역에서
+       프로젝트 미리보기가 페이드+슬라이드인. */
+    .hr {
+      position: relative;
+      max-width: 1240px;
+      margin: 24px auto 120px;
+      padding: 0 22px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 56px;
+      min-height: 540px;
+    }
+    .hr__list {
+      display: flex; flex-direction: column;
+      gap: 4px;
+    }
+    .hr__item {
+      display: flex; align-items: baseline; gap: 18px;
+      padding: 18px 0;
+      width: 100%;
+      text-align: left;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .hr__list:hover .hr__item { opacity: 0.32; }
+    .hr__list .hr__item:hover { opacity: 1; transform: translateX(8px); }
+
+    .hr__num {
+      font-family: "SF Mono", ui-monospace, "Menlo", monospace;
+      font-size: 12px;
+      color: var(--muted-48);
+      width: 28px; flex-shrink: 0;
+      letter-spacing: 0.06em;
+    }
+    .hr__title {
+      font-family: "SF Pro Display", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 56px; line-height: 1.05; letter-spacing: -0.025em;
+    }
+    .hr__meta {
+      margin-left: auto;
+      font-size: 13px; color: var(--muted-48);
+      letter-spacing: 0.02em;
+    }
+    .hr__item:hover .hr__title { color: var(--primary); }
+
+    /* fixed preview pane on the right */
+    .hr__preview {
+      position: sticky; top: 120px;
+      height: 480px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--parchment);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.16);
+    }
+    .hr__pane {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .hr__pane.is-active { opacity: 1; transform: scale(1); }
+
+    /* per-pane visuals */
+    .hr__pane--areum {
+      background: linear-gradient(180deg, #fafaf7, #eef2e8);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hr__pane--areum img {
+      max-height: 86%;
+      border-radius: 28px;
+      box-shadow: 0 14px 30px -10px rgba(0,0,0,0.18);
+    }
+    .hr__pane--yt {
+      background: #0f0f0f;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+      padding: 22px;
+      align-content: center;
+    }
+    .hr__pane--yt > i {
+      display: block; aspect-ratio: 16/9; border-radius: 8px;
+    }
+    .hr__pane--yt > i:nth-child(1) { background: linear-gradient(135deg, #2d3748, #1a202c); }
+    .hr__pane--yt > i:nth-child(2) { background: linear-gradient(135deg, #3a2d1a, #1f1407); }
+    .hr__pane--yt > i:nth-child(3) { background: linear-gradient(135deg, #1a3a2d, #07221a); }
+    .hr__pane--yt > i:nth-child(4) { background: linear-gradient(135deg, #3a1a2d, #220714); }
+
+    .hr__pane--focus {
+      background: #0e1424;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: #e6ebf5; padding: 24px; gap: 8px;
+    }
+    .hr__pane--focus .label {
+      font-size: 11px; color: #8694b8;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .hr__pane--focus .big {
+      font-family: "SF Pro Display", system-ui, sans-serif;
+      font-size: 64px; font-weight: 600; letter-spacing: -0.025em;
+      color: #4dd58a;
+    }
+    .hr__pane--focus .timeline {
+      display: flex; gap: 2px; height: 14px; width: 78%; margin-top: 18px;
+      border-radius: 4px; overflow: hidden;
+    }
+    .hr__pane--focus .timeline span { flex: 1; }
+    .hr__pane--focus .timeline .f { background: #4dd58a; }
+    .hr__pane--focus .timeline .o { background: #4f8cff; }
+    .hr__pane--focus .timeline .d { background: #ff7a59; }
+    .hr__pane--focus .timeline .a { background: #2a3552; }
+
+    .hr__pane--flow {
+      background: #1d1d1f;
+      font-family: "SF Mono", ui-monospace, "Menlo", monospace;
+      display: flex; align-items: center; justify-content: center;
+      color: #e8e8e8; padding: 28px;
+      font-size: 14px; line-height: 1.9;
+    }
+    .hr__pane--flow b { color: #ff9c75; font-weight: 600; }
+    .hr__pane--flow i { color: #6aa6ff; font-style: normal; }
+    .hr__pane--flow s { color: #6fe2a4; text-decoration: none; }
+
+    .hr__pane--persona {
+      background: var(--parchment);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+    }
+    .hr__pane--persona .row { display: flex; gap: 16px; }
+    .hr__pane--persona .row span {
+      width: 64px; height: 64px; border-radius: 999px;
+    }
+    .hr__pane--persona .row span:nth-child(1) { background: linear-gradient(135deg, #ffb86b, #ff7849); }
+    .hr__pane--persona .row span:nth-child(2) { background: linear-gradient(135deg, #6cc1ff, #2b7de9); }
+    .hr__pane--persona .row span:nth-child(3) { background: linear-gradient(135deg, #c39bff, #7d4be0); }
+    .hr__pane--persona .label {
+      font-size: 12px; color: var(--muted-48);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .hr { grid-template-columns: 1fr; }
+      .hr__preview { display: none; }
+      .hr__title { font-size: 38px; }
+      .hr__meta { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="mock-head">
+    <span class="mock-head__title">양영진 · Layout Studies</span>
+    <nav class="mock-head__nav">
+      <a href="../index.html">01 Editorial</a>
+      <a href="./02-hover-reveal.html" class="is-current">02 Hover Reveal</a>
+      <a href="./03-horizontal.html">03 Horizontal</a>
+      <a href="./04-bento.html">04 Bento</a>
+      <a href="./index.html">↩ Compare</a>
+    </nav>
+  </header>
+
+  <section class="mock-hero">
+    <h1 class="mock-hero__name">양영진</h1>
+    <p class="mock-hero__role">Forward Deployed Engineer</p>
+    <p class="mock-hero__lede">비기술적인 요구사항을 정제하고, 공학적 문제로 재정의해 해결합니다.</p>
+  </section>
+
+  <div class="mock-section-title">
+    <p class="mock-section-title__eyebrow">Mockup 02</p>
+    <h2>Hover Reveal Index</h2>
+    <p>큰 타이포 + 우측 sticky 프리뷰. 마우스를 올린 항목만 또렷해지고 나머지는 디밍.</p>
+  </div>
+
+  <section class="hr">
+    <div class="hr__list" id="hr-list">
+      <button class="hr__item" data-key="areum">
+        <span class="hr__num">01</span>
+        <span class="hr__title">마음챙김 가이드 앱 mylo</span>
+        <span class="hr__meta">Mobile · 창업 · 2024</span>
+      </button>
+      <button class="hr__item" data-key="yt">
+        <span class="hr__num">02</span>
+        <span class="hr__title">유튜브 분리수거 웹</span>
+        <span class="hr__meta">Web · 창업 · 2025</span>
+      </button>
+      <button class="hr__item" data-key="focus">
+        <span class="hr__num">03</span>
+        <span class="hr__title">작업 품질 트래킹 앱</span>
+        <span class="hr__meta">Desktop · 창업 · 2025</span>
+      </button>
+      <button class="hr__item" data-key="flow">
+        <span class="hr__num">04</span>
+        <span class="hr__title">MECE 멀티 에이전트 개발 환경</span>
+        <span class="hr__meta">Dev tooling · 2026</span>
+      </button>
+      <button class="hr__item" data-key="persona">
+        <span class="hr__num">05</span>
+        <span class="hr__title">페르소나 시뮬레이션</span>
+        <span class="hr__meta">Dev tooling · 2026</span>
+      </button>
+    </div>
+
+    <aside class="hr__preview">
+      <div class="hr__pane hr__pane--areum is-active" data-pane="areum">
+        <img src="../assets/projects/areum-chat-empty.jpeg" alt="" />
+      </div>
+      <div class="hr__pane hr__pane--yt" data-pane="yt"><i></i><i></i><i></i><i></i></div>
+      <div class="hr__pane hr__pane--focus" data-pane="focus">
+        <span class="label">Deep work</span>
+        <span class="big">3h 47m</span>
+        <div class="timeline"><span class="f" style="flex:6"></span><span class="o" style="flex:3"></span><span class="d" style="flex:1"></span><span class="f" style="flex:5"></span><span class="a" style="flex:2"></span><span class="f" style="flex:4"></span></div>
+      </div>
+      <div class="hr__pane hr__pane--flow" data-pane="flow">
+        <div>
+          <b>planner</b> → spec.md<br/>
+          <i>builder</i> → impl/*<br/>
+          <s>reviewer</s> → review.md
+        </div>
+      </div>
+      <div class="hr__pane hr__pane--persona" data-pane="persona">
+        <div class="row"><span></span><span></span><span></span></div>
+        <span class="label">3 perspectives</span>
+      </div>
+    </aside>
+  </section>
+
+  <script>
+    const list = document.getElementById('hr-list');
+    const panes = document.querySelectorAll('.hr__pane');
+    list.querySelectorAll('.hr__item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        panes.forEach(p => p.classList.toggle('is-active', p.dataset.pane === item.dataset.key));
+      });
+    });
+  </script>
+</body>
+</html>

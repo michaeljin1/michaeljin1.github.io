@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>페르소나 시뮬레이션 — 양영진</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
+    body, body * {
+      font-family: "Wanted Sans Variable", "Wanted Sans",
+                   "DM Sans", -apple-system, BlinkMacSystemFont,
+                   system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+      letter-spacing: -0.005em;
+    }
+  </style>
+</head>
+<body>
+    <article class="section project tile-light">
+    <div class="section__inner">
+      <header class="project__head">
+        <p class="project__eyebrow">Dev tooling · 사고 보조</p>
+        <h1 class="project__title">페르소나 시뮬레이션</h1>
+        <p class="project__tagline">서로 다른 시점의 페르소나가 같은 문제를 토론합니다.</p>
+        <div class="chips">
+          <span class="chip">Multi-perspective</span>
+          <span class="chip">Sub-agent prompt</span>
+          <span class="chip">의사결정 보조</span>
+        </div>
+      </header>
+
+      <div class="preview preview-persona">
+        <div class="preview-persona__card">
+          <div class="preview-persona__avatar preview-persona__a"></div>
+          <div class="preview-persona__role">진취적 혁신가</div>
+          <div class="preview-persona__name">Iris</div>
+          <p class="preview-persona__quote">"이 정도면 PoC 일주일이면 돌릴 수 있어. 시장 반응부터 보고 결정하자."</p>
+        </div>
+        <div class="preview-persona__card">
+          <div class="preview-persona__avatar preview-persona__b"></div>
+          <div class="preview-persona__role">현실적 구현자</div>
+          <div class="preview-persona__name">Bence</div>
+          <p class="preview-persona__quote">"운영 단계에서 외부 API 의존성·재시도 정책부터 정의해야 안전하게 확장돼."</p>
+        </div>
+        <div class="preview-persona__card">
+          <div class="preview-persona__avatar preview-persona__c"></div>
+          <div class="preview-persona__role">VC 관점 분석가</div>
+          <div class="preview-persona__name">Vera</div>
+          <p class="preview-persona__quote">"고객 수요와 유입 채널을 검증한 데이터 없이는 투자 단계로 못 간다."</p>
+        </div>
+      </div>
+
+      <dl class="project-body">
+        <div>
+          <dt>요지</dt>
+          <dd>의사결정 단계에서 서로 다른 관점(혁신가·구현자·분석가)을 페르소나로 모사해, 한 명의 사고 안에서 누락되는 시점을 빠르게 보완합니다. 결과는 절충안과 근거 보고서 형태로 누적됩니다.</dd>
+        </div>
+      </dl>
+    </div>
+  </article>
+</body>
+</html>

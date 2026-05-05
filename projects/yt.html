@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>유튜브 분리수거 웹 — 양영진</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- 이유: Pretendard 대체 — Wanted Sans Variable (한국어) + DM Sans (영문/숫자) -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── 폰트 일괄 적용 (yt.html 전용 override) ── */
+    .yt-page,
+    .yt-page * {
+      font-family: "Wanted Sans Variable", "Wanted Sans",
+                   "DM Sans", -apple-system, BlinkMacSystemFont,
+                   system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+      letter-spacing: -0.005em;
+    }
+
+    /* ── 인트로 카드 ── */
+    .yt-intro {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 36px;
+      align-items: center;
+      margin: 32px 0 12px;
+    }
+    .yt-intro__lede {
+      font-size: 17px; line-height: 1.65;
+      color: #d2d2d7;
+    }
+    .yt-intro__lede strong { color: #fff; font-weight: 600; }
+
+    .yt-stack {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .yt-stack__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+      margin-bottom: 14px;
+    }
+    .yt-stack__group { margin-bottom: 14px; }
+    .yt-stack__group:last-child { margin-bottom: 0; }
+    .yt-stack__group-name {
+      font-size: 11px; color: #8e8e93;
+      margin-bottom: 6px;
+    }
+    .yt-stack__items {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .yt-stack__item {
+      padding: 3px 9px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      font-size: 12px;
+      color: #f5f5f7;
+    }
+
+    /* ── 화면 그리드 ── */
+    .yt-shots {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 36px 0 8px;
+    }
+    .yt-shot {
+      background: #fafafc;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .yt-shot__caption {
+      padding: 10px 16px;
+      background: #fff;
+      border-top: 1px solid #e5e5e7;
+    }
+    .yt-shot__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+    }
+    .yt-shot__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+      margin-top: 2px;
+    }
+
+    /* ── 화면 1: 입력 ── */
+    .mock-input {
+      padding: 28px 24px 32px;
+      background: #fff;
+      min-height: 240px;
+    }
+    .mock-input__title { font-size: 22px; font-weight: 700; color: #1d1d1f; line-height: 1.2; }
+    .mock-input__sub { font-size: 13px; color: #6e6e73; margin-top: 8px; }
+    .mock-input__chips { display: flex; gap: 6px; margin: 18px 0 12px; flex-wrap: wrap; }
+    .mock-input__chip {
+      display: inline-flex; gap: 6px; align-items: center;
+      padding: 4px 10px;
+      background: #f5f5f7;
+      border-radius: 999px;
+      font-size: 12px; color: #1d1d1f;
+    }
+    .mock-input__chip::before { content: '🔗'; font-size: 10px; }
+    .mock-input__field { display: flex; gap: 8px; margin-top: 8px; }
+    .mock-input__input {
+      flex: 1;
+      padding: 10px 14px;
+      background: #f5f5f7;
+      border-radius: 8px;
+      font-size: 13px; color: #6e6e73;
+    }
+    .mock-input__btn {
+      padding: 10px 18px;
+      background: #0066cc; color: #fff;
+      border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+    }
+
+    /* ── 화면 2: 분석 진행 ── */
+    .mock-stream {
+      padding: 24px;
+      background: #1d1d1f; color: #fff;
+      min-height: 240px;
+    }
+    .mock-stream__title { font-size: 13px; opacity: 0.7; margin-bottom: 14px; font-weight: 500; }
+    .mock-stream__row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+    }
+    .mock-stream__row:last-child { border: 0; }
+    .mock-stream__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #34c759; flex-shrink: 0;
+    }
+    .mock-stream__dot--loading {
+      background: #0066cc;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    .mock-stream__dot--wait { background: rgba(255,255,255,0.2); }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .mock-stream__name { flex: 1; opacity: 0.95; }
+    .mock-stream__time { font-size: 11px; opacity: 0.5; font-variant-numeric: tabular-nums; }
+
+    /* ── 화면 3: 결과 ── */
+    .mock-result {
+      padding: 18px;
+      background: #fff;
+      min-height: 240px;
+    }
+    .mock-result__head {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .mock-stat {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+    .mock-stat--green { background: #e9f9ee; color: #34c759; }
+    .mock-stat--orange { background: #fff4e1; color: #ff9500; }
+    .mock-stat--red { background: #ffe9e8; color: #ff3b30; }
+    .mock-stat__label { font-size: 10px; font-weight: 600; }
+    .mock-stat__num { font-size: 18px; font-weight: 700; margin-top: 2px; }
+
+    .mock-card {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+    .mock-card__thumb {
+      width: 64px; height: 36px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #2d3748, #1a202c);
+    }
+    .mock-card__meta {
+      font-size: 10px; font-weight: 700;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .mock-card__meta--orange { color: #ff9500; }
+    .mock-card__meta--red { color: #ff3b30; }
+    .mock-card__meta--green { color: #34c759; }
+    .mock-card__title {
+      font-size: 11px; font-weight: 600; color: #1d1d1f;
+      margin-top: 2px; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* ── 화면 4: 모달 ── */
+    .mock-modal {
+      padding: 18px;
+      background: #fff;
+      min-height: 240px;
+    }
+    .mock-modal__head {
+      display: flex; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid #e5e5e7;
+    }
+    .mock-modal__thumb {
+      width: 80px; height: 45px;
+      background: linear-gradient(135deg, #553c9a, #2c5282);
+      border-radius: 6px; flex-shrink: 0;
+    }
+    .mock-modal__title { font-size: 13px; font-weight: 700; line-height: 1.4; }
+    .mock-modal__pill {
+      display: inline-block;
+      padding: 2px 8px; border-radius: 999px;
+      background: #fff4e1; color: #ff9500;
+      font-size: 10px; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .mock-modal__sec-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      color: #6e6e73; text-transform: uppercase;
+      margin: 14px 0 8px;
+    }
+    .mock-modal__brief {
+      font-size: 12px; line-height: 1.6; color: #1d1d1f;
+    }
+    .mock-modal__concepts {
+      display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .mock-modal__concept {
+      padding: 3px 8px;
+      background: rgba(0, 102, 204, 0.08);
+      color: #0066cc;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 500;
+    }
+
+    /* ── 미니 아키텍처 ── */
+    .mini-arch {
+      background: #fafafc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 32px 0 8px;
+    }
+    .mini-arch__row {
+      display: grid; gap: 8px;
+      margin-bottom: 10px;
+    }
+    .mini-arch__cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .mini-arch__cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .mini-arch__node {
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      text-align: center;
+      color: #1d1d1f;
+    }
+    .mini-arch__node--primary { border-color: #0066cc; background: rgba(0, 102, 204, 0.05); }
+    .mini-arch__node--orange { border-color: #ff9500; background: rgba(255, 149, 0, 0.05); }
+    .mini-arch__node--purple { border-color: #8e44ec; background: rgba(142, 68, 236, 0.05); }
+    .mini-arch__arrow {
+      text-align: center; color: #c0c0c4;
+      font-size: 14px; margin: -2px 0;
+    }
+    .mini-arch__more {
+      margin-top: 14px; text-align: center;
+    }
+    .mini-arch__more a {
+      font-size: 12px; color: #0066cc; text-decoration: none;
+    }
+    .mini-arch__more a:hover { text-decoration: underline; }
+
+    /* 섹션 제목 */
+    .yt-section-title {
+      font-size: 22px; font-weight: 700;
+      margin: 56px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── 처리 흐름 ── */
+    .yt-flow {
+      background: #fafafc;
+      border-radius: 14px;
+      padding: 22px 26px;
+      display: grid;
+      gap: 12px;
+    }
+    .yt-flow__row {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 10px;
+    }
+    .yt-flow__num {
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      background: #0066cc;
+      color: #fff;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 12px;
+    }
+    .yt-flow__body { min-width: 0; }
+    .yt-flow__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+    }
+    .yt-flow__time {
+      font-size: 11px; color: #0066cc; font-weight: 600;
+      margin-left: 6px;
+      font-feature-settings: "tnum";
+    }
+    .yt-flow__desc {
+      font-size: 12px; color: #6e6e73;
+      line-height: 1.5; margin-top: 3px;
+    }
+
+    @media (max-width: 720px) {
+      .yt-intro { grid-template-columns: 1fr; }
+      .yt-shots { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+</head>
+<body class="yt-page">
+  <article class="section project tile-dark on-dark">
+    <div class="section__inner">
+      <header class="project__head">
+        <p class="project__eyebrow">Web · 창업 프로젝트</p>
+        <h1 class="project__title">유튜브 분리수거 웹</h1>
+        <p class="project__tagline">재생목록을 한 번에. 꼭 봐야 할 영상만 선별합니다.</p>
+      </header>
+
+      <!-- ── 인트로: 앱 설명 + 스택 ── -->
+      <section class="yt-intro">
+        <p class="yt-intro__lede">
+          유튜브 URL을 붙여넣으면 <strong>자막을 분석해 의미 임베딩으로 변환</strong>하고,
+          이미 본 영상들로 만든 <strong>라이브러리와 cosine 유사도를 비교</strong>해
+          <strong>🟢 꼭 보세요 / 🟡 일부 겹침 / 🔴 스킵하세요</strong>로 자동 분류합니다.
+          재생목록 일괄 처리, 글로벌 캐시, 가입 없이 무료 체험을 지원합니다.
+        </p>
+
+        <div class="yt-stack">
+          <div class="yt-stack__label">Stack</div>
+
+          <div class="yt-stack__group">
+            <div class="yt-stack__group-name">Frontend</div>
+            <div class="yt-stack__items">
+              <span class="yt-stack__item">Next.js 15</span>
+              <span class="yt-stack__item">TypeScript</span>
+              <span class="yt-stack__item">Vercel</span>
+            </div>
+          </div>
+
+          <div class="yt-stack__group">
+            <div class="yt-stack__group-name">Backend</div>
+            <div class="yt-stack__items">
+              <span class="yt-stack__item">FastAPI</span>
+              <span class="yt-stack__item">asyncio</span>
+              <span class="yt-stack__item">Railway</span>
+            </div>
+          </div>
+
+          <div class="yt-stack__group">
+            <div class="yt-stack__group-name">AI · Data</div>
+            <div class="yt-stack__items">
+              <span class="yt-stack__item">Gemini 2.5 Flash Lite</span>
+              <span class="yt-stack__item">Gemini Embedding (768d)</span>
+              <span class="yt-stack__item">Supabase pgvector</span>
+            </div>
+          </div>
+
+          <div class="yt-stack__group">
+            <div class="yt-stack__group-name">Infra · 결제</div>
+            <div class="yt-stack__items">
+              <span class="yt-stack__item">Cloudflare</span>
+              <span class="yt-stack__item">Paddle (MoR)</span>
+              <span class="yt-stack__item">Webshare proxy</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 실제 화면 4개 ── -->
+      <h2 class="yt-section-title">실제 화면</h2>
+
+      <div class="yt-shots">
+
+        <!-- 1: 입력 -->
+        <div class="yt-shot">
+          <div class="mock-input">
+            <div class="mock-input__title">노이즈는 걸러내고,<br>볼 만한 것만 남기세요.</div>
+            <div class="mock-input__sub">유튜브 링크를 붙여넣으면, 당신이 본 영상들과 비교해 정말 볼 가치가 있는 것만 알려드립니다.</div>
+            <div class="mock-input__chips">
+              <span class="mock-input__chip">앤트로픽 클로드 디자인…</span>
+              <span class="mock-input__chip">NVIDIA Nemotron…</span>
+            </div>
+            <div class="mock-input__field">
+              <div class="mock-input__input">https://youtu.be/...</div>
+              <div class="mock-input__btn">+ 추가</div>
+            </div>
+          </div>
+          <div class="yt-shot__caption">
+            <div class="yt-shot__label">Step 1</div>
+            <div class="yt-shot__title">URL · 재생목록 입력</div>
+          </div>
+        </div>
+
+        <!-- 2: 진행 -->
+        <div class="yt-shot">
+          <div class="mock-stream">
+            <div class="mock-stream__title">분석 중 · 스트리밍 진행</div>
+            <div class="mock-stream__row">
+              <span class="mock-stream__dot"></span>
+              <span class="mock-stream__name">앤트로픽 클로드 디자인…</span>
+              <span class="mock-stream__time">완료 22s</span>
+            </div>
+            <div class="mock-stream__row">
+              <span class="mock-stream__dot"></span>
+              <span class="mock-stream__name">NVIDIA Nemotron 분석</span>
+              <span class="mock-stream__time">완료 18s</span>
+            </div>
+            <div class="mock-stream__row">
+              <span class="mock-stream__dot mock-stream__dot--loading"></span>
+              <span class="mock-stream__name">옵시디언 카파시 wiki…</span>
+              <span class="mock-stream__time">분석 중</span>
+            </div>
+            <div class="mock-stream__row">
+              <span class="mock-stream__dot mock-stream__dot--wait"></span>
+              <span class="mock-stream__name">EP 91. 비즈니스 관점</span>
+              <span class="mock-stream__time">대기</span>
+            </div>
+            <div class="mock-stream__row">
+              <span class="mock-stream__dot mock-stream__dot--wait"></span>
+              <span class="mock-stream__name">구글의 10년 베팅</span>
+              <span class="mock-stream__time">대기</span>
+            </div>
+          </div>
+          <div class="yt-shot__caption">
+            <div class="yt-shot__label">Step 2</div>
+            <div class="yt-shot__title">실시간 진행 (NDJSON 스트림)</div>
+          </div>
+        </div>
+
+        <!-- 3: 결과 -->
+        <div class="yt-shot">
+          <div class="mock-result">
+            <div class="mock-result__head">
+              <div class="mock-stat mock-stat--green">
+                <div class="mock-stat__label">🟢 꼭 보세요</div>
+                <div class="mock-stat__num">2개</div>
+              </div>
+              <div class="mock-stat mock-stat--orange">
+                <div class="mock-stat__label">🟡 일부 겹침</div>
+                <div class="mock-stat__num">3개</div>
+              </div>
+              <div class="mock-stat mock-stat--red">
+                <div class="mock-stat__label">🔴 스킵하세요</div>
+                <div class="mock-stat__num">1개</div>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-card__thumb"></div>
+              <div>
+                <div class="mock-card__meta mock-card__meta--green">🟢 꼭 보세요 · 88% new</div>
+                <div class="mock-card__title">구글의 10년 베팅이 터졌다 — Gemini 3.0</div>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-card__thumb" style="background: linear-gradient(135deg, #ff9500, #c05621);"></div>
+              <div>
+                <div class="mock-card__meta mock-card__meta--orange">🟡 일부 겹침 · 37% new</div>
+                <div class="mock-card__title">앤트로픽 클로드 디자인의 등장</div>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-card__thumb" style="background: linear-gradient(135deg, #ff3b30, #7b341e);"></div>
+              <div>
+                <div class="mock-card__meta mock-card__meta--red">🔴 스킵하세요 · 8% new</div>
+                <div class="mock-card__title">개발자가 알려주는 ChatGPT 12가지 활용법</div>
+              </div>
+            </div>
+          </div>
+          <div class="yt-shot__caption">
+            <div class="yt-shot__label">Step 3</div>
+            <div class="yt-shot__title">3등급 분리수거</div>
+          </div>
+        </div>
+
+        <!-- 4: 모달 -->
+        <div class="yt-shot">
+          <div class="mock-modal">
+            <div class="mock-modal__head">
+              <div class="mock-modal__thumb"></div>
+              <div>
+                <span class="mock-modal__pill">🟡 일부 겹침 · 37% new</span>
+                <div class="mock-modal__title">앤트로픽 클로드 디자인의 등장</div>
+              </div>
+            </div>
+            <div class="mock-modal__sec-label">Brief — 3줄 요약</div>
+            <div class="mock-modal__brief">
+              Claude Design은 디자인 작업 전반을 통합하는 플랫폼으로 등장. 디자이너의 역할은 단순 반복에서 의도 정의로 이동. 도구는 사라지고 의사결정 능력이 핵심 자산.
+            </div>
+            <div class="mock-modal__sec-label">핵심 개념</div>
+            <div class="mock-modal__concepts">
+              <span class="mock-modal__concept">Claude Design</span>
+              <span class="mock-modal__concept">의도 정의</span>
+              <span class="mock-modal__concept">디자이너 직군 재편</span>
+              <span class="mock-modal__concept">Vibe Design</span>
+            </div>
+          </div>
+          <div class="yt-shot__caption">
+            <div class="yt-shot__label">Step 4</div>
+            <div class="yt-shot__title">상세 모달 (Brief · 개념 · 구간 · 인용)</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── 시스템 아키텍처 ── -->
+      <h2 class="yt-section-title">시스템 아키텍처</h2>
+
+      <div class="mini-arch">
+        <div class="mini-arch__row">
+          <div class="mini-arch__node">👤 사용자 (브라우저)</div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node mini-arch__node--primary">Next.js 15<br><span style="font-size: 10px; opacity: 0.6;">Vercel Edge</span></div>
+          <div class="mini-arch__node mini-arch__node--primary">Supabase Auth<br><span style="font-size: 10px; opacity: 0.6;">Google OAuth · JWT</span></div>
+          <div class="mini-arch__node mini-arch__node--primary">Cloudflare<br><span style="font-size: 10px; opacity: 0.6;">DNS · CDN</span></div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node">FastAPI 분석 파이프라인<br><span style="font-size: 10px; opacity: 0.6;">자막 → 청크 → LLM → 임베딩 → 판정</span></div>
+          <div class="mini-arch__node">Quota / Rate Limit<br><span style="font-size: 10px; opacity: 0.6;">JWT · IP 기반 anon</span></div>
+          <div class="mini-arch__node">Paddle Webhook<br><span style="font-size: 10px; opacity: 0.6;">HMAC + replay 방어</span></div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-4">
+          <div class="mini-arch__node mini-arch__node--orange">YouTube<br><span style="font-size: 10px; opacity: 0.6;">Data API + yt-dlp</span></div>
+          <div class="mini-arch__node mini-arch__node--orange">Gemini<br><span style="font-size: 10px; opacity: 0.6;">Flash Lite × 4 키 RR</span></div>
+          <div class="mini-arch__node mini-arch__node--purple">Supabase pgvector<br><span style="font-size: 10px; opacity: 0.6;">768d · HNSW · RLS</span></div>
+          <div class="mini-arch__node mini-arch__node--orange">Paddle<br><span style="font-size: 10px; opacity: 0.6;">글로벌 결제 (MoR)</span></div>
+        </div>
+      </div>
+
+      <!-- ── 처리 흐름 (영상 1개 분석) ── -->
+      <h2 class="yt-section-title">영상 처리 흐름</h2>
+
+      <div class="yt-flow">
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">1</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">자막 추출 <span class="yt-flow__time">~6s</span></div>
+            <div class="yt-flow__desc">youtube-transcript-api + Webshare proxy. 실패 시 재시도 3회 → yt-dlp 폴백 → api.list() 자동 선택.</div>
+          </div>
+        </div>
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">2</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">청크 분할 <span class="yt-flow__time">&lt;100ms</span></div>
+            <div class="yt-flow__desc">최대 3,000자 + 15% overlap. 6,000자 영상 → 약 2~3개 청크.</div>
+          </div>
+        </div>
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">3</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">청크별 LLM 분석 (병렬) <span class="yt-flow__time">~10~15s</span></div>
+            <div class="yt-flow__desc">Gemini Flash Lite × 8 동시 (Semaphore). section_title · summary · concepts · best_quote · density 추출.</div>
+          </div>
+        </div>
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">4</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">brief 임베딩 <span class="yt-flow__time">~150ms</span></div>
+            <div class="yt-flow__desc">title + tags + concepts + brief → Gemini embedding-001 → 768d 벡터.</div>
+          </div>
+        </div>
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">5</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">분리수거 판정 <span class="yt-flow__time">~50ms</span></div>
+            <div class="yt-flow__desc">pgvector RPC로 라이브러리 top-1 cosine 비교. raw ≥ 0.85 → skip / 0.72~0.85 → partial / &lt; 0.72 → must-watch.</div>
+          </div>
+        </div>
+        <div class="yt-flow__row">
+          <span class="yt-flow__num">6</span>
+          <div class="yt-flow__body">
+            <div class="yt-flow__title">캐시 + 저장 <span class="yt-flow__time">~200ms</span></div>
+            <div class="yt-flow__desc">video_id 기준 글로벌 캐시. 같은 영상 재분석 시 0 API 호출 (25s → 0.5s). concept 자동 dedup (cosine ≥ 0.85).</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="color: #6e6e73; font-size: 12px; margin-top: 56px; text-align: center;">
+        <a href="https://tubefilter.app" target="_blank" style="color: #2997ff; text-decoration: none;">tubefilter.app →</a>
+      </p>
+    </div>
+  </article>
+</body>
+</html>

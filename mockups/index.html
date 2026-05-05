@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Layout Studies — 양영진 Portfolio</title>
+  <link rel="stylesheet" href="./shared.css" />
+  <style>
+    .compare {
+      max-width: 1280px;
+      margin: 24px auto 96px;
+      padding: 0 22px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    .compare__card {
+      display: flex; flex-direction: column;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--canvas);
+      box-shadow: inset 0 0 0 1px var(--hairline);
+      transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+    }
+    .compare__card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset 0 0 0 1px var(--hairline),
+                  0 24px 50px -16px rgba(0,0,0,0.18);
+    }
+    .compare__frame {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: var(--parchment);
+    }
+    .compare__frame iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 200%; height: 200%;
+      transform: scale(0.5);
+      transform-origin: top left;
+      border: 0;
+      pointer-events: none; /* preview only — click the card to open */
+    }
+    .compare__body {
+      padding: 22px 24px 26px;
+    }
+    .compare__num {
+      font-family: "SF Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: 0.06em;
+      color: var(--muted-48);
+      margin: 0 0 6px;
+    }
+    .compare__title {
+      font-family: "SF Pro Display", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 24px; line-height: 1.2; letter-spacing: -0.018em;
+      margin: 0 0 8px;
+    }
+    .compare__desc {
+      font-size: 14.5px; line-height: 1.55;
+      color: var(--muted-80);
+      margin: 0 0 14px;
+    }
+    .compare__open {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 14px; font-weight: 500;
+      color: var(--primary);
+    }
+    .compare__open::after { content: "›"; font-size: 18px; transform: translateY(-1px); transition: transform .2s; }
+    .compare__card:hover .compare__open::after { transform: translate(4px, -1px); }
+
+    .compare__tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 999px;
+      background: var(--parchment);
+      color: var(--muted-80);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .compare__tag--current {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    @media (max-width: 760px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="mock-head">
+    <span class="mock-head__title">양영진 · Layout Studies</span>
+    <nav class="mock-head__nav">
+      <a href="../index.html">01 Editorial</a>
+      <a href="./02-hover-reveal.html">02 Hover Reveal</a>
+      <a href="./03-horizontal.html">03 Horizontal</a>
+      <a href="./04-bento.html">04 Bento</a>
+      <a href="./index.html" class="is-current">↩ Compare</a>
+    </nav>
+  </header>
+
+  <section class="mock-hero">
+    <h1 class="mock-hero__name">Layout Studies</h1>
+    <p class="mock-hero__role">네 가지 표현 방식</p>
+    <p class="mock-hero__lede">같은 5개 프로젝트를 네 가지 방식으로 풀어봤습니다. 카드를 클릭하면 전체 화면으로 열립니다.</p>
+  </section>
+
+  <section class="compare">
+
+    <a class="compare__card" href="../index.html" target="_blank" rel="noopener">
+      <div class="compare__frame">
+        <iframe src="../index.html#projects" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="compare__body">
+        <p class="compare__num">01<span class="compare__tag compare__tag--current">현재 메인</span></p>
+        <h3 class="compare__title">Editorial List</h3>
+        <p class="compare__desc">절제된 한 줄 리스트. hover 시 우측 floating 프리뷰가 마우스를 따라 부드럽게 움직임. Apple 톤과 가장 일치.</p>
+        <span class="compare__open">전체 화면으로 보기</span>
+      </div>
+    </a>
+
+    <a class="compare__card" href="./02-hover-reveal.html" target="_blank" rel="noopener">
+      <div class="compare__frame">
+        <iframe src="./02-hover-reveal.html" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="compare__body">
+        <p class="compare__num">02</p>
+        <h3 class="compare__title">Hover Reveal Index</h3>
+        <p class="compare__desc">큰 타이포 세로 나열. hover한 항목만 또렷해지고 나머지는 디밍. 우측 sticky 프리뷰가 페이드 전환. Linear/Vercel 톤.</p>
+        <span class="compare__open">전체 화면으로 보기</span>
+      </div>
+    </a>
+
+    <a class="compare__card" href="./03-horizontal.html" target="_blank" rel="noopener">
+      <div class="compare__frame">
+        <iframe src="./03-horizontal.html" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="compare__body">
+        <p class="compare__num">03</p>
+        <h3 class="compare__title">Horizontal Scroll Snap</h3>
+        <p class="compare__desc">가로 스크롤. 각 프로젝트가 한 화면 차지. scroll-snap으로 정확히 한 장씩 멈춤. Apple TV 톤.</p>
+        <span class="compare__open">전체 화면으로 보기</span>
+      </div>
+    </a>
+
+    <a class="compare__card" href="./04-bento.html" target="_blank" rel="noopener">
+      <div class="compare__frame">
+        <iframe src="./04-bento.html" loading="lazy" tabindex="-1"></iframe>
+      </div>
+      <div class="compare__body">
+        <p class="compare__num">04</p>
+        <h3 class="compare__title">Bento Grid</h3>
+        <p class="compare__desc">크기가 다른 5개 타일. 대표작은 4×2, 보조작은 작게 — 시각 위계로 우선순위. Apple iPhone 페이지 톤.</p>
+        <span class="compare__open">전체 화면으로 보기</span>
+      </div>
+    </a>
+
+  </section>
+
+</body>
+</html>
