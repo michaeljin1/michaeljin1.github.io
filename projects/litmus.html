@@ -8,19 +8,27 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ── 폰트 일괄 적용 ── */
+    /* ── 폰트 변경: Pretendard (한국어 + 영문 통합) + JetBrains Mono (코드) ── */
     .lt-page,
     .lt-page * {
-      font-family: "Wanted Sans Variable", "Wanted Sans",
-                   "DM Sans", -apple-system, BlinkMacSystemFont,
-                   system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
-      letter-spacing: -0.005em;
+      font-family: "Pretendard Variable", Pretendard,
+                   -apple-system, BlinkMacSystemFont, system-ui,
+                   "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
+      letter-spacing: -0.01em;
+    }
+    .lt-page code,
+    .lt-page pre,
+    .lt-page .lt-mono,
+    .lt-page .lt-mono * {
+      font-family: "JetBrains Mono", ui-monospace, "SF Mono",
+                   Menlo, Consolas, monospace !important;
+      letter-spacing: 0;
     }
 
     /* ── 제목 왼 정렬 (light theme override) ── */
@@ -101,161 +109,250 @@
       line-height: 1.5;
     }
 
-    /* ── 기능 명세 ── */
+    /* ── 기능 명세 (작업 순서) ── */
     .lt-features {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
     .lt-feature {
-      padding: 20px 22px;
+      padding: 22px 24px;
       background: #fff;
       border: 1px solid #e5e5e7;
       border-radius: 12px;
     }
     .lt-feature__num {
       display: inline-block;
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 6px;
       background: rgba(0, 102, 204, 0.1);
       color: #0066cc;
       font-size: 11px; font-weight: 700;
-      text-align: center; line-height: 22px;
-      margin-bottom: 10px;
+      text-align: center; line-height: 24px;
+      margin-bottom: 14px;
       font-feature-settings: "tnum";
     }
     .lt-feature__title {
-      font-size: 15px; font-weight: 700;
+      font-size: 16px; font-weight: 700;
       color: #1d1d1f;
-      margin-bottom: 4px;
-    }
-    .lt-feature__sub {
-      font-size: 12px; color: #0066cc;
-      font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .lt-feature__desc {
-      font-size: 13px; color: #1d1d1f;
-      line-height: 1.6;
+      font-size: 13px; color: #6e6e73;
+      line-height: 1.65;
     }
-    .lt-feature__desc strong { color: #0066cc; font-weight: 600; }
-    .lt-feature__list {
-      margin-top: 10px;
-      padding-left: 0;
-      list-style: none;
-    }
-    .lt-feature__list li {
-      font-size: 12px; color: #6e6e73;
-      padding: 4px 0 4px 14px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .lt-feature__list li::before {
-      content: "—";
-      position: absolute; left: 0;
-      color: #c0c0c4;
-    }
+    .lt-feature__desc strong { color: #1d1d1f; font-weight: 600; }
 
-    /* ── 아키텍처 (간결한 단계 카드) ── */
+    /* ── 아키텍처 (플로우 차트) ── */
     .lt-arch {
-      display: grid;
-      gap: 12px;
-    }
-    .lt-arch__step {
-      display: grid;
-      grid-template-columns: 60px 1fr;
-      gap: 18px;
-      padding: 18px 22px;
-      background: #fff;
-      border: 1px solid #e5e5e7;
-      border-radius: 12px;
-      align-items: start;
-    }
-    .lt-arch__num {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(0, 102, 204, 0.08);
-      color: #0066cc;
-      display: grid; place-items: center;
-      font-size: 16px; font-weight: 700;
-    }
-    .lt-arch__name {
-      font-size: 15px; font-weight: 700;
-      color: #1d1d1f;
-    }
-    .lt-arch__role {
-      font-size: 12px; color: #0066cc;
-      font-weight: 500;
-      margin: 2px 0 8px;
-    }
-    .lt-arch__what {
-      font-size: 13px; color: #1d1d1f;
-      line-height: 1.6;
-    }
-    .lt-arch__why {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #6e6e73;
-      line-height: 1.55;
-      padding: 8px 12px;
-      background: #fafafc;
-      border-left: 3px solid #0066cc;
-      border-radius: 0 6px 6px 0;
-    }
-    .lt-arch__why strong { color: #1d1d1f; font-weight: 600; }
-    .lt-arch__arrow {
-      grid-column: 2;
-      text-align: left;
-      color: #c0c0c4;
-      font-size: 14px;
-      padding-left: 4px;
-    }
-
-    /* ── 처리 흐름 ── */
-    .lt-flow {
       background: #fafafc;
       border: 1px solid #e5e5e7;
       border-radius: 14px;
-      padding: 22px 26px;
-      display: grid;
-      gap: 12px;
+      padding: 28px 22px;
     }
-    .lt-flow__row {
+    .lt-arch__flow {
       display: grid;
-      grid-template-columns: 32px 1fr;
-      gap: 14px;
-      align-items: start;
-      padding: 12px 14px;
+      grid-template-columns: 1fr 16px 1fr 16px 1fr 16px 1fr 16px 1fr;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .lt-arch__box {
+      padding: 16px 12px;
       background: #fff;
       border: 1px solid #e5e5e7;
       border-radius: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      min-height: 96px;
     }
-    .lt-flow__num {
-      width: 28px; height: 28px;
-      border-radius: 999px;
-      background: #0066cc;
-      color: #fff;
+    .lt-arch__box--in {
+      background: rgba(0, 102, 204, 0.06);
+      border-color: #0066cc;
+    }
+    .lt-arch__box--out {
+      background: rgba(52, 199, 89, 0.06);
+      border-color: #34c759;
+    }
+    .lt-arch__step-num {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #0066cc;
+      text-transform: uppercase;
+    }
+    .lt-arch__box-title {
+      font-size: 13px; font-weight: 700;
+      color: #1d1d1f;
+    }
+    .lt-arch__box-sub {
+      font-size: 10px; color: #6e6e73;
+      line-height: 1.4;
+    }
+    .lt-arch__sep {
       display: grid; place-items: center;
-      font-weight: 700; font-size: 12px;
+      color: #c0c0c4; font-size: 18px;
     }
-    .lt-flow__body { min-width: 0; }
-    .lt-flow__title {
-      font-size: 13px; font-weight: 600; color: #1d1d1f;
+
+    /* ── NVIDIA 데이터 · 하네싱 ── */
+    .lt-data {
+      display: grid;
+      grid-template-columns: 1fr 32px 1fr;
+      gap: 12px;
+      align-items: stretch;
     }
-    .lt-flow__time {
-      font-size: 11px; color: #0066cc; font-weight: 600;
-      margin-left: 6px;
+    .lt-data__panel {
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .lt-data__panel--source { border-color: #76b900; }   /* NVIDIA green hint */
+    .lt-data__panel--agent { border-color: #0066cc; }
+    .lt-data__head {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e5e7;
+      background: #fafafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .lt-data__panel--source .lt-data__head { background: rgba(118, 185, 0, 0.06); }
+    .lt-data__panel--agent .lt-data__head { background: rgba(0, 102, 204, 0.06); }
+    .lt-data__head-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #6e6e73;
+    }
+    .lt-data__head-name {
+      font-size: 13px; font-weight: 700; color: #1d1d1f;
+      margin-top: 2px;
+    }
+    .lt-data__head-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 999px;
+      color: #1d1d1f;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .lt-data__body {
+      padding: 16px 18px;
+      font-size: 11.5px;
+      line-height: 1.7;
+      color: #1d1d1f;
+      flex: 1;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .lt-data__body--mono {
+      font-family: "JetBrains Mono", ui-monospace, monospace !important;
+      letter-spacing: 0 !important;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .lt-data__k { color: #6e6e73; }
+    .lt-data__v { color: #1d1d1f; }
+    .lt-data__str { color: #34865a; }
+    .lt-data__num { color: #ce6c2a; }
+    .lt-data__sec {
+      color: #0066cc; font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .lt-data__bracket { color: #ce6c2a; }
+    .lt-data__arrow {
+      display: grid; place-items: center;
+      color: #c0c0c4; font-size: 22px;
+    }
+    .lt-data__caption {
+      margin-top: 12px;
+      font-size: 12px; color: #6e6e73;
+      line-height: 1.6;
+    }
+    .lt-data__caption strong { color: #1d1d1f; font-weight: 600; }
+    .lt-data__caption code {
+      font-size: 11px;
+      padding: 1px 6px;
+      background: #fafafc;
+      border: 1px solid #e5e5e7;
+      border-radius: 4px;
+      color: #1d1d1f;
+    }
+
+    /* ── 평가 · 검증 로직 ── */
+    .lt-eval {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .lt-eval__card {
+      padding: 22px 24px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 12px;
+    }
+    .lt-eval__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #0066cc;
+      margin-bottom: 10px;
+    }
+    .lt-eval__title {
+      font-size: 15px; font-weight: 700;
+      color: #1d1d1f;
+      margin-bottom: 10px;
+    }
+    .lt-eval__desc {
+      font-size: 13px; color: #6e6e73;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .lt-eval__formula {
+      padding: 10px 12px;
+      background: #fafafc;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      font-family: "DM Sans", monospace;
+      font-size: 12px;
+      color: #1d1d1f;
+      margin-bottom: 10px;
       font-feature-settings: "tnum";
     }
-    .lt-flow__desc {
-      font-size: 12px; color: #6e6e73;
-      line-height: 1.5; margin-top: 3px;
+    .lt-eval__gate {
+      display: grid;
+      gap: 6px;
     }
+    .lt-eval__gate-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 6px 10px;
+      background: #fafafc;
+      border-radius: 6px;
+    }
+    .lt-eval__gate-name { color: #1d1d1f; }
+    .lt-eval__gate-val {
+      color: #34c759; font-weight: 700;
+      font-feature-settings: "tnum";
+    }
+    .lt-eval__gate-val--fail { color: #ff3b30; }
 
     @media (max-width: 720px) {
       .lt-intro { grid-template-columns: 1fr; }
       .lt-features { grid-template-columns: 1fr; }
-      .lt-arch__step { grid-template-columns: 1fr; }
+      .lt-eval { grid-template-columns: 1fr; }
+      .lt-data { grid-template-columns: 1fr; }
+      .lt-data__arrow { transform: rotate(90deg); padding: 8px 0; }
+      .lt-arch__flow { grid-template-columns: 1fr; }
+      .lt-arch__sep { transform: rotate(90deg); }
     }
   </style>
   <script>
@@ -271,17 +368,15 @@
       <section class="lt-intro project-hero">
         <div class="project-hero__main">
           <header class="project__head">
-            <h1 class="project__title">Litmus</h1>
+            <h1 class="project__title">페르소나 기반 컨셉 스크리닝 엔진</h1>
           </header>
 
           <p class="lt-intro__lede">
             OASIS(1M LLM agent 소셜 시뮬레이션, KAUST 2024)에서 착안.
-            한국 합성 페르소나 100명에게 <strong>4개씩 묶어 best/worst 강제선택</strong>을 시키고,
-            <strong>점수 상위 5개만 추려</strong> 마케터에게 전달합니다.
-            출시 후 데이터(리뷰·랭킹·"15년 1위" 같은 마케팅 문구)는
-            <strong>설계 단계부터 입력에서 차단</strong>해 출시 전 검증의 정합성을 보장합니다.
-            올영 실제 SKU 16개 블라인드 테스트에서 <strong>Top-10 70~100% / Bottom-5 60%</strong> 식별,
-            <strong>1 사이클 $0.30 · 80초 · 인간 0명</strong>.
+            출시 전 K-뷰티 신제품 컨셉을 <strong>한국 합성 페르소나</strong>가 평가해
+            <strong>100개 후보 중 5개</strong>로 좁히는 엔진입니다.
+            기존 컨셉테스트 1회당 수백만 원·수 주가 드는 자리를
+            <strong>1 사이클 $0.30 · 80초 · 인간 0명</strong>으로 대체합니다.
           </p>
         </div>
 
@@ -289,249 +384,166 @@
           <div class="lt-stack__label">Stack</div>
 
           <div class="lt-stack__group">
-            <div class="lt-stack__group-name">Persona · LLM</div>
+            <div class="lt-stack__group-name">AI · Persona</div>
             <div class="lt-stack__items">
-              <span class="lt-stack__item">Nemotron-Personas-Korea</span>
               <span class="lt-stack__item">Gemini 2.5 Flash Lite</span>
-              <span class="lt-stack__item">Anthropic fallback</span>
+              <span class="lt-stack__item">Nemotron-Personas-Korea</span>
             </div>
           </div>
 
           <div class="lt-stack__group">
-            <div class="lt-stack__group-name">Method · Stats</div>
+            <div class="lt-stack__group-name">Method</div>
             <div class="lt-stack__items">
               <span class="lt-stack__item">Latin Hypercube</span>
-              <span class="lt-stack__item">MaxDiff (BWS)</span>
-              <span class="lt-stack__item">BIBD blocks</span>
-              <span class="lt-stack__item">Spearman ρ · Cohen's d</span>
-            </div>
-          </div>
-
-          <div class="lt-stack__group">
-            <div class="lt-stack__group-name">Crawler · Data</div>
-            <div class="lt-stack__items">
-              <span class="lt-stack__item">Stagehand</span>
-              <span class="lt-stack__item">Playwright $eval</span>
-              <span class="lt-stack__item">Browserbase</span>
+              <span class="lt-stack__item">MaxDiff</span>
             </div>
           </div>
 
           <div class="lt-stack__group">
             <div class="lt-stack__group-name">Runtime</div>
             <div class="lt-stack__items">
-              <span class="lt-stack__item">Python 3.13</span>
-              <span class="lt-stack__item">ThreadPoolExecutor</span>
-              <span class="lt-stack__item">YAML configs</span>
+              <span class="lt-stack__item">Python</span>
+              <span class="lt-stack__item">Stagehand</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── 기능 명세 ── -->
-      <h2 class="lt-section-title">기능 명세</h2>
-      <p class="lt-section-sub">출시 전 컨셉을 만들고, 평가하고, 추리는 4가지 핵심 기능.</p>
+      <!-- ── NVIDIA 데이터 · agent 적용 ── -->
+      <h2 class="lt-section-title">NVIDIA 페르소나 데이터의 agent 적용</h2>
+      <p class="lt-section-sub">
+        NVIDIA Nemotron-Personas-Korea의 한 row가 그대로 LLM agent의 정체성으로 주입됩니다.
+        원본 필드를 손대지 않고 system block에 그대로 직렬화 — 페르소나 일관성을 시뮬 사이에 보존합니다.
+      </p>
 
-      <div class="lt-features">
+      <div class="lt-data">
 
-        <div class="lt-feature">
-          <span class="lt-feature__num">01</span>
-          <div class="lt-feature__title">변인 그리드 컨셉 생성</div>
-          <div class="lt-feature__sub">Concept Studio</div>
-          <p class="lt-feature__desc">
-            <strong>나이대·피부타입·가격·효능·제형·차별화·작명방식</strong> 7개 축에서
-            한 셀씩 직교 추출(Latin Hypercube)한 뒤,
-            <strong>셀 하나당 별도 LLM 호출</strong>로 컨셉을 작성합니다.
-            한 번에 50개를 시키면 동의어가 쏟아지는 mode collapse 문제를 차단.
-          </p>
-          <ul class="lt-feature__list">
-            <li>출력: name · subcopy · price · claims[3] · ingredients[3]</li>
-            <li>비현실 조합(50대×쿠션 등) 사후 필터</li>
-            <li>"15년 1위" 같은 출시 후 신호 사용 금지 instruction</li>
-          </ul>
+        <!-- 좌: 원본 NVIDIA 데이터 row -->
+        <div class="lt-data__panel lt-data__panel--source">
+          <div class="lt-data__head">
+            <div>
+              <div class="lt-data__head-label">Source · HuggingFace</div>
+              <div class="lt-data__head-name">nvidia / Nemotron-Personas-Korea</div>
+            </div>
+            <span class="lt-data__head-tag">row #07</span>
+          </div>
+          <div class="lt-data__body lt-data__body--mono">{
+  <span class="lt-data__k">"uuid"</span>: <span class="lt-data__str">"7f3a..."</span>,
+  <span class="lt-data__k">"age"</span>: <span class="lt-data__num">30</span>,
+  <span class="lt-data__k">"sex"</span>: <span class="lt-data__str">"여자"</span>,
+  <span class="lt-data__k">"residence"</span>: <span class="lt-data__str">"인천 인천-연수구"</span>,
+  <span class="lt-data__k">"education"</span>: <span class="lt-data__str">"2~3년제 전문대학"</span>,
+  <span class="lt-data__k">"occupation"</span>: <span class="lt-data__str">"교도관"</span>,
+  <span class="lt-data__k">"household"</span>: <span class="lt-data__str">"배우자·자녀와 거주"</span>,
+  <span class="lt-data__k">"summary"</span>: <span class="lt-data__str">"송도에서 아이를 키우며…"</span>,
+  <span class="lt-data__k">"food"</span>: <span class="lt-data__str">"주 5회 송도 이탈리안…"</span>,
+  <span class="lt-data__k">"media"</span>: <span class="lt-data__str">"넷플릭스 범죄 심리…"</span>,
+  <span class="lt-data__k">"family"</span>: <span class="lt-data__str">"엄격함과 다정함 양립…"</span>,
+  <span class="lt-data__k">"hobby"</span>: <span class="lt-data__str">"센트럴파크 산책·필라테스…"</span>
+}</div>
         </div>
 
-        <div class="lt-feature">
-          <span class="lt-feature__num">02</span>
-          <div class="lt-feature__title">합성 페르소나 평가</div>
-          <div class="lt-feature__sub">Synthetic Panel</div>
-          <p class="lt-feature__desc">
-            <strong>NVIDIA Nemotron-Personas-Korea</strong>의 한국 페르소나 100명 풀에서 N명 샘플링.
-            각 페르소나에게 나이·직업·취미·식문화 등 일관된 정체성을 주입한 뒤,
-            <strong>4개 컨셉 묶음에서 best/worst를 강제선택</strong>(MaxDiff)하게 합니다.
-            5점 척도의 "다 보통" 회귀 문제를 구조적으로 우회.
-          </p>
-          <ul class="lt-feature__list">
-            <li>BIBD 근사 블록 디자인으로 컨셉별 출현 횟수 균등화</li>
-            <li>점수 = (best 횟수 − worst 횟수) / 출현 횟수 ∈ [−1, +1]</li>
-            <li>변별력은 5점 척도의 약 2.3배</li>
-          </ul>
-        </div>
+        <div class="lt-data__arrow">→</div>
 
-        <div class="lt-feature">
-          <span class="lt-feature__num">03</span>
-          <div class="lt-feature__title">자체 sanity check</div>
-          <div class="lt-feature__sub">Adversarial Injection</div>
-          <p class="lt-feature__desc">
-            매 사이클 <strong>명백히 망한 컨셉 8%</strong>를 자동으로 끼워 넣습니다.
-            (예: 모순 클레임, 가격 이상치, 카테고리 외 기능, 사용성 결함)
-            합성 페르소나가 이 함정을 낮은 점수로 분리하면 시스템 정상,
-            그렇지 않으면 결과 폐기.
-          </p>
-          <ul class="lt-feature__list">
-            <li>5가지 패턴(모순/가격/안티페르소나/카테고리외/사용성) templated</li>
-            <li>실측 정상 vs 함정 gap 평균 +0.925 (sanity 통과)</li>
-            <li>매 결과 보고서에 sanity 게이트를 함께 출력</li>
-          </ul>
-        </div>
+        <!-- 우: 적용된 agent system block -->
+        <div class="lt-data__panel lt-data__panel--agent">
+          <div class="lt-data__head">
+            <div>
+              <div class="lt-data__head-label">Agent · System Block</div>
+              <div class="lt-data__head-name">build_common_system(persona)</div>
+            </div>
+            <span class="lt-data__head-tag">Gemini 2.5 Flash Lite</span>
+          </div>
+          <div class="lt-data__body"><span class="lt-data__sec">[역할]</span>
+당신은 한국 소비자이며, 자신의 인구통계·성격·취향·라이프스타일에 일관되게 반응합니다.
 
-        <div class="lt-feature">
-          <span class="lt-feature__num">04</span>
-          <div class="lt-feature__title">Top-K 추출 + 변인 lift 분해</div>
-          <div class="lt-feature__sub">Shortlist Report</div>
-          <p class="lt-feature__desc">
-            점수 상위 5개를 <strong>마케터 검토용 shortlist</strong>로 출력하고,
-            동시에 7개 축 각각이 점수에 미치는 효과를 분해해 보여줍니다.
-            "30대 타깃이 +0.30, 5만원+ 가격대가 −0.22" 처럼
-            <strong>변인 단위 의사결정</strong>이 가능한 형태.
-          </p>
-          <ul class="lt-feature__list">
-            <li>Top-5 / Top-10 / Bottom-5 동시 출력</li>
-            <li>변인별 평균 점수 차이(lift) 자동 계산</li>
-            <li>실 데이터 매칭률(Spearman ρ, overlap) 보조 지표</li>
-          </ul>
+<span class="lt-data__sec">[당신의 정보]</span>
+- 나이: <span class="lt-data__num">30</span>세, 성별: 여자
+- 거주: 인천 인천-연수구
+- 학력: 2~3년제 전문대학
+- 직업: 교도관
+- 가족: 배우자·자녀와 거주
+
+<span class="lt-data__bracket">요약:</span> 송도에서 아이를 키우며 규율과 체계 속에서 일하는 교도관…
+<span class="lt-data__bracket">식문화:</span> 주 5회 정도 남편과 함께 송도 이탈리안 레스토랑…
+<span class="lt-data__bracket">예술·미디어:</span> 넷플릭스 범죄 심리 스릴러물을 시청…
+<span class="lt-data__bracket">가족·생활:</span> 엄격한 직장 생활의 긴장을 내려놓고…
+<span class="lt-data__bracket">취미:</span> 센트럴파크 산책·필라테스로 체력 관리…
+
+<span class="lt-data__sec">[응답 원칙]</span>
+- 지정된 JSON 스키마로만 응답
+- 이유는 구체적 속성(가격·성분·브랜드·맥락·경험) 근거</div>
         </div>
 
       </div>
 
-      <!-- ── 시스템 아키텍처 ── -->
-      <h2 class="lt-section-title">시스템 아키텍처</h2>
-      <p class="lt-section-sub">마케터 입력 한 줄에서 Top-K shortlist까지 — 4단계 파이프라인.</p>
+      <p class="lt-data__caption">
+        <strong>하네싱 원칙</strong> — 원본 row의 12개 필드를 그대로 보존해 한 페르소나의 정체성을 손상 없이 LLM에 전달합니다.
+        같은 <code>uuid</code>는 같은 system block을 만들어 시뮬 사이의 일관성을 보장하고,
+        고정 seed의 샘플링으로 재현성도 유지됩니다.
+      </p>
 
-      <div class="lt-arch">
+      <!-- ── 평가 · 검증 로직 ── -->
+      <h2 class="lt-section-title">평가 · 검증 로직</h2>
+      <p class="lt-section-sub">컨셉 점수 산정 방식, 자체 sanity, 외부 검증의 3-축.</p>
 
-        <div class="lt-arch__step">
-          <div class="lt-arch__num">1</div>
-          <div>
-            <div class="lt-arch__name">컨셉 생성기</div>
-            <div class="lt-arch__role">마케터의 빈 메모지 → 100개 컨셉 초안</div>
-            <div class="lt-arch__what">
-              "선크림, 30대 민감성, 진정 효능 위주" 같은 한 줄 입력을 받아
-              7개 변인(나이대·피부타입·가격·효능·제형·차별화·작명) 그리드에서
-              서로 다른 셀을 N개 뽑고, 셀마다 LLM이 한 번씩 컨셉 1개를 작성합니다.
-            </div>
-            <div class="lt-arch__why">
-              <strong>왜 한 번에 안 하나?</strong>
-              LLM에 "선크림 50개 만들어"를 한 번에 시키면 "수분 산뜻 데일리" 같은 동의어 50개가 나옵니다.
-              셀별로 따로 호출해야 평가할 만큼 다양해집니다.
-            </div>
+      <div class="lt-eval">
+
+        <div class="lt-eval__card">
+          <div class="lt-eval__label">컨셉 점수</div>
+          <div class="lt-eval__title">MaxDiff utility</div>
+          <p class="lt-eval__desc">
+            각 페르소나가 4개 묶음에서 best/worst를 고르면, 컨셉별로 +1 / −1 / 0 점이 누적됩니다.
+            평균을 내 [−1, +1] 범위 점수로 변환.
+          </p>
+          <div class="lt-eval__formula">
+            score = (n_best − n_worst) ÷ n_appearances
           </div>
         </div>
-        <div class="lt-arch__arrow">↓</div>
 
-        <div class="lt-arch__step">
-          <div class="lt-arch__num">2</div>
-          <div>
-            <div class="lt-arch__name">함정 컨셉 자동 주입</div>
-            <div class="lt-arch__role">시스템이 자기 자신을 검증</div>
-            <div class="lt-arch__what">
-              생성된 컨셉 사이에 "명백히 망한 컨셉" 5가지 패턴 중 하나를 8% 비율로 섞습니다.
-              평가 단계에서 이 함정 컨셉이 분명히 낮은 점수로 분리되면 시스템 정상 작동 확인,
-              그렇지 않으면 그 사이클 결과는 폐기됩니다.
+        <div class="lt-eval__card">
+          <div class="lt-eval__label">자체 sanity</div>
+          <div class="lt-eval__title">함정 분리도(ADV gap)</div>
+          <p class="lt-eval__desc">
+            매 사이클 <strong>명백히 망한 컨셉 8%</strong>를 자동으로 끼워 넣고
+            정상 컨셉 평균 점수와 함정 컨셉 평균 점수의 차이를 측정.
+            gap이 충분히 크면 시스템 정상, 작으면 그 사이클 결과 폐기.
+          </p>
+          <div class="lt-eval__gate">
+            <div class="lt-eval__gate-row">
+              <span class="lt-eval__gate-name">ADV gap</span>
+              <span class="lt-eval__gate-val">+0.925</span>
             </div>
-            <div class="lt-arch__why">
-              <strong>왜 필요한가?</strong>
-              합성 시스템이 "그냥 다 비슷한 점수"를 주고 있는지 우리 자신은 알 수 없습니다.
-              함정을 강제로 섞어 매번 변별력을 자동으로 측정합니다.
-            </div>
-          </div>
-        </div>
-        <div class="lt-arch__arrow">↓</div>
-
-        <div class="lt-arch__step">
-          <div class="lt-arch__num">3</div>
-          <div>
-            <div class="lt-arch__name">합성 페르소나 평가</div>
-            <div class="lt-arch__role">디지털 한국 소비자 100명이 줄세우기</div>
-            <div class="lt-arch__what">
-              한국 합성 페르소나(나이·직업·가족·취미·식문화) 풀에서 N명을 뽑아
-              "4개 묶음 중 하나만 산다면? 절대 안 산다면?"을 반복해 묻습니다.
-              각 컨셉이 평균 3번 이상 노출되도록 묶음을 균등하게 설계합니다.
-            </div>
-            <div class="lt-arch__why">
-              <strong>왜 4개 묶음 best/worst인가?</strong>
-              "1~5점으로 평가"는 다들 3점에 몰려 의미가 사라집니다.
-              "둘 중 하나 골라" 강제선택은 솔직한 답을 끌어내고 변별력이 약 2.3배 큽니다.
-            </div>
-          </div>
-        </div>
-        <div class="lt-arch__arrow">↓</div>
-
-        <div class="lt-arch__step">
-          <div class="lt-arch__num">4</div>
-          <div>
-            <div class="lt-arch__name">Top-K shortlist + 변인 분해</div>
-            <div class="lt-arch__role">100개 → 5개 + "왜 그 5개인가"</div>
-            <div class="lt-arch__what">
-              컨셉별 점수 = (best 횟수 − worst 횟수) ÷ 출현 횟수.
-              상위 5개를 shortlist로 추리고, 동시에 7개 축 각각이 점수에 미치는 평균 효과를 분해합니다.
-              "20대 타깃이 +0.40, 5만원 이상 가격대는 -0.22" 같은 actionable 인사이트로 출력.
-            </div>
-            <div class="lt-arch__why">
-              <strong>왜 절대 점수가 아니라 순위·변인 분해인가?</strong>
-              합성 페르소나의 절대 점수는 약상관입니다. 대신 같은 사이클 안의 상대 순위와
-              변인별 차이는 신뢰할 수 있고, 이게 마케터 의사결정에 곧바로 쓸 수 있는 형식입니다.
+            <div class="lt-eval__gate-row">
+              <span class="lt-eval__gate-name">Cohen's d</span>
+              <span class="lt-eval__gate-val">1.26</span>
             </div>
           </div>
         </div>
 
-      </div>
+        <div class="lt-eval__card">
+          <div class="lt-eval__label">외부 검증</div>
+          <div class="lt-eval__title">실 데이터 매칭</div>
+          <p class="lt-eval__desc">
+            올영 실제 SKU(Top 8 + Bottom 8)를 합성 페르소나에 블라인드 평가시켜
+            review_count 순위와 비교. 정성 표현과 누수 신호는 사전 정제.
+          </p>
+          <div class="lt-eval__gate">
+            <div class="lt-eval__gate-row">
+              <span class="lt-eval__gate-name">Top-5 overlap</span>
+              <span class="lt-eval__gate-val">60%</span>
+            </div>
+            <div class="lt-eval__gate-row">
+              <span class="lt-eval__gate-name">Top-10 overlap</span>
+              <span class="lt-eval__gate-val">100%</span>
+            </div>
+            <div class="lt-eval__gate-row">
+              <span class="lt-eval__gate-name">Bot-5 reject</span>
+              <span class="lt-eval__gate-val">60%</span>
+            </div>
+          </div>
+        </div>
 
-      <!-- ── 처리 흐름 ── -->
-      <h2 class="lt-section-title">한 사이클 처리 흐름</h2>
-
-      <div class="lt-flow">
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">1</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">변인 그리드 sampling <span class="lt-flow__time">&lt;100ms</span></div>
-            <div class="lt-flow__desc">7개 축 4만+ 조합에서 N개 직교 추출. 비현실 조합(50대×쿠션 등) 자동 제외.</div>
-          </div>
-        </div>
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">2</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">컨셉 생성 (셀당 1콜) <span class="lt-flow__time">~4s</span></div>
-            <div class="lt-flow__desc">셀별 별도 LLM 호출 → 동의어 회귀 차단. 컨셉별 이름·한줄·가격·클레임·성분 추출.</div>
-          </div>
-        </div>
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">3</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">함정 컨셉 8% 주입 <span class="lt-flow__time">~10ms</span></div>
-            <div class="lt-flow__desc">5가지 망함 패턴(모순·가격이상·안티페르소나·카테고리외·사용성결함) templated 삽입.</div>
-          </div>
-        </div>
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">4</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">묶음 디자인 <span class="lt-flow__time">&lt;100ms</span></div>
-            <div class="lt-flow__desc">컨셉별 출현 횟수 균등화(BIBD 근사). 출현 적은 쪽 우선 sampling.</div>
-          </div>
-        </div>
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">5</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">페르소나 평가 (병렬) <span class="lt-flow__time">~30~80s</span></div>
-            <div class="lt-flow__desc">페르소나 × 묶음 = 120~800회 LLM 호출. 동시 호출 3개로 제한(API 한도 회피).</div>
-          </div>
-        </div>
-        <div class="lt-flow__row">
-          <span class="lt-flow__num">6</span>
-          <div class="lt-flow__body">
-            <div class="lt-flow__title">집계 + 게이트 + 저장 <span class="lt-flow__time">&lt;500ms</span></div>
-            <div class="lt-flow__desc">컨셉별 점수 산출, 함정 분리도(sanity gate), Top-K, 변인 lift, 분포 통계 동시 출력.</div>
-          </div>
-        </div>
       </div>
 
     </div>

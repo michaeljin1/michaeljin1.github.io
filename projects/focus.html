@@ -6,34 +6,25 @@
   <title>작업 품질 트래킹 앱 — 양영진</title>
   <link rel="stylesheet" href="../styles.css" />
 
-  <!-- 이유: 폰트 통일 — Wanted Sans Variable (한국어) + DM Sans (영문/숫자) -->
+  <!-- 이유: 실제 OnTrack 앱과 동일 폰트 — SF Pro Display/Text (Apple) + Pretendard Variable (한국어) -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 
   <style>
-    /* ── 폰트 일괄 적용 ── */
+    /* ── 폰트 일괄 적용 — 실제 앱 동일 (SF Pro + Pretendard) ── */
     .ot-page,
     .ot-page * {
-      font-family: "Wanted Sans Variable", "Wanted Sans",
-                   "DM Sans", -apple-system, BlinkMacSystemFont,
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                   "Pretendard Variable", "Pretendard",
                    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.224px;
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "tnum";
     }
 
-    .ot-page .project__head {
-      text-align: left;
-    }
-    .ot-page .project__title {
-      margin-bottom: 10px;
-    }
-    .ot-page .project__tagline {
-      margin: 0;
-      max-width: 640px;
-    }
+    .ot-page .project__head { text-align: left; }
+    .ot-page .project__title { margin-bottom: 10px; }
+    .ot-page .project__tagline { margin: 0; max-width: 640px; }
 
     /* ── 인트로 카드 ── */
     .ot-intro {
@@ -70,9 +61,7 @@
       font-size: 11px; color: #8e8e93;
       margin-bottom: 6px;
     }
-    .ot-stack__items {
-      display: flex; flex-wrap: wrap; gap: 4px;
-    }
+    .ot-stack__items { display: flex; flex-wrap: wrap; gap: 4px; }
     .ot-stack__item {
       padding: 3px 9px;
       background: #fff;
@@ -89,61 +78,154 @@
       gap: 16px;
       margin: 36px 0 8px;
     }
+    .ot-shots__wide {
+      margin: 16px 0 8px;
+    }
     .ot-shot {
       background: #fafafc;
       border-radius: 12px;
       overflow: hidden;
+      border: 1px solid #e5e5e7;
     }
     .ot-shot__caption {
-      padding: 10px 16px;
+      padding: 12px 16px;
       background: #fff;
       border-top: 1px solid #e5e5e7;
-    }
-    .ot-shot__label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: #8e8e93;
-    }
-    .ot-shot__title {
       font-size: 13px; font-weight: 600; color: #1d1d1f;
-      margin-top: 2px;
     }
 
-    /* ── 화면 1: Today 패널 + 의도 선언 ── */
-    .mock-today {
-      padding: 18px 16px 16px;
+    /* ═════════ 화면 1: 메인 대시보드 (목표 카드) ═════════ */
+    .mock-main {
+      padding: 16px;
       background: #fff;
-      min-height: 280px;
+      min-height: 320px;
+    }
+    .mock-main__head {
+      display: flex; gap: 6px; padding: 0 4px 12px;
+    }
+    .mock-main__dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: #e5e5e7;
+    }
+    .mock-main__dot--red { background: #ff5f56; }
+    .mock-main__dot--yellow { background: #ffbd2e; }
+    .mock-main__dot--green { background: #27c93f; }
+    .mock-main__title-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin: 0 0 14px;
+    }
+    .mock-main__title {
+      font-size: 17px; font-weight: 700; color: #1d1d1f;
+      letter-spacing: -0.01em;
+    }
+    .mock-main__meta {
+      font-size: 11px; color: #8e8e93;
+      font-feature-settings: "tnum";
+    }
+    .mock-main__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .mock-goal {
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .mock-goal--active {
+      border-color: #0066cc;
+      box-shadow: 0 0 0 1px #0066cc, 0 4px 12px rgba(0,102,204,0.08);
+    }
+    .mock-goal__name {
+      font-size: 11px; font-weight: 700;
+      color: #1d1d1f;
+      line-height: 1.3;
+    }
+    .mock-goal__meta {
+      display: flex; gap: 6px;
+      font-size: 9px; color: #8e8e93;
+      font-feature-settings: "tnum";
+    }
+    .mock-goal__due {
+      padding: 1px 5px; background: #f5f5f7;
+      border-radius: 4px; font-weight: 600;
+    }
+    .mock-goal__due--urgent { color: #ff3b30; background: rgba(255,59,48,0.08); }
+    .mock-goal__progress {
+      height: 3px; background: #f5f5f7; border-radius: 2px; overflow: hidden;
+    }
+    .mock-goal__progress-fg {
+      height: 100%; background: #0066cc; border-radius: 2px;
+    }
+    .mock-goal__todos {
+      display: flex; flex-direction: column; gap: 3px;
+      font-size: 10px;
+    }
+    .mock-goal__todo {
+      display: flex; align-items: center; gap: 5px;
+      color: #1d1d1f;
+    }
+    .mock-goal__todo--done {
+      color: #8e8e93; text-decoration: line-through;
+    }
+    .mock-goal__check {
+      width: 10px; height: 10px;
+      border: 1.2px solid #c0c0c4;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mock-goal__check--done {
+      background: #0066cc; border-color: #0066cc;
+      position: relative;
+    }
+    .mock-goal__check--done::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 4px; height: 2px;
+      border-left: 1px solid #fff;
+      border-bottom: 1px solid #fff;
+      transform: rotate(-45deg);
+    }
+
+    /* ═════════ 화면 2: Today 패널 ═════════ */
+    .mock-today {
+      padding: 16px 14px 14px;
+      background: #fff;
+      min-height: 320px;
       display: flex; flex-direction: column;
     }
     .mock-today__head {
       display: flex; align-items: center; gap: 6px;
       padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 8px;
     }
-    .mock-today__dots {
-      display: flex; gap: 4px;
-    }
+    .mock-today__dots { display: flex; gap: 4px; }
     .mock-today__dot {
-      width: 11px; height: 11px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: #e5e5e7;
     }
     .mock-today__dot--red { background: #ff5f56; }
     .mock-today__dot--yellow { background: #ffbd2e; }
     .mock-today__dot--green { background: #27c93f; }
-    .mock-today__title {
+    .mock-today__win-title {
       flex: 1;
       font-size: 11px; font-weight: 600; color: #6e6e73;
       letter-spacing: 0.04em; text-transform: uppercase;
-      margin-left: 6px;
+      margin-left: 8px;
     }
-    .mock-today__list { display: flex; flex-direction: column; gap: 4px; }
+    .mock-today__list { display: flex; flex-direction: column; gap: 2px; }
     .mock-today__item {
       display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border-radius: 8px;
     }
-    .mock-today__item:hover { background: #f5f5f7; }
+    .mock-today__item--active {
+      background: rgba(0,102,204,0.06);
+    }
     .mock-today__check {
       width: 16px; height: 16px;
       border: 1.5px solid #c0c0c4;
@@ -162,21 +244,28 @@
       border-bottom: 1.5px solid #fff;
       transform: rotate(-45deg);
     }
+    .mock-today__name-col {
+      flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0;
+    }
     .mock-today__name {
-      flex: 1;
       font-size: 13px; color: #1d1d1f;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .mock-today__name--done { text-decoration: line-through; color: #8e8e93; }
+    .mock-today__sub {
+      font-size: 10px; color: #8e8e93;
+    }
     .mock-today__intent {
       font-size: 10px; font-weight: 700;
       padding: 2px 7px;
       border-radius: 4px;
       letter-spacing: 0.04em;
+      flex-shrink: 0;
     }
     .mock-today__intent--coding { background: rgba(0,102,204,0.12); color: #0066cc; }
     .mock-today__intent--doc { background: rgba(110,110,115,0.12); color: #6e6e73; }
     .mock-today__play {
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       background: #0066cc;
       border-radius: 50%;
       display: grid; place-items: center;
@@ -185,9 +274,9 @@
     .mock-today__play::after {
       content: '';
       width: 0; height: 0;
-      border-left: 6px solid #fff;
-      border-top: 4px solid transparent;
-      border-bottom: 4px solid transparent;
+      border-left: 7px solid #fff;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
       margin-left: 2px;
     }
     .mock-today__bar {
@@ -196,203 +285,626 @@
       background: #f5f5f7;
       border-radius: 8px;
       font-size: 11px; color: #6e6e73;
+      display: flex; justify-content: space-between;
     }
-    .mock-today__bar strong { color: #0066cc; font-weight: 600; }
+    .mock-today__bar strong { color: #0066cc; font-weight: 700; }
 
-    /* ── 화면 2: 진행 중 (얇은 바) ── */
-    .mock-bar {
-      padding: 28px 24px;
+    /* ═════════ 화면 3: 통계 (실제 앱 화면 — 와이드) ═════════ */
+    .mock-stats {
+      display: grid;
+      grid-template-columns: 56px 1fr;
       background: #fff;
-      min-height: 280px;
-      display: flex; flex-direction: column; justify-content: center; gap: 20px;
+      min-height: 460px;
     }
-    .mock-bar__pill {
+    .mock-stats__sidebar {
       background: #fafafc;
-      border: 1px solid #e5e5e7;
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex; align-items: center; gap: 12px;
+      border-right: 1px solid #f0f0f0;
+      padding: 18px 0;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
     }
-    .mock-bar__live {
-      width: 8px; height: 8px;
-      background: #0066cc;
-      border-radius: 50%;
-      animation: pulse 1.6s infinite;
-      flex-shrink: 0;
+    .mock-stats__nav {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: grid; place-items: center;
+      color: #c0c0c4;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-    .mock-bar__time {
-      font-size: 14px; font-weight: 700;
+    .mock-stats__nav--active {
+      background: #fff;
       color: #0066cc;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .mock-stats__nav svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+    .mock-stats__nav-spacer { flex: 1; }
+
+    .mock-stats__main {
+      padding: 22px 28px 24px;
+    }
+    .mock-stats__head {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 4px;
+    }
+    .mock-stats__title {
+      font-size: 22px; font-weight: 700; color: #1d1d1f;
+      letter-spacing: -0.02em;
+    }
+    .mock-stats__date {
+      font-size: 11px; color: #8e8e93;
       font-feature-settings: "tnum";
     }
-    .mock-bar__divider {
-      width: 1px; height: 14px;
-      background: #e5e5e7;
+    .mock-stats__tabs {
+      display: inline-flex; gap: 4px;
+      padding: 3px;
+      background: #fafafc;
+      border-radius: 999px;
+      margin: 14px 0 18px;
     }
-    .mock-bar__task {
-      flex: 1;
-      font-size: 12px; color: #1d1d1f;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .mock-bar__btn {
-      padding: 5px 10px;
-      border-radius: 6px;
+    .mock-stats__tab {
+      padding: 5px 14px;
       font-size: 11px; font-weight: 600;
+      color: #8e8e93;
+      border-radius: 999px;
     }
-    .mock-bar__btn--ghost { background: #f5f5f7; color: #6e6e73; }
-    .mock-bar__btn--primary { background: #0066cc; color: #fff; }
-    .mock-bar__caption {
-      font-size: 11px; color: #8e8e93; text-align: center;
-      letter-spacing: 0.02em;
+    .mock-stats__tab--active {
+      background: #fff; color: #1d1d1f;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
-    .mock-bar__caption strong { color: #0066cc; font-weight: 600; }
 
-    /* ── 화면 3: 통계 (KPI + 타임라인) ── */
-    .mock-stats {
-      padding: 18px;
-      background: #fff;
-      min-height: 280px;
-    }
     .mock-stats__kpis {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 8px; margin-bottom: 16px;
+      gap: 12px; margin-bottom: 18px;
     }
     .mock-kpi {
-      padding: 10px 12px;
-      background: #fafafc;
-      border-radius: 8px;
+      padding: 14px 16px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #f0f0f0;
     }
     .mock-kpi__label {
-      font-size: 9px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: #8e8e93;
     }
     .mock-kpi__val {
-      font-size: 20px; font-weight: 700;
+      font-size: 24px; font-weight: 700;
       color: #1d1d1f;
       font-feature-settings: "tnum";
-      margin-top: 2px;
+      letter-spacing: -0.02em;
+      margin-top: 4px;
     }
     .mock-kpi__sub {
-      font-size: 10px; color: #6e6e73; margin-top: 1px;
-    }
-    .mock-stats__sec-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: #6e6e73;
-      margin-bottom: 8px;
-    }
-    .mock-stats__tl-row {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 11px; margin-bottom: 5px;
-    }
-    .mock-stats__tl-time { width: 36px; color: #c0c0c4; font-feature-settings: "tnum"; }
-    .mock-stats__tl-track {
-      flex: 1; height: 18px;
-      background: #fafafc;
-      border-radius: 4px;
-      position: relative;
-    }
-    .mock-stats__tl-bar {
-      position: absolute; top: 0; bottom: 0;
-      border-radius: 4px;
-      display: flex; align-items: center;
-      padding: 0 6px;
-      font-size: 9px; font-weight: 700; color: #fff;
-      font-feature-settings: "tnum";
-    }
-    .mock-stats__tl-bar--coding { background: #0066cc; }
-    .mock-stats__tl-bar--doc { background: #8e8e93; }
-    .mock-stats__tl-bar--aborted {
-      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.2) 0 4px, transparent 4px 8px), #8e8e93;
+      font-size: 11px; color: #6e6e73; margin-top: 2px;
     }
 
-    /* ── 화면 4: 세션 1라인 + 품질 점수 ── */
-    .mock-row {
-      padding: 18px 16px;
+    .mock-stats__sec {
       background: #fff;
-      min-height: 280px;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
     }
-    .mock-row__row {
+    .mock-stats__sec-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .mock-stats__sec-title {
+      font-size: 13px; font-weight: 700; color: #1d1d1f;
+    }
+    .mock-stats__sec-meta {
+      font-size: 10px; color: #8e8e93;
+      font-feature-settings: "tnum";
+    }
+
+    /* 세션 타임라인 (가로 시간축) */
+    .mock-tl {
+      display: grid; gap: 6px;
+    }
+    .mock-tl__row {
       display: grid;
-      grid-template-columns: 32px 6px 1fr 60px;
+      grid-template-columns: 110px 1fr;
+      gap: 12px;
+      align-items: center;
+      height: 26px;
+    }
+    .mock-tl__name {
+      font-size: 11px; color: #1d1d1f;
+      font-weight: 500;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-tl__name--aborted {
+      color: #8e8e93; text-decoration: line-through;
+    }
+    .mock-tl__track {
+      position: relative;
+      height: 22px;
+      background: #fafafc;
+      border-radius: 5px;
+    }
+    .mock-tl__bar {
+      position: absolute; top: 0; bottom: 0;
+      border-radius: 5px;
+      display: flex; align-items: center;
+      padding: 0 8px;
+      font-size: 10px; font-weight: 700; color: #fff;
+      font-feature-settings: "tnum";
+    }
+    .mock-tl__bar--coding { background: #0066cc; }
+    .mock-tl__bar--doc { background: #8e8e93; }
+    .mock-tl__bar--aborted {
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.2) 0 4px, transparent 4px 8px), #8e8e93;
+    }
+    .mock-tl__axis {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .mock-tl__axis-ticks {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      font-size: 9px; color: #c0c0c4;
+      font-feature-settings: "tnum";
+      text-align: center;
+    }
+
+    /* 세션 1라인 리스트 */
+    .mock-stats__row {
+      display: grid;
+      grid-template-columns: 36px 6px 1fr 110px 56px;
       gap: 10px;
       align-items: center;
-      padding: 10px 4px;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 8px 4px;
+      border-bottom: 1px solid #f5f5f7;
     }
-    .mock-row__row:last-child { border-bottom: 0; }
-    .mock-row__time {
+    .mock-stats__row:last-child { border-bottom: 0; }
+    .mock-stats__time {
       font-size: 10px; color: #c0c0c4;
       font-feature-settings: "tnum";
     }
-    .mock-row__dot {
+    .mock-stats__dot {
       width: 6px; height: 6px;
       border-radius: 50%;
     }
-    .mock-row__dot--coding { background: #0066cc; }
-    .mock-row__dot--doc { background: #8e8e93; }
-    .mock-row__main {
-      display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    .mock-stats__dot--coding { background: #0066cc; }
+    .mock-stats__dot--doc { background: #8e8e93; }
+    .mock-stats__main {
+      display: flex; flex-direction: column; gap: 3px; min-width: 0;
     }
-    .mock-row__name {
+    .mock-stats__name {
       font-size: 12px; font-weight: 600; color: #1d1d1f;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .mock-row__name--aborted { text-decoration: line-through; color: #8e8e93; }
-    .mock-row__sub {
-      font-size: 9px; color: #8e8e93;
-      letter-spacing: 0.02em;
+    .mock-stats__name--aborted {
+      text-decoration: line-through; color: #8e8e93;
     }
-    .mock-row__stack {
-      display: flex; height: 4px;
-      border-radius: 2px;
+    .mock-stats__sub {
+      font-size: 10px; color: #8e8e93;
+    }
+    .mock-stats__stack {
+      display: flex; height: 5px;
+      border-radius: 3px;
       overflow: hidden;
       background: #f5f5f7;
-      margin-top: 3px;
     }
-    .mock-row__stack span { height: 100%; }
-    .mock-row__score {
-      font-size: 13px; font-weight: 700;
+    .mock-stats__stack span { height: 100%; }
+    .mock-stats__score {
+      font-size: 14px; font-weight: 700;
       font-feature-settings: "tnum";
       text-align: right;
     }
-    .mock-row__score--hi { color: #34c759; }
-    .mock-row__score--med { color: #ff9500; }
-    .mock-row__score--lo { color: #ff3b30; }
+    .mock-stats__score--hi { color: #34c759; }
+    .mock-stats__score--med { color: #ff9500; }
+    .mock-stats__score--lo { color: #ff3b30; }
 
-    /* ── 미니 아키텍처 ── */
-    .mini-arch {
+    /* ═════════ 세션 분석 화면 ═════════ */
+    .mock-sa-hero {
+      padding: 16px 18px;
+      background: #fff;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+    .mock-sa-hero__name {
+      font-size: 17px; font-weight: 600; color: #1d1d1f;
+      letter-spacing: -0.3px;
+    }
+    .mock-sa-hero__meta {
+      font-size: 12px; color: #8e8e93;
+      margin-top: 4px;
+    }
+
+    /* 2-col body: 앱 사용 / 평가 */
+    .mock-sa-body {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px;
+    }
+
+    .mock-sa-sec {
+      background: #fff;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .mock-sa-sec__head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .mock-sa-sec__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+      letter-spacing: -0.1px;
+    }
+    .mock-sa-sec__meta {
+      font-size: 11px; color: #8e8e93;
+    }
+
+    /* 앱·사이트 사용 행 (도형 X, 깔끔 텍스트 + 바 + %) */
+    .mock-app-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 38px 44px;
+      gap: 12px;
+      align-items: center;
+      padding: 6px 0;
+    }
+    .mock-app-row--site {
+      padding: 4px 0 4px 14px;
+    }
+    .mock-app-row__name {
+      font-size: 13px; color: #1d1d1f;
+      font-weight: 500;
+      letter-spacing: -0.15px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-app-row__name--site {
+      font-weight: 400;
+      color: #6e6e73;
+      font-size: 12px;
+      position: relative;
+    }
+    .mock-app-row__name--site::before {
+      content: "·";
+      position: absolute; left: -10px;
+      color: #c0c0c4;
+    }
+    .mock-app-row__bar-wrap {
+      height: 5px;
+      background: #f5f5f7;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .mock-app-row__bar {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .mock-app-row__min {
+      font-size: 11px; color: #8e8e93;
+      text-align: right;
+    }
+    .mock-app-row__pct {
+      font-size: 12.5px; font-weight: 600;
+      color: #1d1d1f;
+      text-align: right;
+      letter-spacing: -0.15px;
+    }
+
+    /* 메트릭 — 인사이트 위 가로 한 줄 */
+    .mock-sa-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding: 12px 14px;
       background: #fafafc;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .mock-sa-metric {
+      padding: 0 12px;
+      border-right: 1px solid #e5e5e7;
+    }
+    .mock-sa-metric:last-child { border-right: 0; }
+    .mock-sa-metric__lbl {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      color: #8e8e93;
+    }
+    .mock-sa-metric__val {
+      font-size: 18px; font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.3px;
+      margin-top: 2px;
+    }
+
+    /* 인사이트 카드 — 점수(품질) 편입 */
+    .mock-insight {
+      background: #fff;
+      border: 1px solid #f0f0f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      height: 100%;
+      display: flex; flex-direction: column;
+    }
+    .mock-insight__head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f5f5f7;
+    }
+    .mock-insight__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+      letter-spacing: -0.1px;
+    }
+    .mock-insight__score {
+      display: flex; align-items: baseline; gap: 4px;
+    }
+    .mock-insight__score-num {
+      font-size: 20px; font-weight: 700;
+      color: #34c759;
+      letter-spacing: -0.3px;
+    }
+    .mock-insight__score-lbl {
+      font-size: 10px; font-weight: 600;
+      color: #8e8e93;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .mock-insight__list {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .mock-insight__item {
+      position: relative;
+      padding-left: 14px;
+      font-size: 12.5px; line-height: 1.55;
+      color: #1d1d1f;
+      letter-spacing: -0.1px;
+    }
+    .mock-insight__item::before {
+      content: '';
+      position: absolute;
+      left: 4px; top: 9px;
+      width: 3px; height: 3px;
+      background: #c0c0c4;
+      border-radius: 50%;
+    }
+    .mock-insight__item strong { color: #1d1d1f; font-weight: 600; }
+
+    /* ═════════ 화면 4: 세션 상세 ═════════ */
+    .mock-sess {
+      padding: 16px;
+      background: #fff;
+      min-height: 320px;
+    }
+    .mock-sess__head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 14px;
+    }
+    .mock-sess__title {
+      font-size: 14px; font-weight: 700; color: #1d1d1f;
+      letter-spacing: -0.01em;
+    }
+    .mock-sess__meta {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; color: #8e8e93;
+      margin-top: 4px;
+      font-feature-settings: "tnum";
+    }
+    .mock-sess__intent {
+      font-size: 9px; font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(0,102,204,0.12); color: #0066cc;
+      letter-spacing: 0.04em;
+    }
+    .mock-sess__score-big {
+      text-align: right; flex-shrink: 0;
+    }
+    .mock-sess__score-num {
+      font-size: 28px; font-weight: 800;
+      color: #34c759;
+      font-feature-settings: "tnum";
+      line-height: 1;
+    }
+    .mock-sess__score-lbl {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+      margin-top: 4px;
+    }
+    .mock-sess__sec {
+      margin-bottom: 14px;
+    }
+    .mock-sess__sec-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+      margin-bottom: 8px;
+    }
+    .mock-sess__stack {
+      display: flex; height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f5f5f7;
+      margin-bottom: 8px;
+    }
+    .mock-sess__stack span { height: 100%; }
+    .mock-sess__legend {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-size: 10px; color: #6e6e73;
+    }
+    .mock-sess__lg {
+      display: flex; align-items: center; gap: 4px;
+      font-feature-settings: "tnum";
+    }
+    .mock-sess__lg-dot {
+      width: 8px; height: 8px; border-radius: 2px;
+    }
+    .mock-sess__app-row {
+      display: flex; justify-content: space-between;
+      padding: 5px 0;
+      font-size: 11px; color: #1d1d1f;
+      border-bottom: 1px solid #f5f5f7;
+    }
+    .mock-sess__app-row:last-child { border-bottom: 0; }
+    .mock-sess__app-name { color: #1d1d1f; }
+    .mock-sess__app-min {
+      color: #8e8e93;
+      font-feature-settings: "tnum";
+    }
+
+    /* ═════════ 흐름형 아키텍처 (ERD-style) ═════════ */
+    .arch {
+      background: #fafafc;
+      border: 1px solid #e5e5e7;
       border-radius: 14px;
-      padding: 24px;
+      padding: 36px 32px 32px;
       margin: 32px 0 8px;
     }
-    .mini-arch__row {
-      display: grid; gap: 8px;
-      margin-bottom: 10px;
-    }
-    .mini-arch__cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .mini-arch__cols-4 { grid-template-columns: repeat(4, 1fr); }
-    .mini-arch__node {
+
+    /* 노드 공통 */
+    .arch__node {
       background: #fff;
       border: 1px solid #e5e5e7;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 11px;
+      border-radius: 10px;
+      padding: 12px 16px;
       text-align: center;
       color: #1d1d1f;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1.3;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
-    .mini-arch__node--primary { border-color: #0066cc; background: rgba(0, 102, 204, 0.05); }
-    .mini-arch__node--orange { border-color: #ff9500; background: rgba(255, 149, 0, 0.05); }
-    .mini-arch__node--purple { border-color: #8e44ec; background: rgba(142, 68, 236, 0.05); }
-    .mini-arch__arrow {
-      text-align: center; color: #c0c0c4;
-      font-size: 14px; margin: -2px 0;
+    .arch__node em {
+      display: block;
+      font-size: 11px; color: #8e8e93;
+      font-weight: 500; font-style: normal;
+      margin-top: 4px;
+      letter-spacing: 0.01em;
+    }
+    .arch__node--user {
+      background: #fff;
+      border-color: #d2d2d7;
+      max-width: 140px;
+      margin: 0 auto;
+      padding: 10px 16px;
+    }
+    .arch__node--app {
+      border-color: #0066cc;
+      background: rgba(0, 102, 204, 0.04);
+      padding: 16px 20px;
+      font-size: 14px;
+    }
+    .arch__node--orange { border-color: #ff9500; background: rgba(255, 149, 0, 0.05); }
+    .arch__node--purple { border-color: #8e44ec; background: rgba(142, 68, 236, 0.05); }
+
+    /* 화살표 + 라벨 (수직 1라인) */
+    .arch__line-down {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px;
+      margin: 6px 0;
+    }
+    .arch__line-down::before {
+      content: '';
+      width: 1px; height: 14px;
+      background: #c0c0c4;
+    }
+    .arch__line-down-arrow {
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #c0c0c4;
+      margin-top: -8px;
+    }
+    .arch__line-label {
+      font-size: 11px; font-weight: 600; color: #6e6e73;
+      background: #fafafc;
+      padding: 2px 10px;
+      letter-spacing: 0.01em;
+    }
+    .arch__line-label .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px;
+      background: #0066cc; color: #fff;
+      border-radius: 50%;
+      font-size: 9px; font-weight: 700;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* 3-branch 영역 */
+    .arch__branches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 4px;
+    }
+    .arch__branch {
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* branch 화살표 — 양방향 vs 단방향 */
+    .arch__branch-arrow {
+      position: relative;
+      width: 1px; height: 60px;
+      background: #c0c0c4;
+      margin: 6px 0;
+    }
+    .arch__branch-arrow::before {
+      content: '';
+      position: absolute; left: -4px;
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+    /* 단방향 ↓ */
+    .arch__branch-arrow--down::before {
+      bottom: 0;
+      border-top: 6px solid #c0c0c4;
+    }
+    /* 양방향 ↓ + ↑ */
+    .arch__branch-arrow--bidir::before {
+      bottom: 0;
+      border-top: 6px solid #c0c0c4;
+    }
+    .arch__branch-arrow--bidir::after {
+      content: '';
+      position: absolute; top: 0; left: -4px;
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 6px solid #c0c0c4;
+    }
+
+    /* branch 라벨 (화살표 옆에 보이게) */
+    .arch__branch-label {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: 11px; font-weight: 600; color: #1d1d1f;
+      letter-spacing: 0.01em;
+    }
+    .arch__branch-label .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px;
+      background: #0066cc; color: #fff;
+      border-radius: 50%;
+      font-size: 9px; font-weight: 700;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .arch__branch-label .sub {
+      display: block;
+      font-size: 10px; color: #8e8e93;
+      font-weight: 500;
+      margin-top: 2px; margin-left: 21px;
+    }
+
+    @media (max-width: 720px) {
+      .arch__branches { grid-template-columns: 1fr; gap: 8px; }
+      .arch__branch-label { left: auto; right: 14px; }
     }
 
     /* 섹션 제목 */
@@ -400,46 +912,6 @@
       font-size: 22px; font-weight: 700;
       margin: 56px 0 16px;
       letter-spacing: -0.01em;
-    }
-
-    /* ── 처리 흐름 ── */
-    .ot-flow {
-      background: #fafafc;
-      border-radius: 14px;
-      padding: 22px 26px;
-      display: grid;
-      gap: 12px;
-    }
-    .ot-flow__row {
-      display: grid;
-      grid-template-columns: 32px 1fr;
-      gap: 14px;
-      align-items: start;
-      padding: 12px 14px;
-      background: #fff;
-      border: 1px solid #e5e5e7;
-      border-radius: 10px;
-    }
-    .ot-flow__num {
-      width: 28px; height: 28px;
-      border-radius: 999px;
-      background: #0066cc;
-      color: #fff;
-      display: grid; place-items: center;
-      font-weight: 700; font-size: 12px;
-    }
-    .ot-flow__body { min-width: 0; }
-    .ot-flow__title {
-      font-size: 13px; font-weight: 600; color: #1d1d1f;
-    }
-    .ot-flow__time {
-      font-size: 11px; color: #0066cc; font-weight: 600;
-      margin-left: 6px;
-      font-feature-settings: "tnum";
-    }
-    .ot-flow__desc {
-      font-size: 12px; color: #6e6e73;
-      line-height: 1.5; margin-top: 3px;
     }
 
     @media (max-width: 720px) {
@@ -456,6 +928,7 @@
 <body class="ot-page">
   <article class="section project tile-light">
     <div class="section__inner">
+
       <!-- ── 인트로: 앱 설명 + 스택 ── -->
       <section class="ot-intro project-hero">
         <div class="project-hero__main">
@@ -465,8 +938,8 @@
 
           <p class="ot-intro__lede">
             사용자는 TODO를 선택하고 작업 세션을 시작합니다.
-            세션 동안 ActivityWatch가 OS API 기반으로 활성 앱·윈도우·AFK 상태를 로컬에서 수집합니다.
-            세션 종료 후에는 작업 품질 점수, 이탈 구간, 일·주 단위 패턴 인사이트를 제공합니다.
+            세션 동안 <strong>ActivityWatch가 OS API 기반</strong>으로 활성 앱·윈도우·AFK 상태를 로컬에서 수집합니다.
+            세션 종료 후에는 <strong>작업 품질 점수, 이탈 구간, 일·주 단위 패턴 인사이트</strong>를 제공합니다.
           </p>
         </div>
 
@@ -488,35 +961,76 @@
               <span class="ot-stack__item">Python</span>
               <span class="ot-stack__item">ActivityWatch</span>
               <span class="ot-stack__item">Supabase</span>
-              <span class="ot-stack__item">SQLite</span>
             </div>
           </div>
 
           <div class="ot-stack__group">
-            <div class="ot-stack__group-name">AI · 평가</div>
+            <div class="ot-stack__group-name">AI</div>
             <div class="ot-stack__items">
-              <span class="ot-stack__item">Rule 4-axis</span>
               <span class="ot-stack__item">Gemini Flash</span>
-              <span class="ot-stack__item">pandas · plotly</span>
-            </div>
-          </div>
-
-          <div class="ot-stack__group">
-            <div class="ot-stack__group-name">Sync · 차단</div>
-            <div class="ot-stack__items">
-              <span class="ot-stack__item">Chrome Extension</span>
-              <span class="ot-stack__item">Native Messaging</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── 실제 화면 4개 ── -->
+      <!-- ── 실제 화면 ── -->
       <h2 class="ot-section-title">실제 화면</h2>
 
       <div class="ot-shots">
 
-        <!-- 1: Today 패널 + 의도 선언 -->
+        <!-- 1: 메인 대시보드 (목표 카드 그리드) -->
+        <div class="ot-shot">
+          <div class="mock-main">
+            <div class="mock-main__head">
+              <span class="mock-main__dot mock-main__dot--red"></span>
+              <span class="mock-main__dot mock-main__dot--yellow"></span>
+              <span class="mock-main__dot mock-main__dot--green"></span>
+            </div>
+            <div class="mock-main__title-row">
+              <span class="mock-main__title">목표</span>
+            </div>
+            <div class="mock-main__grid">
+              <div class="mock-goal mock-goal--active">
+                <div class="mock-goal__name">OnTrack v0.1 출시</div>
+                <div class="mock-goal__meta">
+                  <span class="mock-goal__due mock-goal__due--urgent">D-15</span>
+                  <span>2/8</span>
+                </div>
+                <div class="mock-goal__progress"><div class="mock-goal__progress-fg" style="width:33%"></div></div>
+                <div class="mock-goal__todos">
+                  <div class="mock-goal__todo mock-goal__todo--done"><span class="mock-goal__check mock-goal__check--done"></span>기획서 정리</div>
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>Areum 어댑터 구현</div>
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>PR 리뷰</div>
+                </div>
+              </div>
+              <div class="mock-goal">
+                <div class="mock-goal__name">논문 마무리</div>
+                <div class="mock-goal__meta">
+                  <span>3/9</span>
+                </div>
+                <div class="mock-goal__progress"><div class="mock-goal__progress-fg" style="width:33%"></div></div>
+                <div class="mock-goal__todos">
+                  <div class="mock-goal__todo mock-goal__todo--done"><span class="mock-goal__check mock-goal__check--done"></span>참고문헌 정리</div>
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>선행 연구 정독</div>
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>결론 초안</div>
+                </div>
+              </div>
+              <div class="mock-goal">
+                <div class="mock-goal__name">자유 Todo</div>
+                <div class="mock-goal__meta">
+                  <span>2건</span>
+                </div>
+                <div class="mock-goal__todos" style="margin-top:4px;">
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>은행 송금</div>
+                  <div class="mock-goal__todo"><span class="mock-goal__check"></span>필름 현상</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ot-shot__caption">목표 대시보드</div>
+        </div>
+
+        <!-- 2: Today 패널 -->
         <div class="ot-shot">
           <div class="mock-today">
             <div class="mock-today__head">
@@ -525,285 +1039,170 @@
                 <span class="mock-today__dot mock-today__dot--yellow"></span>
                 <span class="mock-today__dot mock-today__dot--green"></span>
               </div>
-              <div class="mock-today__title">Today · 4건</div>
             </div>
             <div class="mock-today__list">
               <div class="mock-today__item">
                 <span class="mock-today__check mock-today__check--done"></span>
-                <span class="mock-today__name mock-today__name--done">기획서 정리</span>
-                <span class="mock-today__intent mock-today__intent--doc">문서</span>
+                <div class="mock-today__name-col">
+                  <span class="mock-today__name mock-today__name--done">기획서 정리</span>
+                </div>
               </div>
-              <div class="mock-today__item">
+              <div class="mock-today__item mock-today__item--active">
                 <span class="mock-today__check"></span>
-                <span class="mock-today__name">Areum 어댑터 구현</span>
-                <span class="mock-today__intent mock-today__intent--coding">Coding</span>
+                <div class="mock-today__name-col">
+                  <span class="mock-today__name">Areum 어댑터 구현</span>
+                  <span class="mock-today__sub">OnTrack v0.1 출시</span>
+                </div>
                 <div class="mock-today__play"></div>
               </div>
               <div class="mock-today__item">
                 <span class="mock-today__check"></span>
-                <span class="mock-today__name">PR 리뷰</span>
-                <span class="mock-today__intent mock-today__intent--coding">Coding</span>
+                <div class="mock-today__name-col">
+                  <span class="mock-today__name">PR 리뷰</span>
+                  <span class="mock-today__sub">OnTrack v0.1 출시</span>
+                </div>
               </div>
               <div class="mock-today__item">
                 <span class="mock-today__check"></span>
-                <span class="mock-today__name">참고문헌 정리</span>
-                <span class="mock-today__intent mock-today__intent--doc">문서</span>
+                <div class="mock-today__name-col">
+                  <span class="mock-today__name">참고문헌 정리</span>
+                  <span class="mock-today__sub">논문 마무리</span>
+                </div>
               </div>
             </div>
-            <div class="mock-today__bar">
-              오늘 작업 <strong>3h 43m</strong> · 평균 일치도 <strong>80%</strong>
-            </div>
           </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 1</div>
-            <div class="ot-shot__title">Today + 의도 선언</div>
-          </div>
+          <div class="ot-shot__caption">Today 패널</div>
         </div>
 
-        <!-- 2: 세션 진행 (얇은 바) -->
-        <div class="ot-shot">
-          <div class="mock-bar">
-            <div class="mock-bar__pill">
-              <span class="mock-bar__live"></span>
-              <span class="mock-bar__time">12:34</span>
-              <span class="mock-bar__divider"></span>
-              <span class="mock-bar__task">Areum 어댑터 구현 · Cursor</span>
-              <span class="mock-bar__btn mock-bar__btn--ghost">일시정지</span>
-              <span class="mock-bar__btn mock-bar__btn--primary">완료</span>
-            </div>
-            <div class="mock-bar__caption">
-              세션 시작 → Today 윈도우가 자동으로 <strong>580×56 얇은 바</strong>로 접힘
-            </div>
-            <div class="mock-bar__pill" style="opacity:0.55;">
-              <span class="mock-bar__live" style="background:#34c759;animation:none;"></span>
-              <span class="mock-bar__time" style="color:#34c759;">48:12</span>
-              <span class="mock-bar__divider"></span>
-              <span class="mock-bar__task">Areum 어댑터 구현 · 완료</span>
-              <span class="mock-bar__btn mock-bar__btn--ghost">기록 저장됨</span>
-            </div>
-          </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 2</div>
-            <div class="ot-shot__title">세션 진행 + 자동 접힘</div>
-          </div>
-        </div>
+      </div>
 
-        <!-- 3: 통계 -->
+      <!-- ── 화면 3: 일간 통계 (와이드 — 실제 앱 화면 그대로) ── -->
+      <div class="ot-shots__wide">
         <div class="ot-shot">
           <div class="mock-stats">
-            <div class="mock-stats__kpis">
-              <div class="mock-kpi">
-                <div class="mock-kpi__label">세션</div>
-                <div class="mock-kpi__val">3h 43m</div>
-                <div class="mock-kpi__sub">4/5건 완료</div>
+            <!-- Sidebar nav -->
+            <aside class="mock-stats__sidebar">
+              <div class="mock-stats__nav">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h13"/></svg>
               </div>
-              <div class="mock-kpi">
-                <div class="mock-kpi__label">Deep work</div>
-                <div class="mock-kpi__val">2h 34m</div>
-                <div class="mock-kpi__sub">69% 비율</div>
+              <div class="mock-stats__nav mock-stats__nav--active">
+                <svg viewBox="0 0 24 24"><path d="M4 19V5M9 19V11M14 19V8M19 19V14"/></svg>
               </div>
-              <div class="mock-kpi">
-                <div class="mock-kpi__label">평균 품질</div>
-                <div class="mock-kpi__val" style="color:#0066cc;">80</div>
-                <div class="mock-kpi__sub">의도 → 실제</div>
+              <div class="mock-stats__nav-spacer"></div>
+              <div class="mock-stats__nav">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12c0 .8-.1 1.5-.3 2.2l2 1.6c.2.1.2.4.1.6l-1.9 3.3c-.1.2-.4.3-.6.2l-2.4-1c-.5.4-1 .7-1.6.9l-.4 2.5c0 .2-.2.4-.5.4h-3.8c-.2 0-.4-.2-.5-.4l-.4-2.5c-.6-.2-1.1-.5-1.6-.9l-2.4 1c-.2.1-.5 0-.6-.2L2.2 16.4c-.1-.2-.1-.5.1-.6l2-1.6c-.1-.7-.2-1.5-.2-2.2s.1-1.5.3-2.2l-2-1.6c-.2-.1-.2-.4-.1-.6l1.9-3.3c.1-.2.4-.3.6-.2l2.4 1c.5-.4 1-.7 1.6-.9l.4-2.5c0-.2.2-.4.5-.4h3.8c.2 0 .4.2.5.4l.4 2.5c.6.2 1.1.5 1.6.9l2.4-1c.2-.1.5 0 .6.2l1.9 3.3c.1.2.1.5-.1.6l-2 1.6c.2.7.3 1.4.3 2.2z"/></svg>
               </div>
-            </div>
-            <div class="mock-stats__sec-label">세션 타임라인 · 9–15시</div>
-            <div class="mock-stats__tl-row">
-              <span class="mock-stats__tl-time">14:18</span>
-              <div class="mock-stats__tl-track">
-                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:62%;width:30%;">48m</div>
-              </div>
-            </div>
-            <div class="mock-stats__tl-row">
-              <span class="mock-stats__tl-time">13:15</span>
-              <div class="mock-stats__tl-track">
-                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:55%;width:14%;">23m</div>
-              </div>
-            </div>
-            <div class="mock-stats__tl-row">
-              <span class="mock-stats__tl-time">11:30</span>
-              <div class="mock-stats__tl-track">
-                <div class="mock-stats__tl-bar mock-stats__tl-bar--doc" style="left:38%;width:17%;">27m</div>
-              </div>
-            </div>
-            <div class="mock-stats__tl-row">
-              <span class="mock-stats__tl-time">10:00</span>
-              <div class="mock-stats__tl-track">
-                <div class="mock-stats__tl-bar mock-stats__tl-bar--aborted" style="left:30%;width:24%;">38m</div>
-              </div>
-            </div>
-            <div class="mock-stats__tl-row">
-              <span class="mock-stats__tl-time">09:00</span>
-              <div class="mock-stats__tl-track">
-                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:22%;width:54%;">87m</div>
-              </div>
-            </div>
-          </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 3</div>
-            <div class="ot-shot__title">일간 통계 + 세션 타임라인</div>
-          </div>
-        </div>
+            </aside>
 
-        <!-- 4: 세션 1라인 + 품질 점수 -->
-        <div class="ot-shot">
-          <div class="mock-row">
-            <div class="mock-row__row">
-              <span class="mock-row__time">14:18</span>
-              <span class="mock-row__dot mock-row__dot--coding"></span>
-              <div class="mock-row__main">
-                <span class="mock-row__name">Areum 어댑터 구현 · 48m</span>
-                <span class="mock-row__sub">Coding · Cursor · Claude</span>
-                <div class="mock-row__stack">
-                  <span style="flex:38;background:#0066cc;"></span>
-                  <span style="flex:7;background:#8e44ec;"></span>
-                  <span style="flex:3;background:#8e8e93;"></span>
+            <!-- Main content -->
+            <div class="mock-stats__main-area">
+              <div class="mock-stats__main">
+                <div class="mock-stats__head">
+                  <span class="mock-stats__title">세션 분석</span>
+                </div>
+
+                <!-- 세션 hero (Todo + 시간) — 점수 제거, 평가로 이동 -->
+                <div class="mock-sa-hero" style="margin-top:14px;">
+                  <div class="mock-sa-hero__name">Areum 어댑터 구현</div>
+                  <div class="mock-sa-hero__meta">14:18 — 15:06 · 48분 진행</div>
+                </div>
+
+                <!-- 메트릭 (가로 한 줄) -->
+                <div class="mock-sa-metrics">
+                  <div class="mock-sa-metric">
+                    <div class="mock-sa-metric__lbl">화면 전환</div>
+                    <div class="mock-sa-metric__val">12회</div>
+                  </div>
+                  <div class="mock-sa-metric">
+                    <div class="mock-sa-metric__lbl">집중 시간</div>
+                    <div class="mock-sa-metric__val">42m</div>
+                  </div>
+                  <div class="mock-sa-metric">
+                    <div class="mock-sa-metric__lbl">이탈</div>
+                    <div class="mock-sa-metric__val">0건</div>
+                  </div>
+                </div>
+
+                <!-- 2-col body: 앱·사이트 / 평가 -->
+                <div class="mock-sa-body">
+
+                  <!-- 앱 · 사이트 사용 -->
+                  <div class="mock-sa-sec">
+                    <div class="mock-sa-sec__head">
+                      <span class="mock-sa-sec__title">앱 · 사이트 사용</span>
+                    </div>
+
+                    <div class="mock-app-row">
+                      <span class="mock-app-row__name">Cursor</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:67%;background:#1d1d1f;"></div></div>
+                      <span class="mock-app-row__min">32m</span>
+                      <span class="mock-app-row__pct">67%</span>
+                    </div>
+
+                    <div class="mock-app-row">
+                      <span class="mock-app-row__name">Chrome</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:17%;background:#4285f4;"></div></div>
+                      <span class="mock-app-row__min">8m</span>
+                      <span class="mock-app-row__pct">17%</span>
+                    </div>
+                    <div class="mock-app-row mock-app-row--site">
+                      <span class="mock-app-row__name mock-app-row__name--site">google.com</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:12%;background:#34a853;"></div></div>
+                      <span class="mock-app-row__min">5m</span>
+                      <span class="mock-app-row__pct">12%</span>
+                    </div>
+                    <div class="mock-app-row mock-app-row--site">
+                      <span class="mock-app-row__name mock-app-row__name--site">github.com</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:5%;background:#24292f;"></div></div>
+                      <span class="mock-app-row__min">2m</span>
+                      <span class="mock-app-row__pct">5%</span>
+                    </div>
+
+                    <div class="mock-app-row">
+                      <span class="mock-app-row__name">Claude</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:10%;background:#cc785c;"></div></div>
+                      <span class="mock-app-row__min">5m</span>
+                      <span class="mock-app-row__pct">10%</span>
+                    </div>
+
+                    <div class="mock-app-row">
+                      <span class="mock-app-row__name">KakaoTalk</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:4%;background:#fee500;"></div></div>
+                      <span class="mock-app-row__min">2m</span>
+                      <span class="mock-app-row__pct">4%</span>
+                    </div>
+
+                    <div class="mock-app-row">
+                      <span class="mock-app-row__name">Notion</span>
+                      <div class="mock-app-row__bar-wrap"><div class="mock-app-row__bar" style="width:2%;background:#000;"></div></div>
+                      <span class="mock-app-row__min">1m</span>
+                      <span class="mock-app-row__pct">2%</span>
+                    </div>
+                  </div>
+
+                  <!-- 평가 (점수 + 인사이트 통합) -->
+                  <div class="mock-insight">
+                    <div class="mock-insight__head">
+                      <span class="mock-insight__title">평가</span>
+                    </div>
+                    <div class="mock-insight__list">
+                      <div class="mock-insight__item">
+                        Cursor에 <strong>67%</strong> 머물렀습니다 — 의도(Coding)에 충실.
+                      </div>
+                      <div class="mock-insight__item">
+                        화면 전환 <strong>12회</strong>로 평소(18회)보다 안정적.
+                      </div>
+                      <div class="mock-insight__item">
+                        KakaoTalk <strong>2분</strong> 짧게 응대.
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
-              <span class="mock-row__score mock-row__score--hi">94</span>
-            </div>
-            <div class="mock-row__row">
-              <span class="mock-row__time">13:15</span>
-              <span class="mock-row__dot mock-row__dot--coding"></span>
-              <div class="mock-row__main">
-                <span class="mock-row__name">PR 리뷰 · 23m</span>
-                <span class="mock-row__sub">Coding · Chrome · 이탈 1</span>
-                <div class="mock-row__stack">
-                  <span style="flex:15;background:#0066cc;"></span>
-                  <span style="flex:4;background:#8e44ec;"></span>
-                  <span style="flex:2;background:#8e8e93;"></span>
-                  <span style="flex:2;background:#ff3b30;"></span>
-                </div>
-              </div>
-              <span class="mock-row__score mock-row__score--med">81</span>
-            </div>
-            <div class="mock-row__row">
-              <span class="mock-row__time">11:30</span>
-              <span class="mock-row__dot mock-row__dot--doc"></span>
-              <div class="mock-row__main">
-                <span class="mock-row__name">기획서 정리 · 27m</span>
-                <span class="mock-row__sub">문서 · Notion</span>
-                <div class="mock-row__stack">
-                  <span style="flex:22;background:#8e8e93;"></span>
-                  <span style="flex:3;background:#8e44ec;"></span>
-                  <span style="flex:2;background:#0066cc;"></span>
-                </div>
-              </div>
-              <span class="mock-row__score mock-row__score--hi">88</span>
-            </div>
-            <div class="mock-row__row" style="opacity:0.62;">
-              <span class="mock-row__time">10:00</span>
-              <span class="mock-row__dot" style="background:#c0c0c4;"></span>
-              <div class="mock-row__main">
-                <span class="mock-row__name mock-row__name--aborted">참고문헌 정리 · 38m</span>
-                <span class="mock-row__sub">문서 · 이탈 2 · 중단</span>
-                <div class="mock-row__stack">
-                  <span style="flex:18;background:#8e8e93;"></span>
-                  <span style="flex:8;background:#ff3b30;"></span>
-                  <span style="flex:7;background:#8e44ec;"></span>
-                  <span style="flex:5;background:#0066cc;"></span>
-                </div>
-              </div>
-              <span class="mock-row__score mock-row__score--lo">62</span>
-            </div>
-            <div class="mock-row__row">
-              <span class="mock-row__time">09:00</span>
-              <span class="mock-row__dot mock-row__dot--coding"></span>
-              <div class="mock-row__main">
-                <span class="mock-row__name">디자인 시스템 검토 · 87m</span>
-                <span class="mock-row__sub">Coding · Cursor · 이탈 2</span>
-                <div class="mock-row__stack">
-                  <span style="flex:50;background:#0066cc;"></span>
-                  <span style="flex:18;background:#8e44ec;"></span>
-                  <span style="flex:12;background:#8e8e93;"></span>
-                  <span style="flex:7;background:#ff3b30;"></span>
-                </div>
-              </div>
-              <span class="mock-row__score mock-row__score--med">76</span>
             </div>
           </div>
-          <div class="ot-shot__caption">
-            <div class="ot-shot__label">Step 4</div>
-            <div class="ot-shot__title">세션 1라인 + 품질 점수</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ── 시스템 아키텍처 ── -->
-      <h2 class="ot-section-title">시스템 아키텍처</h2>
-
-      <div class="mini-arch">
-        <div class="mini-arch__row">
-          <div class="mini-arch__node">👤 사용자 (macOS)</div>
-        </div>
-        <div class="mini-arch__arrow">↓</div>
-        <div class="mini-arch__row mini-arch__cols-3">
-          <div class="mini-arch__node mini-arch__node--primary">PyWebview Main<br><span style="font-size: 10px; opacity: 0.6;">분석 대시보드 1280×720</span></div>
-          <div class="mini-arch__node mini-arch__node--primary">Today 패널<br><span style="font-size: 10px; opacity: 0.6;">360×600 / 580×56 접힘</span></div>
-          <div class="mini-arch__node mini-arch__node--primary">Chrome 확장<br><span style="font-size: 10px; opacity: 0.6;">세션 중 사이트 차단</span></div>
-        </div>
-        <div class="mini-arch__arrow">↓</div>
-        <div class="mini-arch__row mini-arch__cols-3">
-          <div class="mini-arch__node">Session Engine<br><span style="font-size: 10px; opacity: 0.6;">스톱워치 + 의도 선언</span></div>
-          <div class="mini-arch__node">Quality Score (Rule)<br><span style="font-size: 10px; opacity: 0.6;">4-axis 가중 합 → 0~100</span></div>
-          <div class="mini-arch__node">AW Reader<br><span style="font-size: 10px; opacity: 0.6;">episode 집계 + 카테고리</span></div>
-        </div>
-        <div class="mini-arch__arrow">↓</div>
-        <div class="mini-arch__row mini-arch__cols-4">
-          <div class="mini-arch__node mini-arch__node--orange">ActivityWatch<br><span style="font-size: 10px; opacity: 0.6;">OS API · 활성 앱·AFK</span></div>
-          <div class="mini-arch__node mini-arch__node--purple">Supabase<br><span style="font-size: 10px; opacity: 0.6;">세션·의도 일치율 누적</span></div>
-          <div class="mini-arch__node mini-arch__node--orange">Gemini Flash<br><span style="font-size: 10px; opacity: 0.6;">일/주 패턴 인사이트</span></div>
-          <div class="mini-arch__node">SQLite (로컬)<br><span style="font-size: 10px; opacity: 0.6;">오프라인 큐</span></div>
-        </div>
-      </div>
-
-      <!-- ── 처리 흐름 (세션 1개 평가) ── -->
-      <h2 class="ot-section-title">세션 평가 흐름</h2>
-
-      <div class="ot-flow">
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">1</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">의도 선언 + 스톱워치 시작 <span class="ot-flow__time">~0s</span></div>
-            <div class="ot-flow__desc">Today 패널에서 Todo의 ▶ 클릭 → 카테고리 자동 매핑 (예: "Coding") + Today 윈도우 자동 접힘.</div>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">2</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">행동 신호 측정 (지속) <span class="ot-flow__time">실시간</span></div>
-            <div class="ot-flow__desc">ActivityWatch가 활성 윈도우·앱·AFK를 1초 단위 폴링. 화면 픽셀·키스트로크·URL 일절 수집 X.</div>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">3</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">세션 종료 + 데이터 청크 <span class="ot-flow__time">~0s</span></div>
-            <div class="ot-flow__desc">사용자가 [완료] / [종료] 클릭 → 스톱워치 정지 → 세션 시간 범위로 AW raw event 청크.</div>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">4</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">카테고리 집계 <span class="ot-flow__time">~30ms</span></div>
-            <div class="ot-flow__desc">17 카테고리 × 6 그룹 룰로 raw event → episode 변환. 의도 vs 비의도 카테고리 시간 분리.</div>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">5</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">4차원 품질 점수 (Rule) <span class="ot-flow__time">~5ms</span></div>
-            <div class="ot-flow__desc">Alignment · Depth · Resistance · Stability를 가중 합 (0.40·0.25·0.20·0.15)으로 0~100 즉시 환산.</div>
-          </div>
-        </div>
-        <div class="ot-flow__row">
-          <span class="ot-flow__num">6</span>
-          <div class="ot-flow__body">
-            <div class="ot-flow__title">패턴 인사이트 (LLM, 비동기) <span class="ot-flow__time">~2s · 일 1회</span></div>
-            <div class="ot-flow__desc">하루 마감 시 Gemini Flash가 카테고리·앱·점수만(=익명화) 받아 자연어 인사이트 생성. 점수는 Rule, 이야기는 LLM.</div>
-          </div>
+          <div class="ot-shot__caption">세션 분석</div>
         </div>
       </div>
 
