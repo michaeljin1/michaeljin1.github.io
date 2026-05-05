@@ -224,28 +224,32 @@
     .lt-data__panel--source .lt-data__head { background: rgba(118, 185, 0, 0.06); }
     .lt-data__panel--agent .lt-data__head { background: rgba(0, 102, 204, 0.06); }
     .lt-data__head-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: #6e6e73;
+      /* Runtime 라벨과 동일한 Pretendard */
+      font-size: 11px; color: #6e6e73;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: -0.01em;
     }
     .lt-data__head-name {
-      font-size: 13px; font-weight: 700; color: #1d1d1f;
-      margin-top: 2px;
+      /* Runtime 그룹의 굵은 텍스트와 동일한 톤 */
+      font-size: 14px; font-weight: 600; color: #1d1d1f;
+      margin-top: 4px;
+      letter-spacing: -0.01em;
     }
     .lt-data__head-tag {
-      font-size: 10px;
-      padding: 2px 8px;
+      font-size: 11px;
+      padding: 3px 10px;
       background: #fff;
       border: 1px solid #e5e5e7;
       border-radius: 999px;
-      color: #1d1d1f;
+      color: #6e6e73;
       font-weight: 500;
       white-space: nowrap;
     }
     .lt-data__body {
-      padding: 16px 18px;
-      font-size: 11.5px;
-      line-height: 1.7;
+      padding: 18px 20px;
+      font-size: 14px;
+      line-height: 1.75;
       color: #1d1d1f;
       flex: 1;
       overflow: auto;
@@ -255,8 +259,8 @@
     .lt-data__body--mono {
       font-family: "JetBrains Mono", ui-monospace, monospace !important;
       letter-spacing: 0 !important;
-      font-size: 11px;
-      line-height: 1.6;
+      font-size: 13px;
+      line-height: 1.7;
     }
     .lt-data__k { color: #6e6e73; }
     .lt-data__v { color: #1d1d1f; }
@@ -299,10 +303,12 @@
       border-radius: 12px;
     }
     .lt-eval__label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      font-family: "JetBrains Mono", ui-monospace, monospace !important;
+      letter-spacing: 0 !important;
+      font-size: 11px; font-weight: 500;
+      text-transform: none;
       color: #0066cc;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .lt-eval__title {
       font-size: 15px; font-weight: 700;
@@ -345,6 +351,87 @@
     }
     .lt-eval__gate-val--fail { color: #ff3b30; }
 
+    /* ── 외부 검증 결과 표 ── */
+    .lt-result {
+      margin-top: 16px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .lt-result__head {
+      padding: 14px 22px;
+      border-bottom: 1px solid #e5e5e7;
+      background: #fafafc;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .lt-result__title {
+      font-size: 13px; font-weight: 700;
+      color: #1d1d1f;
+    }
+    .lt-result__meta {
+      font-family: "JetBrains Mono", ui-monospace, monospace !important;
+      letter-spacing: 0 !important;
+      font-size: 11px;
+      color: #6e6e73;
+    }
+    .lt-result__meta strong {
+      color: #34c759; font-weight: 700;
+    }
+    .lt-result table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .lt-result th {
+      padding: 10px 12px;
+      text-align: left;
+      background: #fafafc;
+      border-bottom: 1px solid #e5e5e7;
+      font-size: 10px;
+      font-weight: 700;
+      color: #6e6e73;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .lt-result th.lt-result__num,
+    .lt-result td.lt-result__num {
+      text-align: right;
+      font-family: "JetBrains Mono", ui-monospace, monospace !important;
+      letter-spacing: 0 !important;
+      font-feature-settings: "tnum";
+      width: 1%;
+      white-space: nowrap;
+    }
+    .lt-result td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f2;
+      color: #1d1d1f;
+      vertical-align: middle;
+    }
+    .lt-result tr:last-child td { border-bottom: 0; }
+    .lt-result tr:hover td { background: #fafafc; }
+    .lt-result__name {
+      color: #1d1d1f;
+      font-weight: 500;
+    }
+    .lt-result__score--pos { color: #34c759; font-weight: 700; }
+    .lt-result__score--neg { color: #ff3b30; font-weight: 700; }
+    .lt-result__score--zero { color: #6e6e73; }
+    .lt-result__check {
+      display: inline-grid; place-items: center;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(52, 199, 89, 0.12);
+      color: #34c759;
+      font-size: 11px; font-weight: 700;
+    }
+
     @media (max-width: 720px) {
       .lt-intro { grid-template-columns: 1fr; }
       .lt-features { grid-template-columns: 1fr; }
@@ -372,11 +459,10 @@
           </header>
 
           <p class="lt-intro__lede">
-            OASIS(1M LLM agent 소셜 시뮬레이션, KAUST 2024)에서 착안.
+            OASIS(KAUST 2024)에서 착안.
             출시 전 K-뷰티 신제품 컨셉을 <strong>한국 합성 페르소나</strong>가 평가해
-            <strong>100개 후보 중 5개</strong>로 좁히는 엔진입니다.
-            기존 컨셉테스트 1회당 수백만 원·수 주가 드는 자리를
-            <strong>1 사이클 $0.30 · 80초 · 인간 0명</strong>으로 대체합니다.
+            마케터가 검토할 <strong>후보로 좁혀주는 엔진</strong>입니다.
+            인간 패널 컨셉테스트의 시간·비용 부담을 한 사이클로 대체합니다.
           </p>
         </div>
 
@@ -409,11 +495,10 @@
         </div>
       </section>
 
-      <!-- ── NVIDIA 데이터 · agent 적용 ── -->
-      <h2 class="lt-section-title">NVIDIA 페르소나 데이터의 agent 적용</h2>
+      <!-- ── agent 페르소나 하네싱 ── -->
+      <h2 class="lt-section-title">agent 페르소나 하네싱</h2>
       <p class="lt-section-sub">
-        NVIDIA Nemotron-Personas-Korea의 한 row가 그대로 LLM agent의 정체성으로 주입됩니다.
-        원본 필드를 손대지 않고 system block에 그대로 직렬화 — 페르소나 일관성을 시뮬 사이에 보존합니다.
+        nvidia/Nemotron-Personas-Korea : 한 row의 모든 필드를 LLM agent의 system role에 그대로 주입합니다.
       </p>
 
       <div class="lt-data">
@@ -477,12 +562,6 @@
 
       </div>
 
-      <p class="lt-data__caption">
-        <strong>하네싱 원칙</strong> — 원본 row의 12개 필드를 그대로 보존해 한 페르소나의 정체성을 손상 없이 LLM에 전달합니다.
-        같은 <code>uuid</code>는 같은 system block을 만들어 시뮬 사이의 일관성을 보장하고,
-        고정 seed의 샘플링으로 재현성도 유지됩니다.
-      </p>
-
       <!-- ── 평가 · 검증 로직 ── -->
       <h2 class="lt-section-title">평가 · 검증 로직</h2>
       <p class="lt-section-sub">컨셉 점수 산정 방식, 자체 sanity, 외부 검증의 3-축.</p>
@@ -525,25 +604,108 @@
           <div class="lt-eval__label">외부 검증</div>
           <div class="lt-eval__title">실 데이터 매칭</div>
           <p class="lt-eval__desc">
-            올영 실제 SKU(Top 8 + Bottom 8)를 합성 페르소나에 블라인드 평가시켜
-            review_count 순위와 비교. 정성 표현과 누수 신호는 사전 정제.
+            올영 sunscreen 16개(<strong>인기 상위 8 + 하위 8</strong>)를
+            누수 신호 제거 · 브랜드 마스킹 후 블라인드 평가.
+            <strong>합성 상위 10개가 실제 인기 상위 10개와 얼마나 겹치는지</strong>를 측정합니다.
           </p>
           <div class="lt-eval__gate">
-            <div class="lt-eval__gate-row">
-              <span class="lt-eval__gate-name">Top-5 overlap</span>
-              <span class="lt-eval__gate-val">60%</span>
-            </div>
             <div class="lt-eval__gate-row">
               <span class="lt-eval__gate-name">Top-10 overlap</span>
               <span class="lt-eval__gate-val">100%</span>
             </div>
-            <div class="lt-eval__gate-row">
-              <span class="lt-eval__gate-name">Bot-5 reject</span>
-              <span class="lt-eval__gate-val">60%</span>
-            </div>
           </div>
         </div>
 
+      </div>
+
+      <!-- ── 외부 검증 — 16 SKU 결과 표 (full-width) ── -->
+      <div class="lt-result">
+        <div class="lt-result__head">
+          <div class="lt-result__title">외부 검증 결과 — 올영 sunscreen 16 SKU 블라인드</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th class="lt-result__num">실제 순위</th>
+              <th class="lt-result__num">합성 순위</th>
+              <th>SKU (브랜드 마스킹)</th>
+              <th class="lt-result__num">합성 점수</th>
+              <th class="lt-result__num">Top-10 일치</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="lt-result__num">1</td>
+              <td class="lt-result__num">1</td>
+              <td class="lt-result__name">BRAND_02 맑은 어성초 진정 수분 선크림 50ml</td>
+              <td class="lt-result__num lt-result__score--pos">+1.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">2</td>
+              <td class="lt-result__num">4</td>
+              <td class="lt-result__name">BRAND_07 알로에 97% 수딩젤 300ml</td>
+              <td class="lt-result__num lt-result__score--zero">+0.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">3</td>
+              <td class="lt-result__num">5</td>
+              <td class="lt-result__name">BRAND_04 그린 마일드 업 선 플러스 50ml</td>
+              <td class="lt-result__num lt-result__score--zero">+0.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">4</td>
+              <td class="lt-result__num">6</td>
+              <td class="lt-result__name">BRAND_08 보송 페이스 앤 바디 선 스틱 30g</td>
+              <td class="lt-result__num lt-result__score--zero">+0.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">5</td>
+              <td class="lt-result__num">9</td>
+              <td class="lt-result__name">BRAND_04 브라이트닝 업 선 플러스</td>
+              <td class="lt-result__num lt-result__score--neg">−1.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">6</td>
+              <td class="lt-result__num">10</td>
+              <td class="lt-result__name">BRAND_10 기미 앰플 쿠션</td>
+              <td class="lt-result__num lt-result__score--neg">−1.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">7</td>
+              <td class="lt-result__num">2</td>
+              <td class="lt-result__name">BRAND_12 맑은쌀 선크림 50ml+20ml</td>
+              <td class="lt-result__num lt-result__score--pos">+1.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">8</td>
+              <td class="lt-result__num">3</td>
+              <td class="lt-result__name">BRAND_13 올어바웃 블러 퍼플 커버선크림 35g</td>
+              <td class="lt-result__num lt-result__score--pos">+1.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">9</td>
+              <td class="lt-result__num">8</td>
+              <td class="lt-result__name">BRAND_13 올어바웃 글로우 커버 선쿠션 15g</td>
+              <td class="lt-result__num lt-result__score--neg">−0.50</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="lt-result__num">10</td>
+              <td class="lt-result__num">7</td>
+              <td class="lt-result__name">BRAND_05 자작나무 수분 선 스프레이 100ml</td>
+              <td class="lt-result__num lt-result__score--zero">+0.00</td>
+              <td class="lt-result__num"><span class="lt-result__check">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
