@@ -5,82 +5,790 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>작업 품질 트래킹 앱 — 양영진</title>
   <link rel="stylesheet" href="../styles.css" />
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+
+  <!-- 이유: 폰트 통일 — Wanted Sans Variable (한국어) + DM Sans (영문/숫자) -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
-    body, body * {
+    /* ── 폰트 일괄 적용 ── */
+    .ot-page,
+    .ot-page * {
       font-family: "Wanted Sans Variable", "Wanted Sans",
                    "DM Sans", -apple-system, BlinkMacSystemFont,
                    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
       letter-spacing: -0.005em;
     }
+
+    /* ── 인트로 카드 ── */
+    .ot-intro {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 36px;
+      align-items: center;
+      margin: 32px 0 12px;
+    }
+    .ot-intro__lede {
+      font-size: 17px; line-height: 1.65;
+      color: #d2d2d7;
+    }
+    .ot-intro__lede strong { color: #fff; font-weight: 600; }
+
+    .ot-stack {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .ot-stack__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+      margin-bottom: 14px;
+    }
+    .ot-stack__group { margin-bottom: 14px; }
+    .ot-stack__group:last-child { margin-bottom: 0; }
+    .ot-stack__group-name {
+      font-size: 11px; color: #8e8e93;
+      margin-bottom: 6px;
+    }
+    .ot-stack__items {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .ot-stack__item {
+      padding: 3px 9px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      font-size: 12px;
+      color: #f5f5f7;
+    }
+
+    /* ── 화면 그리드 ── */
+    .ot-shots {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 36px 0 8px;
+    }
+    .ot-shot {
+      background: #fafafc;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .ot-shot__caption {
+      padding: 10px 16px;
+      background: #fff;
+      border-top: 1px solid #e5e5e7;
+    }
+    .ot-shot__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+    }
+    .ot-shot__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+      margin-top: 2px;
+    }
+
+    /* ── 화면 1: Today 패널 + 의도 선언 ── */
+    .mock-today {
+      padding: 18px 16px 16px;
+      background: #fff;
+      min-height: 280px;
+      display: flex; flex-direction: column;
+    }
+    .mock-today__head {
+      display: flex; align-items: center; gap: 6px;
+      padding-bottom: 10px;
+    }
+    .mock-today__dots {
+      display: flex; gap: 4px;
+    }
+    .mock-today__dot {
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: #e5e5e7;
+    }
+    .mock-today__dot--red { background: #ff5f56; }
+    .mock-today__dot--yellow { background: #ffbd2e; }
+    .mock-today__dot--green { background: #27c93f; }
+    .mock-today__title {
+      flex: 1;
+      font-size: 11px; font-weight: 600; color: #6e6e73;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-left: 6px;
+    }
+    .mock-today__list { display: flex; flex-direction: column; gap: 4px; }
+    .mock-today__item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+    .mock-today__item:hover { background: #f5f5f7; }
+    .mock-today__check {
+      width: 16px; height: 16px;
+      border: 1.5px solid #c0c0c4;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mock-today__check--done {
+      background: #0066cc; border-color: #0066cc;
+      position: relative;
+    }
+    .mock-today__check--done::after {
+      content: ''; position: absolute;
+      top: 4px; left: 3px;
+      width: 7px; height: 4px;
+      border-left: 1.5px solid #fff;
+      border-bottom: 1.5px solid #fff;
+      transform: rotate(-45deg);
+    }
+    .mock-today__name {
+      flex: 1;
+      font-size: 13px; color: #1d1d1f;
+    }
+    .mock-today__name--done { text-decoration: line-through; color: #8e8e93; }
+    .mock-today__intent {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .mock-today__intent--coding { background: rgba(0,102,204,0.12); color: #0066cc; }
+    .mock-today__intent--doc { background: rgba(110,110,115,0.12); color: #6e6e73; }
+    .mock-today__play {
+      width: 22px; height: 22px;
+      background: #0066cc;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .mock-today__play::after {
+      content: '';
+      width: 0; height: 0;
+      border-left: 6px solid #fff;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      margin-left: 2px;
+    }
+    .mock-today__bar {
+      margin-top: auto;
+      padding: 10px 12px;
+      background: #f5f5f7;
+      border-radius: 8px;
+      font-size: 11px; color: #6e6e73;
+    }
+    .mock-today__bar strong { color: #0066cc; font-weight: 600; }
+
+    /* ── 화면 2: 진행 중 (얇은 바) ── */
+    .mock-bar {
+      padding: 28px 24px;
+      background: #fff;
+      min-height: 280px;
+      display: flex; flex-direction: column; justify-content: center; gap: 20px;
+    }
+    .mock-bar__pill {
+      background: #fafafc;
+      border: 1px solid #e5e5e7;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .mock-bar__live {
+      width: 8px; height: 8px;
+      background: #0066cc;
+      border-radius: 50%;
+      animation: pulse 1.6s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .mock-bar__time {
+      font-size: 14px; font-weight: 700;
+      color: #0066cc;
+      font-feature-settings: "tnum";
+    }
+    .mock-bar__divider {
+      width: 1px; height: 14px;
+      background: #e5e5e7;
+    }
+    .mock-bar__task {
+      flex: 1;
+      font-size: 12px; color: #1d1d1f;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-bar__btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+    }
+    .mock-bar__btn--ghost { background: #f5f5f7; color: #6e6e73; }
+    .mock-bar__btn--primary { background: #0066cc; color: #fff; }
+    .mock-bar__caption {
+      font-size: 11px; color: #8e8e93; text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .mock-bar__caption strong { color: #0066cc; font-weight: 600; }
+
+    /* ── 화면 3: 통계 (KPI + 타임라인) ── */
+    .mock-stats {
+      padding: 18px;
+      background: #fff;
+      min-height: 280px;
+    }
+    .mock-stats__kpis {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 16px;
+    }
+    .mock-kpi {
+      padding: 10px 12px;
+      background: #fafafc;
+      border-radius: 8px;
+    }
+    .mock-kpi__label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93;
+    }
+    .mock-kpi__val {
+      font-size: 20px; font-weight: 700;
+      color: #1d1d1f;
+      font-feature-settings: "tnum";
+      margin-top: 2px;
+    }
+    .mock-kpi__sub {
+      font-size: 10px; color: #6e6e73; margin-top: 1px;
+    }
+    .mock-stats__sec-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #6e6e73;
+      margin-bottom: 8px;
+    }
+    .mock-stats__tl-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; margin-bottom: 5px;
+    }
+    .mock-stats__tl-time { width: 36px; color: #c0c0c4; font-feature-settings: "tnum"; }
+    .mock-stats__tl-track {
+      flex: 1; height: 18px;
+      background: #fafafc;
+      border-radius: 4px;
+      position: relative;
+    }
+    .mock-stats__tl-bar {
+      position: absolute; top: 0; bottom: 0;
+      border-radius: 4px;
+      display: flex; align-items: center;
+      padding: 0 6px;
+      font-size: 9px; font-weight: 700; color: #fff;
+      font-feature-settings: "tnum";
+    }
+    .mock-stats__tl-bar--coding { background: #0066cc; }
+    .mock-stats__tl-bar--doc { background: #8e8e93; }
+    .mock-stats__tl-bar--aborted {
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.2) 0 4px, transparent 4px 8px), #8e8e93;
+    }
+
+    /* ── 화면 4: 세션 1라인 + 품질 점수 ── */
+    .mock-row {
+      padding: 18px 16px;
+      background: #fff;
+      min-height: 280px;
+    }
+    .mock-row__row {
+      display: grid;
+      grid-template-columns: 32px 6px 1fr 60px;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 4px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .mock-row__row:last-child { border-bottom: 0; }
+    .mock-row__time {
+      font-size: 10px; color: #c0c0c4;
+      font-feature-settings: "tnum";
+    }
+    .mock-row__dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+    .mock-row__dot--coding { background: #0066cc; }
+    .mock-row__dot--doc { background: #8e8e93; }
+    .mock-row__main {
+      display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    }
+    .mock-row__name {
+      font-size: 12px; font-weight: 600; color: #1d1d1f;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-row__name--aborted { text-decoration: line-through; color: #8e8e93; }
+    .mock-row__sub {
+      font-size: 9px; color: #8e8e93;
+      letter-spacing: 0.02em;
+    }
+    .mock-row__stack {
+      display: flex; height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      background: #f5f5f7;
+      margin-top: 3px;
+    }
+    .mock-row__stack span { height: 100%; }
+    .mock-row__score {
+      font-size: 13px; font-weight: 700;
+      font-feature-settings: "tnum";
+      text-align: right;
+    }
+    .mock-row__score--hi { color: #34c759; }
+    .mock-row__score--med { color: #ff9500; }
+    .mock-row__score--lo { color: #ff3b30; }
+
+    /* ── 미니 아키텍처 ── */
+    .mini-arch {
+      background: #fafafc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 32px 0 8px;
+    }
+    .mini-arch__row {
+      display: grid; gap: 8px;
+      margin-bottom: 10px;
+    }
+    .mini-arch__cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .mini-arch__cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .mini-arch__node {
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      text-align: center;
+      color: #1d1d1f;
+    }
+    .mini-arch__node--primary { border-color: #0066cc; background: rgba(0, 102, 204, 0.05); }
+    .mini-arch__node--orange { border-color: #ff9500; background: rgba(255, 149, 0, 0.05); }
+    .mini-arch__node--purple { border-color: #8e44ec; background: rgba(142, 68, 236, 0.05); }
+    .mini-arch__arrow {
+      text-align: center; color: #c0c0c4;
+      font-size: 14px; margin: -2px 0;
+    }
+
+    /* 섹션 제목 */
+    .ot-section-title {
+      font-size: 22px; font-weight: 700;
+      margin: 56px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── 처리 흐름 ── */
+    .ot-flow {
+      background: #fafafc;
+      border-radius: 14px;
+      padding: 22px 26px;
+      display: grid;
+      gap: 12px;
+    }
+    .ot-flow__row {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 10px;
+    }
+    .ot-flow__num {
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      background: #0066cc;
+      color: #fff;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 12px;
+    }
+    .ot-flow__body { min-width: 0; }
+    .ot-flow__title {
+      font-size: 13px; font-weight: 600; color: #1d1d1f;
+    }
+    .ot-flow__time {
+      font-size: 11px; color: #0066cc; font-weight: 600;
+      margin-left: 6px;
+      font-feature-settings: "tnum";
+    }
+    .ot-flow__desc {
+      font-size: 12px; color: #6e6e73;
+      line-height: 1.5; margin-top: 3px;
+    }
+
+    @media (max-width: 720px) {
+      .ot-intro { grid-template-columns: 1fr; }
+      .ot-shots { grid-template-columns: 1fr; }
+    }
   </style>
+  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
 </head>
-<body>
-    <article class="section project tile-parchment">
+<body class="ot-page">
+  <article class="section project tile-dark on-dark">
     <div class="section__inner">
       <header class="project__head">
         <p class="project__eyebrow">Desktop · 창업 프로젝트</p>
         <h1 class="project__title">작업 품질 트래킹 앱</h1>
-        <p class="project__tagline">PC 사용 신호로 몰입을 측정하고, 습관을 점검합니다.</p>
-        <div class="chips">
-          <span class="chip">ActivityWatch</span>
-          <span class="chip">OS API · Active Tab</span>
-          <span class="chip">세션 평가</span>
-          <span class="chip">통계 대시보드</span>
-        </div>
+        <p class="project__tagline">PC 사용 신호로 작업의 품질을 측정합니다.</p>
       </header>
 
-      <div class="preview preview-fg">
-        <div class="preview-fg__head">
-          <span class="preview-fg__title">오늘의 몰입 리포트</span>
-          <span class="preview-fg__date">2026.05.05 · Mon</span>
-        </div>
-        <div class="preview-fg__grid">
-          <div class="preview-fg__card">
-            <div class="preview-fg__metric">Deep work</div>
-            <div class="preview-fg__big">3h 47m</div>
-            <div class="preview-fg__delta">▲ 어제보다 +52분</div>
-            <div class="preview-fg__bars">
-              <span style="height:40%"></span><span style="height:65%"></span>
-              <span style="height:80%"></span><span style="height:55%"></span>
-              <span style="height:90%"></span><span style="height:72%"></span>
-              <span style="height:48%"></span>
-            </div>
-            <div class="preview-fg__timeline">
-              <span class="focus" style="flex:6"></span>
-              <span class="ok" style="flex:3"></span>
-              <span class="distract" style="flex:1"></span>
-              <span class="focus" style="flex:5"></span>
-              <span class="afk" style="flex:2"></span>
-              <span class="focus" style="flex:4"></span>
-              <span class="distract" style="flex:1"></span>
+      <!-- ── 인트로: 앱 설명 + 스택 ── -->
+      <section class="ot-intro">
+        <p class="ot-intro__lede">
+          세션 시작 시 <strong>의도(예: Coding)를 선언</strong>하고 스톱워치를 켭니다.
+          <strong>ActivityWatch가 OS API 레벨</strong>에서 활성 앱·윈도우·AFK를 수집하면,
+          그 시간 동안 의도한 카테고리에 쓴 비율로 <strong>작업 품질을 0~100점으로 즉시 환산</strong>합니다.
+          일·주 단위 패턴 인사이트는 Gemini Flash가 비동기로 생성합니다.
+        </p>
+
+        <div class="ot-stack">
+          <div class="ot-stack__label">Stack</div>
+
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Desktop Shell</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">PyWebview</span>
+              <span class="ot-stack__item">py2app</span>
+              <span class="ot-stack__item">macOS</span>
             </div>
           </div>
-          <div class="preview-fg__card">
-            <div class="preview-fg__metric">현재 세션 — TODO</div>
-            <div class="preview-fg__big" style="font-size:18px; line-height:1.4;">포트폴리오 리팩터링</div>
-            <div class="preview-fg__delta" style="color:#8694b8;">42분 / 90분 · 차단 사이트 7</div>
-            <div style="height:8px; background:#1f2a47; border-radius:4px; margin-top:14px; overflow:hidden;">
-              <div style="width:46%; height:100%; background:linear-gradient(90deg,#4dd58a,#4f8cff);"></div>
+
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Backend · Data</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">Python</span>
+              <span class="ot-stack__item">ActivityWatch</span>
+              <span class="ot-stack__item">Supabase</span>
+              <span class="ot-stack__item">SQLite</span>
             </div>
-            <div class="preview-fg__metric" style="margin-top:18px;">세션 품질 점수</div>
-            <div class="preview-fg__big" style="color:#4dd58a;">A−</div>
+          </div>
+
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">AI · 평가</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">Rule 4-axis</span>
+              <span class="ot-stack__item">Gemini Flash</span>
+              <span class="ot-stack__item">pandas · plotly</span>
+            </div>
+          </div>
+
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Sync · 차단</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">Chrome Extension</span>
+              <span class="ot-stack__item">Native Messaging</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 실제 화면 4개 ── -->
+      <h2 class="ot-section-title">실제 화면</h2>
+
+      <div class="ot-shots">
+
+        <!-- 1: Today 패널 + 의도 선언 -->
+        <div class="ot-shot">
+          <div class="mock-today">
+            <div class="mock-today__head">
+              <div class="mock-today__dots">
+                <span class="mock-today__dot mock-today__dot--red"></span>
+                <span class="mock-today__dot mock-today__dot--yellow"></span>
+                <span class="mock-today__dot mock-today__dot--green"></span>
+              </div>
+              <div class="mock-today__title">Today · 4건</div>
+            </div>
+            <div class="mock-today__list">
+              <div class="mock-today__item">
+                <span class="mock-today__check mock-today__check--done"></span>
+                <span class="mock-today__name mock-today__name--done">기획서 정리</span>
+                <span class="mock-today__intent mock-today__intent--doc">문서</span>
+              </div>
+              <div class="mock-today__item">
+                <span class="mock-today__check"></span>
+                <span class="mock-today__name">Areum 어댑터 구현</span>
+                <span class="mock-today__intent mock-today__intent--coding">Coding</span>
+                <div class="mock-today__play"></div>
+              </div>
+              <div class="mock-today__item">
+                <span class="mock-today__check"></span>
+                <span class="mock-today__name">PR 리뷰</span>
+                <span class="mock-today__intent mock-today__intent--coding">Coding</span>
+              </div>
+              <div class="mock-today__item">
+                <span class="mock-today__check"></span>
+                <span class="mock-today__name">참고문헌 정리</span>
+                <span class="mock-today__intent mock-today__intent--doc">문서</span>
+              </div>
+            </div>
+            <div class="mock-today__bar">
+              오늘 작업 <strong>3h 43m</strong> · 평균 일치도 <strong>80%</strong>
+            </div>
+          </div>
+          <div class="ot-shot__caption">
+            <div class="ot-shot__label">Step 1</div>
+            <div class="ot-shot__title">Today + 의도 선언</div>
+          </div>
+        </div>
+
+        <!-- 2: 세션 진행 (얇은 바) -->
+        <div class="ot-shot">
+          <div class="mock-bar">
+            <div class="mock-bar__pill">
+              <span class="mock-bar__live"></span>
+              <span class="mock-bar__time">12:34</span>
+              <span class="mock-bar__divider"></span>
+              <span class="mock-bar__task">Areum 어댑터 구현 · Cursor</span>
+              <span class="mock-bar__btn mock-bar__btn--ghost">일시정지</span>
+              <span class="mock-bar__btn mock-bar__btn--primary">완료</span>
+            </div>
+            <div class="mock-bar__caption">
+              세션 시작 → Today 윈도우가 자동으로 <strong>580×56 얇은 바</strong>로 접힘
+            </div>
+            <div class="mock-bar__pill" style="opacity:0.55;">
+              <span class="mock-bar__live" style="background:#34c759;animation:none;"></span>
+              <span class="mock-bar__time" style="color:#34c759;">48:12</span>
+              <span class="mock-bar__divider"></span>
+              <span class="mock-bar__task">Areum 어댑터 구현 · 완료</span>
+              <span class="mock-bar__btn mock-bar__btn--ghost">기록 저장됨</span>
+            </div>
+          </div>
+          <div class="ot-shot__caption">
+            <div class="ot-shot__label">Step 2</div>
+            <div class="ot-shot__title">세션 진행 + 자동 접힘</div>
+          </div>
+        </div>
+
+        <!-- 3: 통계 -->
+        <div class="ot-shot">
+          <div class="mock-stats">
+            <div class="mock-stats__kpis">
+              <div class="mock-kpi">
+                <div class="mock-kpi__label">세션</div>
+                <div class="mock-kpi__val">3h 43m</div>
+                <div class="mock-kpi__sub">4/5건 완료</div>
+              </div>
+              <div class="mock-kpi">
+                <div class="mock-kpi__label">Deep work</div>
+                <div class="mock-kpi__val">2h 34m</div>
+                <div class="mock-kpi__sub">69% 비율</div>
+              </div>
+              <div class="mock-kpi">
+                <div class="mock-kpi__label">평균 품질</div>
+                <div class="mock-kpi__val" style="color:#0066cc;">80</div>
+                <div class="mock-kpi__sub">의도 → 실제</div>
+              </div>
+            </div>
+            <div class="mock-stats__sec-label">세션 타임라인 · 9–15시</div>
+            <div class="mock-stats__tl-row">
+              <span class="mock-stats__tl-time">14:18</span>
+              <div class="mock-stats__tl-track">
+                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:62%;width:30%;">48m</div>
+              </div>
+            </div>
+            <div class="mock-stats__tl-row">
+              <span class="mock-stats__tl-time">13:15</span>
+              <div class="mock-stats__tl-track">
+                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:55%;width:14%;">23m</div>
+              </div>
+            </div>
+            <div class="mock-stats__tl-row">
+              <span class="mock-stats__tl-time">11:30</span>
+              <div class="mock-stats__tl-track">
+                <div class="mock-stats__tl-bar mock-stats__tl-bar--doc" style="left:38%;width:17%;">27m</div>
+              </div>
+            </div>
+            <div class="mock-stats__tl-row">
+              <span class="mock-stats__tl-time">10:00</span>
+              <div class="mock-stats__tl-track">
+                <div class="mock-stats__tl-bar mock-stats__tl-bar--aborted" style="left:30%;width:24%;">38m</div>
+              </div>
+            </div>
+            <div class="mock-stats__tl-row">
+              <span class="mock-stats__tl-time">09:00</span>
+              <div class="mock-stats__tl-track">
+                <div class="mock-stats__tl-bar mock-stats__tl-bar--coding" style="left:22%;width:54%;">87m</div>
+              </div>
+            </div>
+          </div>
+          <div class="ot-shot__caption">
+            <div class="ot-shot__label">Step 3</div>
+            <div class="ot-shot__title">일간 통계 + 세션 타임라인</div>
+          </div>
+        </div>
+
+        <!-- 4: 세션 1라인 + 품질 점수 -->
+        <div class="ot-shot">
+          <div class="mock-row">
+            <div class="mock-row__row">
+              <span class="mock-row__time">14:18</span>
+              <span class="mock-row__dot mock-row__dot--coding"></span>
+              <div class="mock-row__main">
+                <span class="mock-row__name">Areum 어댑터 구현 · 48m</span>
+                <span class="mock-row__sub">Coding · Cursor · Claude</span>
+                <div class="mock-row__stack">
+                  <span style="flex:38;background:#0066cc;"></span>
+                  <span style="flex:7;background:#8e44ec;"></span>
+                  <span style="flex:3;background:#8e8e93;"></span>
+                </div>
+              </div>
+              <span class="mock-row__score mock-row__score--hi">94</span>
+            </div>
+            <div class="mock-row__row">
+              <span class="mock-row__time">13:15</span>
+              <span class="mock-row__dot mock-row__dot--coding"></span>
+              <div class="mock-row__main">
+                <span class="mock-row__name">PR 리뷰 · 23m</span>
+                <span class="mock-row__sub">Coding · Chrome · 이탈 1</span>
+                <div class="mock-row__stack">
+                  <span style="flex:15;background:#0066cc;"></span>
+                  <span style="flex:4;background:#8e44ec;"></span>
+                  <span style="flex:2;background:#8e8e93;"></span>
+                  <span style="flex:2;background:#ff3b30;"></span>
+                </div>
+              </div>
+              <span class="mock-row__score mock-row__score--med">81</span>
+            </div>
+            <div class="mock-row__row">
+              <span class="mock-row__time">11:30</span>
+              <span class="mock-row__dot mock-row__dot--doc"></span>
+              <div class="mock-row__main">
+                <span class="mock-row__name">기획서 정리 · 27m</span>
+                <span class="mock-row__sub">문서 · Notion</span>
+                <div class="mock-row__stack">
+                  <span style="flex:22;background:#8e8e93;"></span>
+                  <span style="flex:3;background:#8e44ec;"></span>
+                  <span style="flex:2;background:#0066cc;"></span>
+                </div>
+              </div>
+              <span class="mock-row__score mock-row__score--hi">88</span>
+            </div>
+            <div class="mock-row__row" style="opacity:0.62;">
+              <span class="mock-row__time">10:00</span>
+              <span class="mock-row__dot" style="background:#c0c0c4;"></span>
+              <div class="mock-row__main">
+                <span class="mock-row__name mock-row__name--aborted">참고문헌 정리 · 38m</span>
+                <span class="mock-row__sub">문서 · 이탈 2 · 중단</span>
+                <div class="mock-row__stack">
+                  <span style="flex:18;background:#8e8e93;"></span>
+                  <span style="flex:8;background:#ff3b30;"></span>
+                  <span style="flex:7;background:#8e44ec;"></span>
+                  <span style="flex:5;background:#0066cc;"></span>
+                </div>
+              </div>
+              <span class="mock-row__score mock-row__score--lo">62</span>
+            </div>
+            <div class="mock-row__row">
+              <span class="mock-row__time">09:00</span>
+              <span class="mock-row__dot mock-row__dot--coding"></span>
+              <div class="mock-row__main">
+                <span class="mock-row__name">디자인 시스템 검토 · 87m</span>
+                <span class="mock-row__sub">Coding · Cursor · 이탈 2</span>
+                <div class="mock-row__stack">
+                  <span style="flex:50;background:#0066cc;"></span>
+                  <span style="flex:18;background:#8e44ec;"></span>
+                  <span style="flex:12;background:#8e8e93;"></span>
+                  <span style="flex:7;background:#ff3b30;"></span>
+                </div>
+              </div>
+              <span class="mock-row__score mock-row__score--med">76</span>
+            </div>
+          </div>
+          <div class="ot-shot__caption">
+            <div class="ot-shot__label">Step 4</div>
+            <div class="ot-shot__title">세션 1라인 + 품질 점수</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── 시스템 아키텍처 ── -->
+      <h2 class="ot-section-title">시스템 아키텍처</h2>
+
+      <div class="mini-arch">
+        <div class="mini-arch__row">
+          <div class="mini-arch__node">👤 사용자 (macOS)</div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node mini-arch__node--primary">PyWebview Main<br><span style="font-size: 10px; opacity: 0.6;">분석 대시보드 1280×720</span></div>
+          <div class="mini-arch__node mini-arch__node--primary">Today 패널<br><span style="font-size: 10px; opacity: 0.6;">360×600 / 580×56 접힘</span></div>
+          <div class="mini-arch__node mini-arch__node--primary">Chrome 확장<br><span style="font-size: 10px; opacity: 0.6;">세션 중 사이트 차단</span></div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node">Session Engine<br><span style="font-size: 10px; opacity: 0.6;">스톱워치 + 의도 선언</span></div>
+          <div class="mini-arch__node">Quality Score (Rule)<br><span style="font-size: 10px; opacity: 0.6;">4-axis 가중 합 → 0~100</span></div>
+          <div class="mini-arch__node">AW Reader<br><span style="font-size: 10px; opacity: 0.6;">episode 집계 + 카테고리</span></div>
+        </div>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-4">
+          <div class="mini-arch__node mini-arch__node--orange">ActivityWatch<br><span style="font-size: 10px; opacity: 0.6;">OS API · 활성 앱·AFK</span></div>
+          <div class="mini-arch__node mini-arch__node--purple">Supabase<br><span style="font-size: 10px; opacity: 0.6;">세션·의도 일치율 누적</span></div>
+          <div class="mini-arch__node mini-arch__node--orange">Gemini Flash<br><span style="font-size: 10px; opacity: 0.6;">일/주 패턴 인사이트</span></div>
+          <div class="mini-arch__node">SQLite (로컬)<br><span style="font-size: 10px; opacity: 0.6;">오프라인 큐</span></div>
+        </div>
+      </div>
+
+      <!-- ── 처리 흐름 (세션 1개 평가) ── -->
+      <h2 class="ot-section-title">세션 평가 흐름</h2>
+
+      <div class="ot-flow">
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">1</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">의도 선언 + 스톱워치 시작 <span class="ot-flow__time">~0s</span></div>
+            <div class="ot-flow__desc">Today 패널에서 Todo의 ▶ 클릭 → 카테고리 자동 매핑 (예: "Coding") + Today 윈도우 자동 접힘.</div>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">2</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">행동 신호 측정 (지속) <span class="ot-flow__time">실시간</span></div>
+            <div class="ot-flow__desc">ActivityWatch가 활성 윈도우·앱·AFK를 1초 단위 폴링. 화면 픽셀·키스트로크·URL 일절 수집 X.</div>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">3</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">세션 종료 + 데이터 청크 <span class="ot-flow__time">~0s</span></div>
+            <div class="ot-flow__desc">사용자가 [완료] / [종료] 클릭 → 스톱워치 정지 → 세션 시간 범위로 AW raw event 청크.</div>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">4</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">카테고리 집계 <span class="ot-flow__time">~30ms</span></div>
+            <div class="ot-flow__desc">17 카테고리 × 6 그룹 룰로 raw event → episode 변환. 의도 vs 비의도 카테고리 시간 분리.</div>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">5</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">4차원 품질 점수 (Rule) <span class="ot-flow__time">~5ms</span></div>
+            <div class="ot-flow__desc">Alignment · Depth · Resistance · Stability를 가중 합 (0.40·0.25·0.20·0.15)으로 0~100 즉시 환산.</div>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">6</span>
+          <div class="ot-flow__body">
+            <div class="ot-flow__title">패턴 인사이트 (LLM, 비동기) <span class="ot-flow__time">~2s · 일 1회</span></div>
+            <div class="ot-flow__desc">하루 마감 시 Gemini Flash가 카테고리·앱·점수만(=익명화) 받아 자연어 인사이트 생성. 점수는 Rule, 이야기는 LLM.</div>
           </div>
         </div>
       </div>
 
-      <dl class="project-body">
-        <div><dt>배경 및 문제 정의</dt><dd>최근 멀티태스킹과 타 페이지 이탈로 작업 몰입도가 굉장히 떨어지는 걸 느꼈습니다. 메타가 전 직원 PC 화면을 녹화해 데이터화한 사례에서 영감을 받아, 내 PC 사용 내역으로 작업 습관과 품질을 도출하는 앱을 고안했습니다.</dd></div>
-        <div><dt>해결 방향</dt><dd>ActivityWatch로 활성 탭·윈도우·AFK를 수집합니다. 사용자는 TODO를 적은 다음 세션을 시작하고, 세션 종료 시 행동 신호로 품질을 평가합니다. 세션·일 단위 인사이트로 습관을 점검할 수 있게 했습니다.</dd></div>
-        <div><dt>배운 점</dt><dd>있는 줄도 몰랐던 데이터를 기존 앱에 결부시켜 새로운 가치를 만들 수 있다는 사실이 놀라웠습니다. 데이터 활용에 관심을 갖게 되며 문제를 바라보는 방식이 한 층 넓어졌습니다.</dd></div>
-      </dl>
     </div>
   </article>
 </body>
