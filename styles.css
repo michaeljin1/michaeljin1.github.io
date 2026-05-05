@@ -581,6 +581,10 @@ body {
 .gallery__card--full { grid-column: 1 / -1; }
 .gallery__card--full .gallery__frame { aspect-ratio: 21 / 6; }
 
+/* left-aligned square card — sits in column 1, leaves column 2 empty */
+.gallery__card--left-square { grid-column: 1; }
+.gallery__card--left-square .gallery__frame { aspect-ratio: 1 / 1; }
+
 /* ----- Project group (창업 / 개발 방식 개선) ----- */
 .gallery-group { margin-bottom: 72px; }
 .gallery-group:last-child { margin-bottom: 0; }
