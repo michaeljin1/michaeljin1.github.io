@@ -5,64 +5,296 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MECE 멀티 에이전트 개발 환경 — 양영진</title>
   <link rel="stylesheet" href="../styles.css" />
-  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
+
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* 이유: 프로젝트 페이지 폰트 통일 — Wanted Sans (한국어) + DM Sans (영문) */
-    body, body * {
+    .ot-page,
+    .ot-page * {
       font-family: "Wanted Sans Variable", "Wanted Sans",
                    "DM Sans", -apple-system, BlinkMacSystemFont,
                    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif !important;
       letter-spacing: -0.005em;
     }
+
+    .ot-page-flow {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin: 24px 0 36px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e5e7;
+    }
+    .ot-page-flow__step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: #f5f5f7;
+      border-radius: 999px;
+      font-size: 12px; color: #6e6e73;
+    }
+    .ot-page-flow__step b {
+      font-family: "DM Sans", sans-serif !important;
+      font-weight: 600; color: #0066cc;
+    }
+    .ot-page-flow__sep { color: #c0c0c4; font-size: 12px; align-self: center; }
+
+    .ot-intro {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: 36px; align-items: start;
+      margin: 8px 0 56px;
+    }
+    .ot-intro__lede {
+      font-size: 17px; line-height: 1.7; color: #424245;
+    }
+    .ot-intro__lede strong { color: #1d1d1f; font-weight: 600; }
+    .ot-intro__lede p { margin: 0 0 14px; }
+    .ot-intro__lede p:last-child { margin-bottom: 0; }
+
+    .ot-stack {
+      background: #fafafc; border: 1px solid #e5e5e7;
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .ot-stack__label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #8e8e93; margin-bottom: 14px;
+    }
+    .ot-stack__group { margin-bottom: 14px; }
+    .ot-stack__group:last-child { margin-bottom: 0; }
+    .ot-stack__group-name { font-size: 11px; color: #8e8e93; margin-bottom: 6px; }
+    .ot-stack__items { display: flex; flex-wrap: wrap; gap: 4px; }
+    .ot-stack__item {
+      padding: 3px 9px; background: #fff;
+      border: 1px solid #e5e5e7; border-radius: 6px;
+      font-size: 12px; color: #1d1d1f;
+    }
+
+    .ot-section-title {
+      font-size: 20px; font-weight: 600; letter-spacing: -0.012em;
+      color: #1d1d1f; margin: 56px 0 18px;
+    }
+
+    .mini-arch {
+      background: #fafafc; border: 1px solid #e5e5e7;
+      border-radius: 14px; padding: 22px;
+    }
+    .mini-arch__row { display: grid; gap: 8px; margin-bottom: 8px; }
+    .mini-arch__row:last-child { margin-bottom: 0; }
+    .mini-arch__cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .mini-arch__node {
+      background: #fff; border: 1px solid #e5e5e7; border-radius: 8px;
+      padding: 10px 12px; font-size: 12px; text-align: center;
+      color: #1d1d1f; line-height: 1.4;
+    }
+    .mini-arch__node--planner { border-color: #d97757; background: rgba(217,119,87,0.06); }
+    .mini-arch__node--builder { border-color: #0066cc; background: rgba(0,102,204,0.04); }
+    .mini-arch__node--reviewer { border-color: #34c759; background: rgba(52,199,89,0.06); }
+    .mini-arch__node small {
+      display: block; font-size: 10px; color: #8e8e93;
+      font-family: "DM Sans", sans-serif !important;
+      font-weight: 500; margin-top: 2px;
+    }
+    .mini-arch__arrow {
+      text-align: center; color: #c0c0c4;
+      font-size: 14px; margin: 0 0 8px;
+    }
+
+    .ot-flow { display: flex; flex-direction: column; }
+    .ot-flow__row {
+      display: grid; grid-template-columns: 28px 1fr;
+      gap: 14px; padding: 14px 0;
+      border-top: 1px solid #e5e5e7;
+    }
+    .ot-flow__row:first-child { border-top: 0; }
+    .ot-flow__num {
+      font-family: "DM Sans", sans-serif !important;
+      font-size: 13px; font-weight: 600; color: #0066cc;
+      padding-top: 1px;
+    }
+    .ot-flow__line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; }
+    .ot-flow__title { font-size: 14px; color: #1d1d1f; font-weight: 500; flex: 1; }
+    .ot-flow__time {
+      font-family: "DM Sans", sans-serif !important;
+      font-size: 11px; font-weight: 500; color: #8e8e93;
+      letter-spacing: 0.02em;
+    }
+
+    /* code-style file blocks */
+    .ot-code {
+      background: #1d1d1f; color: #e8e8e8;
+      border-radius: 12px; padding: 22px 24px;
+      font-family: "DM Sans", "SF Mono", ui-monospace, monospace !important;
+      font-size: 13px; line-height: 1.9;
+    }
+    .ot-code .tag {
+      padding: 2px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 600;
+      margin-right: 8px;
+    }
+    .ot-code .tag--planner { background: rgba(217,119,87,0.18); color: #ff9c75; }
+    .ot-code .tag--builder { background: rgba(0,102,204,0.20); color: #6aa6ff; }
+    .ot-code .tag--reviewer { background: rgba(77,213,138,0.18); color: #6fe2a4; }
+    .ot-code .file { color: #c9c9cc; }
+    .ot-code .arr { color: #5a5a5d; margin: 0 6px; }
+    .ot-code .hook {
+      display: block; margin-top: 14px; padding: 10px 14px;
+      background: #111; border: 1px solid #2a2a2c; border-radius: 8px;
+      font-size: 12px; color: #8e8e93;
+    }
+    .ot-code .hook b { color: #ff9c75; font-weight: 600; }
+
+    @media (max-width: 760px) {
+      .ot-intro { grid-template-columns: 1fr; gap: 22px; }
+      .mini-arch__cols-3 { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-    <article class="section project tile-dark-2 on-dark">
+  <article class="section project tile-light ot-page">
     <div class="section__inner">
-      <header class="project__head">
-        <p class="project__eyebrow">Dev tooling · 개발 방식 개선</p>
-        <h1 class="project__title">MECE 멀티 에이전트 개발 환경</h1>
-        <p class="project__tagline">페로몬 프로토콜에서 착안. md 공유 + 훅 트리거로 자율 실행.</p>
-        <div class="chips">
-          <span class="chip">Claude Code</span>
-          <span class="chip">Sub-agents</span>
-          <span class="chip">Hook 자동화</span>
-          <span class="chip">권한 격리 (MECE)</span>
-        </div>
+
+      <header class="project__head" style="text-align:left;">
+        <p class="project__eyebrow" style="color:#0066cc;">Dev tooling · 개발 방식 개선</p>
+        <h1 class="project__title" style="margin-bottom:10px;">MECE 멀티 에이전트 개발 환경</h1>
+        <p class="project__tagline" style="margin:0; max-width:640px;">페로몬 프로토콜에서 착안. md 공유 + 훅 트리거로 자율 실행.</p>
       </header>
 
-      <div class="preview preview-flow">
-        <div class="preview-flow__row">
-          <span class="preview-flow__tag preview-flow__tag--planner">planner</span>
-          <span>writes</span><span class="preview-flow__file">spec.md</span>
-          <span class="preview-flow__arrow">→</span><span>onChange</span>
+      <div class="ot-intro">
+        <div class="ot-intro__lede">
+          <p>슬래시 명령으로 매번 sub-agent를 부르는 방식은 <strong>메인 컨텍스트가 빠르게 오염</strong>되고, 산출물·로그가 휘발됐다.</p>
+          <p>페로몬 프로토콜에서 착안해 <strong>에이전트 간 통신은 md 파일로</strong>, 변경 감지는 훅이 담당하도록 설계. 한 번 명령하면 단계가 자율 실행되고 모든 산출물이 파일로 누적된다.</p>
         </div>
-        <div class="preview-flow__row">
-          <span class="preview-flow__tag preview-flow__tag--builder">builder</span>
-          <span>reads spec.md, writes</span><span class="preview-flow__file">impl/*.ts</span>
-          <span class="preview-flow__arrow">→</span><span>onChange</span>
+        <aside class="ot-stack">
+          <div class="ot-stack__label">Stack</div>
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Runtime</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">Claude Code</span>
+              <span class="ot-stack__item">Sub-agents</span>
+            </div>
+          </div>
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Trigger</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">PostToolUse Hook</span>
+              <span class="ot-stack__item">파일 변경 감지</span>
+            </div>
+          </div>
+          <div class="ot-stack__group">
+            <div class="ot-stack__group-name">Storage</div>
+            <div class="ot-stack__items">
+              <span class="ot-stack__item">Markdown 파일</span>
+              <span class="ot-stack__item">권한 격리 (MECE)</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <h2 class="ot-section-title">파이프라인</h2>
+
+      <div class="ot-code">
+        <div><span class="tag tag--planner">planner</span>writes <span class="file">spec.md</span><span class="arr">→</span>onChange</div>
+        <div><span class="tag tag--builder">builder</span>reads spec.md, writes <span class="file">impl/*.ts</span><span class="arr">→</span>onChange</div>
+        <div><span class="tag tag--reviewer">reviewer</span>reads impl/*, writes <span class="file">review.md</span><span class="arr">→</span>done</div>
+        <span class="hook"><b>hook</b> · 변경 감지 시 다음 에이전트만 호출 — 메인 컨텍스트 오염 0, 단일 명령으로 자율 실행, 로그 누적·재시작 가능.</span>
+      </div>
+
+      <h2 class="ot-section-title">시스템 아키텍처</h2>
+
+      <div class="mini-arch">
+        <div class="mini-arch__row">
+          <div class="mini-arch__node">사용자 — 단일 명령</div>
         </div>
-        <div class="preview-flow__row">
-          <span class="preview-flow__tag preview-flow__tag--reviewer">reviewer</span>
-          <span>reads impl/*, writes</span><span class="preview-flow__file">review.md</span>
-          <span class="preview-flow__arrow">→</span><span>done</span>
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node mini-arch__node--planner">planner<br/><small>요구사항 → spec.md</small></div>
+          <div class="mini-arch__node mini-arch__node--builder">builder<br/><small>spec.md → impl/*</small></div>
+          <div class="mini-arch__node mini-arch__node--reviewer">reviewer<br/><small>impl/* → review.md</small></div>
         </div>
-        <div class="preview-flow__hook">
-          <b>hook</b> · 변경 감지 시 다음 에이전트만 호출 — 메인 컨텍스트 오염 0, 단일 명령으로 자율 실행, 로그 누적·재시작 가능.
+        <div class="mini-arch__arrow">↓</div>
+        <div class="mini-arch__row mini-arch__cols-3">
+          <div class="mini-arch__node">PostToolUse Hook<br/><small>파일 변경 감지</small></div>
+          <div class="mini-arch__node">권한 매트릭스<br/><small>read/write 격리</small></div>
+          <div class="mini-arch__node">로그 누적<br/><small>md 파일 = 진행 상태</small></div>
         </div>
       </div>
 
-      <dl class="project-body">
-        <div><dt>기존 방식의 문제</dt><dd>Claude Code 내 슬래시 명령으로 sub agent (기획·디자인·리뷰)를 호출했지만, 메인 컨텍스트 오염, 명령 번거로움, 데이터/로그 휘발이 발생했습니다.</dd></div>
-        <div><dt>새 방식</dt><dd>페로몬 프로토콜에서 착안해 sub agent들이 md 파일을 공유하고, 변경 시 훅으로 다음 에이전트를 호출하도록 설계했습니다. MECE 권한 격리.</dd></div>
-        <div><dt>실험과 절충</dt><dd>1회 명령만으로 자율 실행, 단계별 산출물 품질 향상, 로그 누적·재시작 가능. 비용은 느린 실행, 횡단 검증 불가, 작업 과잉. 비용 인지 후 긴 호흡 작업에만 적용하고, 내용에 따라 필수 agent만 채택하도록 최적화했습니다.</dd></div>
-      </dl>
+      <h2 class="ot-section-title">한 사이클 처리 흐름</h2>
+
+      <div class="ot-flow">
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">1</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">사용자가 단일 명령 입력 — planner 호출</span>
+            <span class="ot-flow__time">~0s</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">2</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">planner → spec.md 작성 (요구사항·제약·산출물 정의)</span>
+            <span class="ot-flow__time">~30s</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">3</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">Hook 발동 → builder만 호출, spec.md 읽고 impl/* 작성</span>
+            <span class="ot-flow__time">~2–5min</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">4</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">Hook 발동 → reviewer만 호출, impl/* 읽고 review.md 작성</span>
+            <span class="ot-flow__time">~1–2min</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">5</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">사이클 종료 — 모든 산출물이 md 파일로 누적, 재시작 가능</span>
+            <span class="ot-flow__time">~0s</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="ot-section-title">권한 격리 원칙</h2>
+
+      <div class="ot-flow">
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">·</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">각 에이전트는 자기 산출물만 write — 교차 쓰기 금지</span>
+            <span class="ot-flow__time">MECE write</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">·</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">상류 단계 산출물만 read — 하류 산출물 참조 금지</span>
+            <span class="ot-flow__time">one-way read</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">·</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">에이전트 간 메모리 공유 없음 — 통신은 md 파일이 유일</span>
+            <span class="ot-flow__time">file as bus</span>
+          </div>
+        </div>
+        <div class="ot-flow__row">
+          <span class="ot-flow__num">·</span>
+          <div class="ot-flow__line">
+            <span class="ot-flow__title">긴 호흡 작업에만 적용 — 짧은 작업은 단일 명령 직접 실행</span>
+            <span class="ot-flow__time">cost-aware</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </article>
 </body>

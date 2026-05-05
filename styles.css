@@ -753,6 +753,9 @@ html.embed .proj-back { display: none; }
    Modal — iframe popup (uses native <dialog>)
    ============================================================ */
 .modal-iframe {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: 92vw; max-width: 1080px;
   height: 86vh;
   padding: 0;
@@ -761,7 +764,7 @@ html.embed .proj-back { display: none; }
   background: var(--canvas);
   box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.45);
   overflow: hidden;
-  position: relative;
+  transform-origin: center center;
 }
 .modal-iframe::backdrop {
   background: rgba(0, 0, 0, 0.55);
